@@ -37,12 +37,13 @@ A simple, responsive, single-page personal website featuring:
 *   Basic scroll-based fade-in animations for sections.
 
 ## Directory Structure
+```
 /
 ├── index.html # Main HTML structure
 ├── style.css # CSS for styling and theme
 ├── script.js # JavaScript for reactivity (animations, etc.)
 └── README.md # This setup and documentation file
-
+```
 
 ## Technology Stack
 
@@ -250,23 +251,3 @@ This method uses a `CNAME` record to point `www.softwarestable.com` to Cloudflar
 
 *   **IMPORTANT:** Remember to replace the placeholder bio text in `index.html` with your actual bio from your LinkedIn profile.
 
----
-
-**Original User Prompt:**
-
-```text
-Using Cloudflare Pages. Implement the following sequence.
-Create a simple reactive webpage, that works on both mobile and desktop browsers and supported the latest chrome, firefox and safari browsers.
-The website will present a personal home page of my name, skills as an IT architect in Platform engineering, links to github and linkedin pages.
-The page includes my name Thomas Connolly, my email address, contact@thomasconnolly.com, a brief bio copied from my linkedin page, see  https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au and to my github page, https://github.com/tomconn.
-Add my it certifications from linkedin include kubernetes, CKA,CKAD,CKS,kubestronaut, AWS Architect Professional and TOGAF 9 Certified.
-It will also provide links to my linkedin and github pages.
-Split the website into html, css and javascript files.
-Use a 1970's Nasa theme for the website, with emphasis on an optimistic future of innovation and automation where people are content and tolerant.
-I have a domain name www.softwarestable.com, I want to use the free Cloudflare pages to only host my personal website.
-My fqdn is managed in www.namecheap.com, provide details on how I can setup Cloudflare pages for the website.
-I use email forwarding in www.namecheap.com, and I want to continue to use www.namecheap.com to forward emails (I do not want to use cloudflare pages email forwarding at this time).
-Instructions to host on the free tier cloudflare pages should follow the above instructions.
-Describe how to setup and use my personal www.github.com/tomconn private repo.
-Document the process of setting up ,all the above, with the directory structure, in a README.md, in markdown.
-Include this prompt at then end of the README.md and indicate the use of Gemini 2.5 pro for the creation and generation of this website using cloudflare pages.
