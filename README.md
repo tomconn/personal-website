@@ -1,6 +1,6 @@
 # Personal Website - Thomas Connolly
 
-This repository contains the source code for the personal website of Thomas Connolly (www.softwarestable.com), hosted on Cloudflare Pages.
+This repository contains the source code for the personal website of Thomas Connolly (www.thomasconnolly.com), hosted on Cloudflare Pages.
 
 ## Original Prompt & Generation
 
@@ -14,7 +14,7 @@ This repository contains the source code for the personal website of Thomas Conn
 > It will also provide links to my linkedin and github pages.
 > Split the website into html, css and javascript files.
 > Use a 1970's Nasa theme for the website, with emphasis on an optimistic future of innovation and automation where people are content and tolerant.
-> I have a domain name www.softwarestable.com, I want to use the free Cloudflare pages to only host my personal website.
+> I have a domain name www.thomasconnolly.com, I want to use the free Cloudflare pages to only host my personal website.
 > My fqdn is managed in www.namecheap.com, provide details on how I can setup Cloudflare pages for the website.
 > I use email forwarding in www.namecheap.com, and I want to continue to use www.namecheap.com to forward emails (I do not want to use cloudflare pages email forwarding at this time).
 > Instructions to host on the free tier cloudflare pages should follow the above instructions.
@@ -52,11 +52,11 @@ A simple, responsive, single-page personal website featuring:
 *   **JavaScript (Vanilla):** Simple interactivity (fade-in on scroll, dynamic year in footer).
 *   **Cloudflare Pages:** Hosting (Free Tier).
 *   **GitHub:** Source control and deployment trigger (Private Repository).
-*   **Namecheap:** DNS Management (for `www.softwarestable.com`) and Email Forwarding.
+*   **Namecheap:** DNS Management (for `www.thomasconnolly.com`) and Email Forwarding.
 
 ## Setup Instructions
 
-Follow these steps to set up the repository and deploy the website to Cloudflare Pages using your custom domain `www.softwarestable.com`, while keeping email forwarding active on Namecheap.
+Follow these steps to set up the repository and deploy the website to Cloudflare Pages using your custom domain `www.thomasconnolly.com`, while keeping email forwarding active on Namecheap.
 
 ### 1. GitHub Repository Setup (Private)
 
@@ -64,7 +64,7 @@ Follow these steps to set up the repository and deploy the website to Cloudflare
     *   Go to your GitHub account (`github.com/tomconn`).
     *   Click the "+" icon in the top-right corner and select "New repository".
     *   **Repository name:** Choose a name (e.g., `personal-website` or `softwarestable-com`).
-    *   **Description:** (Optional) Add a brief description like "Source code for www.softwarestable.com".
+    *   **Description:** (Optional) Add a brief description like "Source code for www.thomasconnolly.com".
     *   **Select "Private"**: This is crucial to keep your code private as requested.
     *   **Initialize this repository with:** Tick the box for "Add a README file" (you'll replace it later with this one).
     *   Click "Create repository".
@@ -108,15 +108,15 @@ Follow these steps to set up the repository and deploy the website to Cloudflare
     *   **Environment variables:** None needed for this setup.
 6.  **Save and Deploy:** Click "Save and Deploy". Cloudflare will pull your code from GitHub and deploy it. You'll get a default `<your-project-name>.pages.dev` URL where you can view the site.
 
-### 3. Custom Domain Setup (www.softwarestable.com via Namecheap)
+### 3. Custom Domain Setup (www.thomasconnolly.com via Namecheap)
 
-**Goal:** Point `www.softwarestable.com` to your Cloudflare Pages site *without* changing your nameservers away from Namecheap, thus preserving Namecheap's email forwarding.
+**Goal:** Point `www.thomasconnolly.com` to your Cloudflare Pages site *without* changing your nameservers away from Namecheap, thus preserving Namecheap's email forwarding.
 
 1.  **Add Custom Domain in Cloudflare Pages:**
     *   Go back to your Cloudflare Pages project dashboard (`Workers & Pages` -> Select your project).
     *   Click on the `Custom domains` tab.
     *   Click `Set up a custom domain`.
-    *   Enter `www.softwarestable.com` into the domain field and click `Continue`.
+    *   Enter `www.thomasconnolly.com` into the domain field and click `Continue`.
     *   Cloudflare will detect that the domain's nameservers are *not* pointed to Cloudflare. It will provide instructions to add a `CNAME` record. **Follow these CNAME instructions.** It will look something like this:
         *   **Type:** `CNAME`
         *   **Name:** `www`
@@ -124,7 +124,7 @@ Follow these steps to set up the repository and deploy the website to Cloudflare
 
 2.  **Add CNAME Record in Namecheap:**
     *   Log in to your Namecheap account.
-    *   Go to your `Domain List` and click `Manage` next to `softwarestable.com`.
+    *   Go to your `Domain List` and click `Manage` next to `thomasconnolly.com`.
     *   Go to the `Advanced DNS` tab.
     *   **Important:** Find the "Host Records" section. *Do not* change the "Nameservers" setting (keep it on "Namecheap BasicDNS" or "Namecheap Web Hosting DNS" if applicable).
     *   Click `Add New Record`.
@@ -138,21 +138,21 @@ Follow these steps to set up the repository and deploy the website to Cloudflare
 3.  **Verification in Cloudflare:**
     *   Go back to the Cloudflare Pages "Custom domains" tab.
     *   It might take some time (minutes to hours, usually faster) for DNS changes to propagate. Cloudflare will automatically check for the CNAME record.
-    *   Once verified, the status will change to "Active". Cloudflare will also automatically provision an SSL certificate for `www.softwarestable.com`.
+    *   Once verified, the status will change to "Active". Cloudflare will also automatically provision an SSL certificate for `www.thomasconnolly.com`.
 
-4.  **(Optional) Handling the Root Domain (`softwarestable.com`):**
-    *   Visitors might type `softwarestable.com` without the `www`. You have a few options managed in Namecheap's `Advanced DNS`:
+4.  **(Optional) Handling the Root Domain (`thomasconnolly.com`):**
+    *   Visitors might type `thomasconnolly.com` without the `www`. You have a few options managed in Namecheap's `Advanced DNS`:
         *   **Option A (Recommended): URL Redirect:** Add a `URL Redirect Record` (sometimes called Forwarding).
             *   **Type:** `URL Redirect` (or similar name in Namecheap)
             *   **Host:** `@` (represents the root domain)
-            *   **Value:** `https://www.softwarestable.com` (forward to the `www` version)
+            *   **Value:** `https://www.thomasconnolly.com` (forward to the `www` version)
             *   **Type:** Choose `Permanent (301)`
             *   Save this record. Remove any existing `A` or `CNAME` records for `@` if they conflict.
         *   **Option B (If URL Redirect isn't ideal):** Add an `A` record pointing to a dummy IP like `192.0.2.1` (a non-routable IP often used for CNAME-like behavior at the root via Cloudflare, *but since you're NOT using Cloudflare DNS proxy*, this won't work directly). Stick with Option A (URL Redirect) managed within Namecheap for simplicity here.
 
 ### 4. Confirm Email Forwarding
 
-*   Since you **did not** change your nameservers from Namecheap to Cloudflare, your existing MX records and email forwarding settings within Namecheap for `contact@thomasconnolly.com` (assuming it's configured for the `softwarestable.com` domain) will remain active and unaffected. No further action is needed for email.
+*   Since you **did not** change your nameservers from Namecheap to Cloudflare, your existing MX records and email forwarding settings within Namecheap for `contact@thomasconnolly.com` (assuming it's configured for the `thomasconnolly.com` domain) will remain active and unaffected. No further action is needed for email.
 
 ### 5. Continuous Deployment
 
@@ -207,18 +207,18 @@ Follow these steps to set up the GitHub repository, deploy to Cloudflare Pages, 
 
 **3. Custom Domain Setup (Namecheap + Cloudflare Pages)**
 
-This method uses a `CNAME` record to point `www.softwarestable.com` to Cloudflare Pages, allowing you to keep your `MX` records (for email forwarding) at Namecheap untouched.
+This method uses a `CNAME` record to point `www.thomasconnolly.com` to Cloudflare Pages, allowing you to keep your `MX` records (for email forwarding) at Namecheap untouched.
 
 *   **In Cloudflare Pages:**
     *   Go to your Pages project dashboard (`dash.cloudflare.com` -> Workers & Pages -> Select your project).
     *   Click on the "Custom domains" tab.
     *   Click "Set up a custom domain".
-    *   Enter your desired domain: `www.softwarestable.com` and click "Continue".
+    *   Enter your desired domain: `www.thomasconnolly.com` and click "Continue".
     *   Cloudflare will now provide DNS instructions. **Crucially, it will likely ask you to add a `CNAME` record.** It will give you a specific value to point to (e.g., `your-project-name.pages.dev` or similar). **Copy this target value.**
 *   **In Namecheap:**
     *   Log in to your [Namecheap account](https://www.namecheap.com/).
     *   Go to "Domain List" from the sidebar.
-    *   Find `softwarestable.com` and click the "Manage" button next to it.
+    *   Find `thomasconnolly.com` and click the "Manage" button next to it.
     *   Go to the "Advanced DNS" tab.
     *   Under the "Host Records" section, look for existing records for `www`.
         *   **If a `CNAME` record for `www` exists:** Click "Edit" (pencil icon) and change the "Value" field to the target value you copied from Cloudflare (e.g., `your-project-name.pages.dev`). Set TTL to "Automatic" or a low value like 5 minutes if possible. Save changes (checkmark icon).
@@ -232,13 +232,13 @@ This method uses a `CNAME` record to point `www.softwarestable.com` to Cloudflar
 *   **Verification in Cloudflare:**
     *   Go back to the Cloudflare Pages "Custom domains" tab.
     *   It might take some time (minutes to hours, usually quick) for DNS propagation. Cloudflare will automatically check and activate the domain once it detects the correct CNAME record. It will show as "Active" when ready.
-*   **(Optional) Handling the Apex Domain (`softwarestable.com`):**
-    *   Since you are not changing nameservers, handling the root domain (`softwarestable.com` without `www`) pointing to Cloudflare Pages directly via CNAME is often not supported by registrars (though Namecheap might have ALIAS/ANAME options, check their docs).
+*   **(Optional) Handling the Apex Domain (`thomasconnolly.com`):**
+    *   Since you are not changing nameservers, handling the root domain (`thomasconnolly.com` without `www`) pointing to Cloudflare Pages directly via CNAME is often not supported by registrars (though Namecheap might have ALIAS/ANAME options, check their docs).
     *   **Simplest approach:** In Namecheap's "Advanced DNS" or sometimes under "Domain" tab -> "Redirect Domain", set up a URL Redirect record:
-        *   **Source URL:** `softwarestable.com` (or `@` for Host)
-        *   **Destination URL:** `https://www.softwarestable.com`
+        *   **Source URL:** `thomasconnolly.com` (or `@` for Host)
+        *   **Destination URL:** `https://www.thomasconnolly.com`
         *   **Type:** Permanent (301)
-    *   This ensures users visiting `softwarestable.com` are redirected to `www.softwarestable.com`, which is served by Cloudflare Pages.
+    *   This ensures users visiting `thomasconnolly.com` are redirected to `www.thomasconnolly.com`, which is served by Cloudflare Pages.
 
 **4. Updating the Website**
 
