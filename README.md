@@ -159,4 +159,114 @@ Follow these steps to set up the repository and deploy the website to Cloudflare
 
 ---
 
-You should now have your personal website live on `www.softwarestable.com`, served via Cloudflare Pages, with the source code securely stored in a private GitHub repository, and your Namecheap email forwarding intact. Remember to paste your bio into `index.html`!
+## Setup Instructions
+
+Follow these steps to set up the GitHub repository, deploy to Cloudflare Pages, and configure the custom domain while keeping Namecheap email forwarding intact.
+
+**1. GitHub Repository Setup**
+
+*   **Create Repository:**
+    *   Go to [GitHub](https://github.com/new).
+    *   Enter a repository name (e.g., `personal-website` or `softwarestable-com`).
+    *   Choose **Private** visibility.
+    *   You can initialize it with this README file or add it later.
+    *   Click "Create repository".
+*   **Clone Repository:**
+    *   On your local machine, open a terminal or Git client.
+    *   Clone the repository: `git clone git@github.com:tomconn/YOUR_REPO_NAME.git` (Replace `YOUR_REPO_NAME` and use HTTPS if you prefer).
+    *   Navigate into the cloned directory: `cd YOUR_REPO_NAME`.
+*   **Add Files:**
+    *   Copy `index.html`, `style.css`, and `script.js` into this directory.
+    *   Ensure this `README.md` file is also present.
+*   **Commit and Push:**
+    *   Stage the files: `git add .`
+    *   Commit the files: `git commit -m "Initial commit of personal website files"`
+    *   Push to GitHub: `git push origin main` (or `master` depending on your default branch name).
+
+**2. Cloudflare Pages Setup**
+
+*   **Log in to Cloudflare:** Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
+*   **Navigate to Pages:** In the sidebar, select "Workers & Pages".
+*   **Create a Project:**
+    *   Click "Create application", then select the "Pages" tab.
+    *   Click "Connect to Git".
+    *   Select your GitHub account and choose **Only select repositories**. Grant access to the private repository you just created (`tomconn/YOUR_REPO_NAME`).
+    *   Click "Install & Authorize".
+*   **Configure Project:**
+    *   Select your newly authorized repository (`tomconn/YOUR_REPO_NAME`).
+    *   Click "Begin setup".
+    *   **Project Name:** Choose a name (e.g., `softwarestable-com`). This determines your `.pages.dev` subdomain.
+    *   **Production Branch:** Select `main` (or `master`).
+    *   **Build Settings:**
+        *   **Framework Preset:** Select `None`. Cloudflare Pages handles basic HTML/CSS/JS sites automatically.
+        *   **Build command:** Leave blank.
+        *   **Build output directory:** Leave as `/` or ensure it points to the root where `index.html` resides.
+    *   Click "Save and Deploy".
+*   **Initial Deployment:** Cloudflare will build and deploy your site. You'll get a URL like `your-project-name.pages.dev`. Verify the site looks correct here.
+
+**3. Custom Domain Setup (Namecheap + Cloudflare Pages)**
+
+This method uses a `CNAME` record to point `www.softwarestable.com` to Cloudflare Pages, allowing you to keep your `MX` records (for email forwarding) at Namecheap untouched.
+
+*   **In Cloudflare Pages:**
+    *   Go to your Pages project dashboard (`dash.cloudflare.com` -> Workers & Pages -> Select your project).
+    *   Click on the "Custom domains" tab.
+    *   Click "Set up a custom domain".
+    *   Enter your desired domain: `www.softwarestable.com` and click "Continue".
+    *   Cloudflare will now provide DNS instructions. **Crucially, it will likely ask you to add a `CNAME` record.** It will give you a specific value to point to (e.g., `your-project-name.pages.dev` or similar). **Copy this target value.**
+*   **In Namecheap:**
+    *   Log in to your [Namecheap account](https://www.namecheap.com/).
+    *   Go to "Domain List" from the sidebar.
+    *   Find `softwarestable.com` and click the "Manage" button next to it.
+    *   Go to the "Advanced DNS" tab.
+    *   Under the "Host Records" section, look for existing records for `www`.
+        *   **If a `CNAME` record for `www` exists:** Click "Edit" (pencil icon) and change the "Value" field to the target value you copied from Cloudflare (e.g., `your-project-name.pages.dev`). Set TTL to "Automatic" or a low value like 5 minutes if possible. Save changes (checkmark icon).
+        *   **If an `A` record or other record for `www` exists:** *Delete* that record first. Then click "Add New Record".
+        *   **If no record for `www` exists:** Click "Add New Record".
+    *   Select `CNAME Record` as the "Type".
+    *   Enter `www` in the "Host" field.
+    *   Paste the Cloudflare Pages target URL (e.g., `your-project-name.pages.dev`) into the "Value" field.
+    *   Set the "TTL" to `Automatic` or `5 min`.
+    *   Click the "Save All Changes" checkmark.
+*   **Verification in Cloudflare:**
+    *   Go back to the Cloudflare Pages "Custom domains" tab.
+    *   It might take some time (minutes to hours, usually quick) for DNS propagation. Cloudflare will automatically check and activate the domain once it detects the correct CNAME record. It will show as "Active" when ready.
+*   **(Optional) Handling the Apex Domain (`softwarestable.com`):**
+    *   Since you are not changing nameservers, handling the root domain (`softwarestable.com` without `www`) pointing to Cloudflare Pages directly via CNAME is often not supported by registrars (though Namecheap might have ALIAS/ANAME options, check their docs).
+    *   **Simplest approach:** In Namecheap's "Advanced DNS" or sometimes under "Domain" tab -> "Redirect Domain", set up a URL Redirect record:
+        *   **Source URL:** `softwarestable.com` (or `@` for Host)
+        *   **Destination URL:** `https://www.softwarestable.com`
+        *   **Type:** Permanent (301)
+    *   This ensures users visiting `softwarestable.com` are redirected to `www.softwarestable.com`, which is served by Cloudflare Pages.
+
+**4. Updating the Website**
+
+*   Make any changes to your `index.html`, `style.css`, or `script.js` files locally.
+*   Commit the changes: `git commit -am "Update content/styles"`
+*   Push the changes to GitHub: `git push origin main`
+*   Cloudflare Pages will automatically detect the push to your production branch (`main` or `master`) and redeploy the updated site, usually within a minute or two.
+
+**5. Content Update Reminder**
+
+*   **IMPORTANT:** Remember to replace the placeholder bio text in `index.html` with your actual bio from your LinkedIn profile.
+
+---
+
+**Original User Prompt:**
+
+```text
+Using Cloudflare Pages. Implement the following sequence.
+Create a simple reactive webpage, that works on both mobile and desktop browsers and supported the latest chrome, firefox and safari browsers.
+The website will present a personal home page of my name, skills as an IT architect in Platform engineering, links to github and linkedin pages.
+The page includes my name Thomas Connolly, my email address, contact@thomasconnolly.com, a brief bio copied from my linkedin page, see  https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au and to my github page, https://github.com/tomconn.
+Add my it certifications from linkedin include kubernetes, CKA,CKAD,CKS,kubestronaut, AWS Architect Professional and TOGAF 9 Certified.
+It will also provide links to my linkedin and github pages.
+Split the website into html, css and javascript files.
+Use a 1970's Nasa theme for the website, with emphasis on an optimistic future of innovation and automation where people are content and tolerant.
+I have a domain name www.softwarestable.com, I want to use the free Cloudflare pages to only host my personal website.
+My fqdn is managed in www.namecheap.com, provide details on how I can setup Cloudflare pages for the website.
+I use email forwarding in www.namecheap.com, and I want to continue to use www.namecheap.com to forward emails (I do not want to use cloudflare pages email forwarding at this time).
+Instructions to host on the free tier cloudflare pages should follow the above instructions.
+Describe how to setup and use my personal www.github.com/tomconn private repo.
+Document the process of setting up ,all the above, with the directory structure, in a README.md, in markdown.
+Include this prompt at then end of the README.md and indicate the use of Gemini 2.5 pro for the creation and generation of this website using cloudflare pages.
