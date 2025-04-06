@@ -7,10 +7,10 @@ This repository contains the source code for the personal website of Thomas Conn
 *This project structure, code, and documentation were generated based on the following prompt using Google Gemini 2.5 Pro:*
 
 > Using Cloudflare Pages. Implement the following sequence.
-> Create a simple reactive webpage, that works on both mobile and desktop browsers and supported the latest chrome, firefox and safari browsers.
+> Create a simple reactive webpage, that works on both mobile and desktop browsers and supports the latest chrome, firefox and safari browsers.
 > The website will present a personal home page of my name, skills as an IT architect in Platform engineering, links to github and linkedin pages.
 > The page includes my name Thomas Connolly, my email address, contact@thomasconnolly.com, a brief bio copied from my linkedin page, see https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au and to my github page, https://github.com/tomconn.
-> Add my it certifications from linkedin include kubernetes, CKA,CKAD,CKS,kubestronaut, AWS Architect Professional and TOGAF 9 Certified.
+> Add my it certifications from linkedin include kubernetes, CKA, CKAD, CKS, kubestronaut, AWS Architect Professional and TOGAF 9 Certified.
 > It will also provide links to my linkedin and github pages.
 > Split the website into html, css and javascript files.
 > Use a 1970's Nasa theme for the website, with emphasis on an optimistic future of innovation and automation where people are content and tolerant.
