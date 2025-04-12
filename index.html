@@ -66,7 +66,7 @@
             </div>
         </section>
 
-        <!-- NEW COMMENT SECTION -->
+        <!-- COMMENT SECTION - Modified for v3 -->
         <section id="comments" class="card fade-in">
             <h2><span class="icon">💬</span> Leave a Comment</h2>
             <form id="comment-form">
@@ -75,18 +75,19 @@
                     <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
                     <div id="char-count" class="char-counter">0 / 256</div>
                 </div>
-
-                <div class="form-group">
-                    <!-- IMPORTANT: Replace with your actual reCAPTCHA v2 Site Key -->
-                    <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6Lf5mxUrAAAAANJsh5-Q4DnqggkDWK-dci9QzPF1"></div>
-                </div>
-
                 <div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
 
                 <button type="submit" id="submit-comment" class="button">Submit Comment</button>
+
+                <!-- ADDED: reCAPTCHA v3 privacy/terms notice (Recommended by Google) -->
+                <p class="recaptcha-notice">
+                    This site is protected by reCAPTCHA and the Google
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> apply.
+                </p>
             </form>
         </section>
-        <!-- END NEW COMMENT SECTION -->
+        <!-- END COMMENT SECTION -->         
 
     </main>
 
@@ -94,6 +95,10 @@
         <p>© <span id="year"></span> Thomas Connolly. Charting the course for innovation.</p>
     </footer>
 
+    <script>
+        // Pass Site Key to script.js (Alternative: Hardcode in script.js)
+        window.recaptchaSiteKey = '6Lf5mxUrAAAAANJsh5-Q4DnqggkDWK-dci9QzPF1';
+      </script>
     <script src="script.js"></script>
 </body>
 </html>

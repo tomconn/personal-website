@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Set current year in footer
@@ -30,18 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElems.forEach(elem => observer.observe(elem));
 
 
-    // --- Comment Form Logic ---
+    // --- Comment Form Logic (Modified for v3) ---
     const commentForm = document.getElementById('comment-form');
     const commentTextarea = document.getElementById('comment-text');
     const charCount = document.getElementById('char-count');
     const formStatus = document.getElementById('form-status');
     const submitButton = document.getElementById('submit-comment');
-    const recaptchaContainer = document.getElementById('recaptcha-container'); // To check if it exists
     const maxChars = 256;
     let statusTimeout; // To manage the success message timeout
 
+    // Get Site Key passed from HTML (Ensure the script block in HTML exists before this script)
+    // Provide a fallback, but strongly recommend setting it in HTML.
+    const recaptchaV3SiteKey = window.recaptchaSiteKey || null;
+    if (!recaptchaV3SiteKey) {
+        console.error("reCAPTCHA v3 Site Key not found. Please set window.recaptchaSiteKey in your HTML.");
+    }
+
+
     // Check if all required comment elements exist before adding listeners
-    if (commentForm && commentTextarea && charCount && formStatus && submitButton && recaptchaContainer) {
+    if (commentForm && commentTextarea && charCount && formStatus && submitButton && recaptchaV3SiteKey) {
 
         // Character Counter Update
         commentTextarea.addEventListener('input', () => {
@@ -58,41 +66,23 @@ document.addEventListener('DOMContentLoaded', () => {
         charCount.textContent = `${commentTextarea.value.length} / ${maxChars}`;
 
 
-        // Form Submission Handler
-        commentForm.addEventListener('submit', async (event) => {
+        // Form Submission Handler (Major changes for v3)
+        commentForm.addEventListener('submit', (event) => {
             event.preventDefault(); // Prevent default browser submission
             clearTimeout(statusTimeout); // Clear any existing status message timeout
 
-            // --- Client-side Validation ---
+            // --- Client-side Validation (Before reCAPTCHA execution) ---
             const comment = commentTextarea.value.trim();
-            let recaptchaResponse = null;
-
-            // Ensure grecaptcha is loaded and get response
-            try {
-                recaptchaResponse = grecaptcha.getResponse();
-            } catch (e) {
-                console.error("reCAPTCHA not ready or error getting response:", e);
-                showStatus('reCAPTCHA is not ready. Please wait or refresh.', 'error');
-                // Don't disable button if reCAPTCHA itself failed to load
-                return;
-            }
 
             if (!comment) {
                 showStatus('Comment cannot be empty.', 'error');
                 commentTextarea.focus();
-                return;
+                return; // Stop submission
             }
             if (comment.length > maxChars) {
                 showStatus(`Comment exceeds the maximum length of ${maxChars} characters.`, 'error');
                 commentTextarea.focus();
-                return;
-            }
-             if (!recaptchaResponse) {
-                showStatus('Please complete the reCAPTCHA verification.', 'error');
-                // Try to focus the reCAPTCHA iframe, though direct focus might be blocked
-                const iframe = recaptchaContainer.querySelector('iframe');
-                if (iframe) iframe.focus();
-                return;
+                return; // Stop submission
             }
             // --- End Validation ---
 
@@ -102,60 +92,88 @@ document.addEventListener('DOMContentLoaded', () => {
             submitButton.textContent = 'Submitting...';
             hideStatus(); // Clear previous status message immediately
 
-            try {
-                const response = await fetch('/api/submit-comment', { // Your Function endpoint
+            // Use grecaptcha.ready to ensure API is loaded, then execute
+            grecaptcha.ready(async () => { // Use async function for await inside
+                try {
+                    // Execute reCAPTCHA V3 - get a token
+                    const token = await grecaptcha.execute(recaptchaV3SiteKey, { action: 'submit_comment' });
+                    // console.log('reCAPTCHA v3 Token:', token); // For debugging purposes
+
+                    // Proceed with form submission using the obtained token
+                    await submitFormData(comment, token);
+
+                } catch (error) {
+                    // Handle errors during reCAPTCHA execution itself
+                    console.error('reCAPTCHA execution failed:', error);
+                    showStatus('Could not get verification token. Please try again.', 'error');
+                    // Re-enable button if reCAPTCHA fails before fetch
+                    resetSubmitButton();
+                }
+            }); // End grecaptcha.ready
+        }); // End form submit listener
+
+
+        // Separate async function to handle the actual fetch/submission logic
+        // This is called after the reCAPTCHA token is successfully obtained
+        async function submitFormData(comment, recaptchaToken) {
+             try {
+                const response = await fetch('/api/submit-comment', { // Your Cloudflare Function endpoint
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         comment: comment, // Send the trimmed comment
-                        'g-recaptcha-response': recaptchaResponse,
+                        'g-recaptcha-response': recaptchaToken, // Send the token obtained from execute()
                     }),
                 });
 
-                // Try parsing JSON, but handle cases where response might not be JSON
+                // Try parsing JSON, but handle cases where response might not be JSON (e.g., 500 error page)
                 let result;
                 try {
                      result = await response.json();
                 } catch(e) {
-                    // If response is not JSON (e.g., server error page)
+                    // If response is not JSON
                     console.error("Failed to parse JSON response:", e);
-                    result = { success: false, message: `Server returned status ${response.status}. Please try again.` };
+                    // Create a generic error object based on status
+                    result = { success: false, message: `Server error (Status: ${response.status}). Please try again later.` };
                 }
 
 
                 if (response.ok && result.success) {
+                    // Handle success
                     showStatus('Thank you for your comment!', 'success');
                     commentForm.reset(); // Clear the form fields
                     charCount.textContent = `0 / ${maxChars}`; // Reset char count display
-                    charCount.classList.remove('error');
-                    grecaptcha.reset(); // Reset reCAPTCHA widget
+                    charCount.classList.remove('error'); // Ensure error class is removed
 
                     // Set timeout to hide success message after 20 seconds
-                    statusTimeout = setTimeout(() => {
-                        hideStatus();
-                    }, 20000); // 20 seconds
+                    statusTimeout = setTimeout(hideStatus, 20000); // 20 seconds
 
                 } else {
-                    // Handle errors from the function (including reCAPTCHA failure)
+                    // Handle errors from the function (including reCAPTCHA low score or validation failure)
                     const errorMessage = result.message || 'An unknown error occurred. Please try again.';
                     showStatus(errorMessage, 'error');
-                    grecaptcha.reset(); // Reset reCAPTCHA on error so user can retry
                 }
 
             } catch (error) {
+                // Handle network errors during fetch
                 console.error('Network or fetch error submitting comment:', error);
                 showStatus('A network error occurred. Please check your connection and try again.', 'error');
-                // Don't reset reCAPTCHA here as it might be a network issue, not verification fail
             } finally {
-                // Re-enable button AFTER processing, regardless of outcome
+                // Re-enable button AFTER fetch processing is complete (success or fail)
                 resetSubmitButton();
             }
-        });
+        } // End submitFormData function
+
 
     } else {
-        console.warn("Comment form elements not found. Comment functionality disabled.");
+        // Log a warning if the form or necessary components aren't found
+        if (!recaptchaV3SiteKey) {
+             console.warn("reCAPTCHA V3 Site Key is missing. Comment form disabled.");
+        } else {
+             console.warn("One or more comment form elements not found. Comment functionality disabled.");
+        }
     }
 
 
@@ -163,12 +181,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function showStatus(message, type = 'info') { // type can be 'success' or 'error'
         if (formStatus) {
             formStatus.textContent = message;
-            // Reset classes, then add the correct ones
-            formStatus.className = 'form-status';
+            // Reset classes, then add the correct ones for styling and visibility
+            formStatus.className = 'form-status'; // Base class
             if (type === 'success' || type === 'error') {
-                formStatus.classList.add(type);
+                formStatus.classList.add(type); // Add 'success' or 'error' class
             }
-            formStatus.classList.add('visible'); // Make it visible with transition
+            formStatus.classList.add('visible'); // Make it visible using CSS transition
             // Set aria-invalid for errors for accessibility
             if (type === 'error') {
                 formStatus.setAttribute('aria-invalid', 'true');
@@ -182,14 +200,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideStatus() {
         if (formStatus) {
             formStatus.classList.remove('visible');
-             // Optional: clear text after transition ends for cleaner DOM
+             // Optional: clear text after transition ends for cleaner DOM,
+             // but ensure it doesn't clear a rapidly appearing new message.
             // setTimeout(() => {
-            //     if (!formStatus.classList.contains('visible')) { // check if it wasn't shown again quickly
+            //     if (!formStatus.classList.contains('visible')) {
             //         formStatus.textContent = '';
             //         formStatus.className = 'form-status';
             //         formStatus.removeAttribute('aria-invalid');
             //     }
-            // }, 500); // Match CSS transition duration
+            // }, 500); // Should match CSS transition duration
         }
     }
 
@@ -205,4 +224,4 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Initializing connection to base... Sequence nominal.");
     console.log("Welcome aboard the Software Stable. All systems green.");
 
-});
+}); // End DOMContentLoaded listener
