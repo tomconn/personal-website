@@ -10,8 +10,8 @@ const EXPECTED_ACTION = 'submit_comment';
 const EMAIL_TO = 'tcwebsite@softwarestable.com';
 // IMPORTANT: Sender email - MUST be a verified sender for your domain in Cloudflare/MailChannels
 // (e.g., using Email Routing or a verified domain)
-const EMAIL_FROM = 'no-reply@yourdomain.com'; // <-- CHANGE THIS TO YOUR VERIFIED SENDER
-const EMAIL_SUBJECT = 'New Comment on thomasconnolly.com';
+const EMAIL_FROM = 'no-reply@ysoftwarestable.com'; // <-- CHANGE THIS TO YOUR VERIFIED SENDER
+const EMAIL_SUBJECT = 'New Comment on softwarestable.com';
 // --- End Configuration ---
 
 // Basic HTML entity escaping function
