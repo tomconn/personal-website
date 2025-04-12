@@ -80,7 +80,7 @@ export async function onRequestPost({ request, env }) {
         // --- Email Sending (using MailChannels) ---
         // NOTE: Ensure your domain is set up for MailChannels via Cloudflare for this to work easily.
         const emailTo = 'tcwebsite@softwarestable.com';
-        const emailFrom = 'no-reply@yourdomain.com'; // IMPORTANT: Use a valid sender for your domain configured with Cloudflare/MailChannels
+        const emailFrom = 'no-reply@softwarestable.com'; // IMPORTANT: Use a valid sender for your domain configured with Cloudflare/MailChannels
         const emailSubject = 'New Comment on thomasconnolly.com';
 
         const emailBody = `
