@@ -83,55 +83,6 @@ export async function onRequestPost({ request, env }) {
         const emailFrom = 'no-reply@softwarestable.com'; // IMPORTANT: Use a valid sender for your domain configured with Cloudflare/MailChannels
         const emailSubject = 'New Comment on thomasconnolly.com';
 
-        const emailBody = `
-New comment received:
----------------------
-${sanitizedComment}
----------------------
-
-Submitted by IP: ${ip || 'Unknown'}
-Timestamp: ${new Date().toISOString()}
-        `;
-/*
-        const send_request = new Request("https://api.mailchannels.net/tx/v1/send", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify({
-                personalizations: [
-                    { to: [{ email: emailTo }] }
-                ],
-                from: {
-                    email: emailFrom, // Make sure this sender is allowed/verified
-                    name: "Website Comment Bot",
-                },
-                subject: emailSubject,
-                content: [
-                    {
-                        type: "text/plain",
-                        value: emailBody,
-                    }
-                ],
-            }),
-        });
-
-       const emailResponse = await fetch(send_request);
-
-        if (emailResponse.status === 202) { // 202 Accepted is success for MailChannels
-             return new Response(JSON.stringify({ success: true, message: 'Comment submitted successfully.' }), {
-                status: 200,
-                headers: { 'Content-Type': 'application/json' },
-            });
-        } else {
-            const errorBody = await emailResponse.text();
-            console.error(`Failed to send email via MailChannels. Status: ${emailResponse.status}, Body: ${errorBody}`);
-            return new Response(JSON.stringify({ success: false, message: 'Failed to process comment. Please try again later.' }), {
-                status: 500, // Internal server error (email sending failed)
-                headers: { 'Content-Type': 'application/json' },
-            });
-        }
-*/
     } catch (error) {
         console.error('Error processing comment request:', error);
         return new Response(JSON.stringify({ success: false, message: 'An unexpected server error occurred.' }), {
