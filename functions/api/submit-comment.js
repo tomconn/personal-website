@@ -92,7 +92,7 @@ ${sanitizedComment}
 Submitted by IP: ${ip || 'Unknown'}
 Timestamp: ${new Date().toISOString()}
         `;
-
+/*
         const send_request = new Request("https://api.mailchannels.net/tx/v1/send", {
             method: "POST",
             headers: {
@@ -131,7 +131,7 @@ Timestamp: ${new Date().toISOString()}
                 headers: { 'Content-Type': 'application/json' },
             });
         }
-
+*/
     } catch (error) {
         console.error('Error processing comment request:', error);
         return new Response(JSON.stringify({ success: false, message: 'An unexpected server error occurred.' }), {
