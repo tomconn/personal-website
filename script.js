@@ -42,11 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get Site Key passed from HTML (Ensure the script block in HTML exists before this script)
     // Provide a fallback, but strongly recommend setting it in HTML.
-    const recaptchaV3SiteKey = window.recaptchaSiteKey || null;
-    if (!recaptchaV3SiteKey) {
-        console.error("reCAPTCHA v3 Site Key not found. Please set window.recaptchaSiteKey in your HTML.");
-    }
-
+    const recaptchaV3SiteKey = '6Lf5mxUrAAAAANJsh5-Q4DnqggkDWK-dci9QzPF1';
 
     // Check if all required comment elements exist before adding listeners
     if (commentForm && commentTextarea && charCount && formStatus && submitButton && recaptchaV3SiteKey) {
