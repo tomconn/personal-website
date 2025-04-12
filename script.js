@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     // Execute reCAPTCHA V3 - get a token
                     const token = await grecaptcha.execute(recaptchaV3SiteKey, { action: 'submit_comment' });
-                    // console.log('reCAPTCHA v3 Token:', token); // For debugging purposes
+                    console.log('reCAPTCHA v3 Token:', token); // For debugging purposes
 
                     // Proceed with form submission using the obtained token
                     await submitFormData(comment, token);
