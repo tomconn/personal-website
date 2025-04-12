@@ -309,6 +309,15 @@ a:hover, a:focus {
     font-weight: bold;
 }
 
+/* reCAPTCHA needs some margin */
+#recaptcha-container {
+    margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
+    /* Center alignment if needed */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    min-height: 78px; /* Approximate height of reCAPTCHA */
+}
+
 /* Form status message styling */
 .form-status {
     padding: 0.8rem 1.2rem;
@@ -345,22 +354,6 @@ a:hover, a:focus {
     min-width: 180px; /* Give button a decent minimum width */
 }
 
-.recaptcha-notice {
-    font-size: 0.75em;
-    color: var(--notice-text);
-    text-align: center;
-    margin-top: 1rem; /* Add some space above the notice */
-    margin-bottom: 0; /* Reset default paragraph margin */
-}
-
-.recaptcha-notice a {
-    color: var(--notice-text); /* Match notice text color */
-    text-decoration: underline;
-}
-.recaptcha-notice a:hover {
-    color: var(--text-medium); /* Slightly lighter on hover */
-    text-shadow: none;
-}
 
 /* --- Responsiveness --- */
 @media (max-width: 768px) {
@@ -425,6 +418,12 @@ a:hover, a:focus {
         padding: 0.7rem 0.9rem;
     }
 
+     /* Adjust reCAPTCHA scale for smaller screens */
+    #recaptcha-container > div { /* Target the inner div for scaling */
+        transform: scale(0.85);
+        transform-origin: center; /* Scale from center */
+        margin: 0 auto; /* Center after scaling */
+    }
     #recaptcha-container {
         min-height: 70px; /* Adjust min-height after scaling */
     }
