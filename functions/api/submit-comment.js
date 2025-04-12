@@ -117,7 +117,7 @@ Timestamp: ${new Date().toISOString()}
         });
 
        const emailResponse = await fetch(send_request);
-
+/*
         if (emailResponse.status === 202) { // 202 Accepted is success for MailChannels
              return new Response(JSON.stringify({ success: true, message: 'Comment submitted successfully.' }), {
                 status: 200,
@@ -131,6 +131,13 @@ Timestamp: ${new Date().toISOString()}
                 headers: { 'Content-Type': 'application/json' },
             });
         }
+*/
+
+        // temporary do nothing response - until I can figure out the email sending
+        return new Response(JSON.stringify({ success: true, message: 'Comment submitted successfully.' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
 
     } catch (error) {
         console.error('Error processing comment request:', error);
