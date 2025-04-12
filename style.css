@@ -8,6 +8,10 @@
     --text-medium: #a0a0a0;  /* Lighter gray */
     --card-bg: rgba(28, 42, 64, 0.8); /* Semi-transparent card background */
     --border-color: rgba(11, 61, 145, 0.5); /* Subtle blue border */
+    --success-bg: rgba(40, 167, 69, 0.8); /* Greenish background for success */
+    --error-bg: rgba(220, 53, 69, 0.8);   /* Reddish background for error */
+    --error-text: #f8d7da; /* Light red text for errors */
+    --success-text: #d4edda; /* Light green text for success */
 
     --font-heading: 'Orbitron', sans-serif;
     --font-body: 'Montserrat', sans-serif;
@@ -206,15 +210,27 @@ a:hover, a:focus {
     border: 1px solid var(--accent-orange);
     text-align: center;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    cursor: pointer; /* Add cursor pointer */
 }
 
-.button:hover, .button:focus {
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
     background-color: #1e5bc6; /* Lighter blue */
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     text-shadow: none; /* Remove text shadow on button hover */
+}
+
+.button:disabled {
+    background-color: #555;
+    border-color: #777;
+    color: #aaa; /* Lighter text color for disabled state */
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none; /* Prevent hover effect */
+    box-shadow: none; /* Prevent hover shadow */
 }
 
 
@@ -228,6 +244,114 @@ a:hover, a:focus {
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+
+/* --- Comment Form Styles --- */
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Spacing between form elements */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Visually hidden class for accessibility - keep this */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+#comment-form textarea {
+    background-color: rgba(10, 15, 26, 0.9); /* Darker input background */
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1em;
+    min-height: 100px; /* Decent starting height */
+    resize: vertical; /* Allow vertical resizing */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 5px rgba(255, 127, 0, 0.5);
+}
+
+#comment-form textarea::placeholder {
+    color: var(--text-medium);
+    opacity: 0.8;
+}
+
+.char-counter {
+    text-align: right;
+    font-size: 0.85em;
+    color: var(--text-medium);
+    margin-top: 0.3rem;
+    height: 1.2em; /* Reserve space to prevent layout shift */
+}
+
+.char-counter.error {
+    color: var(--error-text);
+    font-weight: bold;
+}
+
+/* reCAPTCHA needs some margin */
+#recaptcha-container {
+    margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
+    /* Center alignment if needed */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    min-height: 78px; /* Approximate height of reCAPTCHA */
+}
+
+/* Form status message styling */
+.form-status {
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    /* margin-top: 0.5rem; Remove top margin, add bottom instead */
+    margin-bottom: 1rem; /* Space below status, before button */
+    font-weight: 500;
+    text-align: center;
+    display: none; /* Hide by default */
+    opacity: 0; /* Start hidden for transition */
+    transition: opacity 0.5s ease-out;
+    border: 1px solid transparent; /* Base border */
+}
+
+.form-status.visible {
+    display: block; /* Make it take up space */
+    opacity: 1; /* Fade it in */
+}
+
+.form-status.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border-color: #38c172;
+}
+
+.form-status.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border-color: #dc3545;
+}
+
+#comment-form button[type="submit"] {
+    align-self: center; /* Center the button */
+    min-width: 180px; /* Give button a decent minimum width */
 }
 
 
@@ -261,6 +385,10 @@ a:hover, a:focus {
         flex-direction: column;
         align-items: stretch; /* Make buttons full width */
     }
+
+     #comment-form button[type="submit"] {
+        width: 100%; /* Make submit button full width on medium screens */
+    }
 }
 
 @media (max-width: 480px) {
@@ -283,5 +411,23 @@ a:hover, a:focus {
     .button {
         padding: 0.7rem 1.2rem;
         font-size: 0.95em;
+    }
+
+    #comment-form textarea {
+        font-size: 0.95em;
+        padding: 0.7rem 0.9rem;
+    }
+
+     /* Adjust reCAPTCHA scale for smaller screens */
+    #recaptcha-container > div { /* Target the inner div for scaling */
+        transform: scale(0.85);
+        transform-origin: center; /* Scale from center */
+        margin: 0 auto; /* Center after scaling */
+    }
+    #recaptcha-container {
+        min-height: 70px; /* Adjust min-height after scaling */
+    }
+     #comment-form button[type="submit"] {
+        width: 100%; /* Ensure full width */
     }
 }

@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Add reCAPTCHA script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <div class="stars-bg"></div>
@@ -23,13 +25,6 @@
         <section id="about" class="card fade-in">
             <h2><span class="icon">🚀</span> About Me</h2>
             <p>
-                <!-- 
-                  IMPORTANT: Please manually copy and paste your latest bio 
-                  from https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au 
-                  into this <p> tag below, replacing this comment block.
-                  Example structure:
-                  "Experienced IT Architect specialising in Platform Engineering... [rest of your bio]" 
-                -->
                 Experienced IT Architect specialising in Platform Engineering, Cloud Native technologies, and DevOps practices. Passionate about designing and implementing scalable, secure, and automated systems that empower development teams and accelerate business value. Proven ability in leading infrastructure strategy, adopting modern tooling like Kubernetes and Terraform, and fostering a culture of collaboration and continuous improvement across organisations. Focused on bridging the gap between development and operations to create robust and efficient platforms.
             </p>
         </section>
@@ -70,6 +65,29 @@
                 <a href="https://github.com/tomconn" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
             </div>
         </section>
+
+        <!-- NEW COMMENT SECTION -->
+        <section id="comments" class="card fade-in">
+            <h2><span class="icon">💬</span> Leave a Comment</h2>
+            <form id="comment-form">
+                <div class="form-group">
+                    <label for="comment-text" class="sr-only">Your Comment:</label>
+                    <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
+                    <div id="char-count" class="char-counter">0 / 256</div>
+                </div>
+
+                <div class="form-group">
+                    <!-- IMPORTANT: Replace with your actual reCAPTCHA v2 Site Key -->
+                    <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6Lf5mxUrAAAAANJsh5-Q4DnqggkDWK-dci9QzPF1"></div>
+                </div>
+
+                <div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
+
+                <button type="submit" id="submit-comment" class="button">Submit Comment</button>
+            </form>
+        </section>
+        <!-- END NEW COMMENT SECTION -->
+
     </main>
 
     <footer class="fade-in">
