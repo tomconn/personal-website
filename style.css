@@ -259,19 +259,17 @@ a:hover, a:focus {
     flex-direction: column;
 }
 
-/* Visually hidden class for accessibility - keep this */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+/* Label styling (visible label now) */
+#comment-form label {
+    display: block; /* Ensure label takes its own line */
+    margin-bottom: 0.5rem; /* Space between label and input/textarea */
+    color: var(--text-medium);
+    font-weight: 500;
+    font-size: 0.95em;
 }
 
+/* *** NEW/MODIFIED: Input and Textarea Styles *** */
+#comment-form input[type="email"],
 #comment-form textarea {
     background-color: rgba(10, 15, 26, 0.9); /* Darker input background */
     color: var(--text-light);
@@ -280,21 +278,29 @@ a:hover, a:focus {
     padding: 0.8rem 1rem;
     font-family: var(--font-body);
     font-size: 1em;
-    min-height: 100px; /* Decent starting height */
-    resize: vertical; /* Allow vertical resizing */
+    width: 100%; /* Ensure full width */
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+#comment-form textarea {
+    min-height: 100px; /* Decent starting height */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+#comment-form input[type="email"]:focus,
 #comment-form textarea:focus {
     outline: none;
     border-color: var(--accent-orange);
     box-shadow: 0 0 5px rgba(255, 127, 0, 0.5);
 }
 
+#comment-form input[type="email"]::placeholder,
 #comment-form textarea::placeholder {
     color: var(--text-medium);
     opacity: 0.8;
 }
+/* *** END NEW/MODIFIED *** */
+
 
 .char-counter {
     text-align: right;
@@ -312,17 +318,32 @@ a:hover, a:focus {
 /* reCAPTCHA needs some margin */
 #recaptcha-container {
     margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
-    /* Center alignment if needed */
     display: flex;
     justify-content: center; /* Center horizontally */
     min-height: 78px; /* Approximate height of reCAPTCHA */
 }
 
-/* Form status message styling */
+/* *** NEW: Specific Email Error Message Styling *** */
+.form-error-message {
+    color: var(--error-text);
+    font-size: 0.85em;
+    margin-top: 0.3rem;
+    min-height: 1.2em; /* Reserve space like char counter */
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.form-error-message.visible {
+    display: block;
+    opacity: 1;
+}
+/* *** END NEW *** */
+
+/* Form status message styling (for general success/errors) */
 .form-status {
     padding: 0.8rem 1.2rem;
     border-radius: 5px;
-    /* margin-top: 0.5rem; Remove top margin, add bottom instead */
     margin-bottom: 1rem; /* Space below status, before button */
     font-weight: 500;
     text-align: center;
@@ -413,6 +434,8 @@ a:hover, a:focus {
         font-size: 0.95em;
     }
 
+    /* *** MODIFIED: Adjust input/textarea padding for small screens *** */
+    #comment-form input[type="email"],
     #comment-form textarea {
         font-size: 0.95em;
         padding: 0.7rem 0.9rem;

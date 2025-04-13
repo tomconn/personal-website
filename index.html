@@ -66,18 +66,25 @@
             </div>
         </section>
 
-        <!-- NEW COMMENT SECTION -->
+        <!-- MODIFIED COMMENT SECTION -->
         <section id="comments" class="card fade-in">
             <h2><span class="icon">💬</span> Leave a Comment</h2>
             <form id="comment-form">
+                <!-- *** NEW: Email Input Field *** -->
                 <div class="form-group">
-                    <label for="comment-text" class="sr-only">Your Comment:</label>
+                    <label for="comment-email">Your Email:</label>
+                    <input type="email" id="comment-email" name="email" placeholder="Enter your email address" required aria-describedby="email-error">
+                    <div id="email-error" class="form-error-message" role="alert" aria-live="assertive"></div>
+                </div>
+                <!-- *** END NEW: Email Input Field *** -->
+
+                <div class="form-group">
+                    <label for="comment-text">Your Comment:</label>
                     <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
                     <div id="char-count" class="char-counter">0 / 256</div>
                 </div>
 
                 <div class="form-group">
-                    <!-- IMPORTANT: Replace with your actual reCAPTCHA v2 Site Key -->
                     <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"></div>
                 </div>
 
@@ -86,7 +93,7 @@
                 <button type="submit" id="submit-comment" class="button">Submit Comment</button>
             </form>
         </section>
-        <!-- END NEW COMMENT SECTION -->
+        <!-- END MODIFIED COMMENT SECTION -->
 
     </main>
 
