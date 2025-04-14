@@ -205,11 +205,11 @@ Timestamp: ${new Date().toISOString()}
         // Call the Brevo sending function
         const emailResult = await sendEmailWithBrevo({
             apiKey: env.BREVO_API_KEY,
-            toEmail: sanitizedEmail,
+            toEmail: env.NOTIFICATION_EMAIL_TO,
             fromEmail: env.NOTIFICATION_EMAIL_FROM,
             fromName: "SoftwareStable Website", // Or make this configurable via env
             subject: emailSubject,
-            textContent: sanitizedComment,
+            textContent: `Email: ${sanitizedEmail} Comment: ${sanitizedComment}`,
         });
 
         // --- Respond to Client ---
