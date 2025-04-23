@@ -1,3 +1,460 @@
+/* --- Base Styles & Variables --- */
+:root {
+    --primary-bg: #0a0f1a; /* Deep space blue/black */
+    --secondary-bg: #1c2a40; /* Slightly lighter blue */
+    --accent-orange: #ff7f00; /* NASA orange */
+    --accent-blue: #0b3d91;   /* NASA blue */
+    --text-light: #e0e0e0;    /* Off-white text */
+    --text-medium: #a0a0a0;  /* Lighter gray */
+    --card-bg: rgba(28, 42, 64, 0.8); /* Semi-transparent card background */
+    --border-color: rgba(11, 61, 145, 0.5); /* Subtle blue border */
+    --success-bg: rgba(40, 167, 69, 0.8); /* Greenish background for success */
+    --error-bg: rgba(220, 53, 69, 0.8);   /* Reddish background for error */
+    --error-text: #f8d7da; /* Light red text for errors */
+    --success-text: #d4edda; /* Light green text for success */
+
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    position: relative; /* Needed for pseudo-element backgrounds */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Starfield Backgrounds --- */
+.stars-bg, .twinkling-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: -2; /* Behind content */
+}
+
+.stars-bg {
+    background: #000 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8xMC8xNiskQ40AAAAddEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE2LTEwLTEwVDE3OjI3OjM5KzAwOjAwWxy4RAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNi0xMC0xMFQxNzoyNzozOSswMDowMBfRdgcAAABQSURBVFjD7dQxCgAgEATBCu3/v6yBLCExFOzcpLvoaakmeM9ckIIQQgghhBBCCCEkH1o9W26W7+7g5N7+QEEIIYQQQgghhBBSXHwBAJ2HYoAh47UOAAAAAElFTkSuQmCC) repeat top center;
+    z-index: -2;
+}
+
+.twinkling-bg {
+    background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8xMC8xNiskQ40AAAAddEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE2LTEwLTEwVDE3OjI3OjM5KzAwOjAwWxy4RAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNi0xMC0xMFQxNzoyNzozOSswMDowMBfRdgcAAADqSURBVFjD7ZYhDoNQDEV9N+/+L6toLVjYtsG/OCECNBkSSUKlHElZIrV7Y54AEEAAAQQQQBCGmTky/+3bZ3aM415POQwQQBCGWTl75r9vt/sPQACgAFDX8Y9ACCEEQggBAYQQAlAsDu+IZXZlYQDA1UmtHwCAQjAY+AAAAQCCAEEAgBACAKAEASjYv58OAAUAoABAlXw6kAAAIIAAAgggAAAEAAABGAIAApT/BgEUAAgAUECAAIAABAAEAICiAAQAcKkAAQgAAAAAAAEAgAAAAAGAEATwUa24vnU3AAAQgMAHAEAAgAABAEAAAAAAAEAAIAAAAAABAAAAPAAAN3lB/jX/FpCAAAAAElFTkSuQmCC) repeat top center;
+    animation: move-twink-back 200s linear infinite;
+    z-index: -1;
+}
+
+@keyframes move-twink-back {
+    from { background-position: 0 0; }
+    to { background-position: -10000px 5000px; }
+}
+
+
+/* --- Layout & Spacing --- */
+header, main, footer {
+    width: 100%;
+    max-width: 900px; /* Content width */
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    z-index: 1; /* Above background */
+}
+
+main {
+    flex-grow: 1; /* Pushes footer down */
+}
+
+header {
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 2px solid var(--accent-orange);
+    margin-bottom: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-medium);
+    font-size: 0.9em;
+}
+
+section {
+    margin-bottom: 2.5rem;
+}
+
+/* --- Typography --- */
+h1, h2 {
+    font-family: var(--font-heading);
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 2.8em;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255, 127, 0, 0.5); /* Orange glow */
+}
+
+h2 {
+    font-size: 1.8em;
+    color: var(--accent-orange);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+header h2 {
+    font-size: 1.5em;
+    color: var(--text-light);
+    font-weight: 400;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.subtitle {
+    color: var(--text-medium);
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 1.1em;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-light);
+}
+
+ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 1.5em; /* Indent list items */
+}
+
+li {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+/* Custom bullet point */
+li::before {
+    content: '»'; /* Use a chevron or other symbol */
+    position: absolute;
+    left: -1.5em;
+    color: var(--accent-orange);
+    font-weight: bold;
+}
+
+a {
+    color: var(--accent-orange);
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: #ffffff;
+    text-shadow: 0 0 5px var(--accent-orange);
+}
+
+/* --- Components --- */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.icon {
+    display: inline-block;
+    font-size: 1.2em; /* Make icons slightly larger than text */
+}
+
+#contact .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.button {
+    display: inline-block;
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--accent-orange);
+    text-align: center;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    cursor: pointer; /* Add cursor pointer */
+}
+
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
+    background-color: #1e5bc6; /* Lighter blue */
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: none; /* Remove text shadow on button hover */
+}
+
+.button:disabled {
+    background-color: #555;
+    border-color: #777;
+    color: #aaa; /* Lighter text color for disabled state */
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none; /* Prevent hover effect */
+    box-shadow: none; /* Prevent hover shadow */
+}
+
+
+/* --- Animations --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- Comment Form Styles --- */
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Spacing between form elements */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling (visible label now) */
+#comment-form label {
+    display: block; /* Ensure label takes its own line */
+    margin-bottom: 0.5rem; /* Space between label and input/textarea */
+    color: var(--text-medium);
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+/* *** NEW/MODIFIED: Input and Textarea Styles *** */
+#comment-form input[type="email"],
+#comment-form textarea {
+    background-color: rgba(10, 15, 26, 0.9); /* Darker input background */
+    color: var(--text-light);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1em;
+    width: 100%; /* Ensure full width */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#comment-form textarea {
+    min-height: 100px; /* Decent starting height */
+    resize: vertical; /* Allow vertical resizing */
+}
+
+#comment-form input[type="email"]:focus,
+#comment-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 5px rgba(255, 127, 0, 0.5);
+}
+
+#comment-form input[type="email"]::placeholder,
+#comment-form textarea::placeholder {
+    color: var(--text-medium);
+    opacity: 0.8;
+}
+/* *** END NEW/MODIFIED *** */
+
+
+.char-counter {
+    text-align: right;
+    font-size: 0.85em;
+    color: var(--text-medium);
+    margin-top: 0.3rem;
+    height: 1.2em; /* Reserve space to prevent layout shift */
+}
+
+.char-counter.error {
+    color: var(--error-text);
+    font-weight: bold;
+}
+
+/* reCAPTCHA needs some margin */
+#recaptcha-container {
+    margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    min-height: 78px; /* Approximate height of reCAPTCHA */
+}
+
+/* *** NEW: Specific Email Error Message Styling *** */
+.form-error-message {
+    color: var(--error-text);
+    font-size: 0.85em;
+    margin-top: 0.3rem;
+    min-height: 1.2em; /* Reserve space like char counter */
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.form-error-message.visible {
+    display: block;
+    opacity: 1;
+}
+/* *** END NEW *** */
+
+/* Form status message styling (for general success/errors) */
+.form-status {
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    margin-bottom: 1rem; /* Space below status, before button */
+    font-weight: 500;
+    text-align: center;
+    display: none; /* Hide by default */
+    opacity: 0; /* Start hidden for transition */
+    transition: opacity 0.5s ease-out;
+    border: 1px solid transparent; /* Base border */
+}
+
+.form-status.visible {
+    display: block; /* Make it take up space */
+    opacity: 1; /* Fade it in */
+}
+
+.form-status.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border-color: #38c172;
+}
+
+.form-status.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border-color: #dc3545;
+}
+
+#comment-form button[type="submit"] {
+    align-self: center; /* Center the button */
+    min-width: 180px; /* Give button a decent minimum width */
+}
+
+
+/* --- Responsiveness --- */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2em;
+    }
+
+    header h2 {
+        font-size: 1.3em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    header, main, footer {
+        padding: 1.5rem 1rem;
+    }
+
+    header {
+        padding-top: 3rem;
+    }
+
+    .card {
+        padding: 1rem 1.5rem;
+    }
+
+    #contact .links {
+        flex-direction: column;
+        align-items: stretch; /* Make buttons full width */
+    }
+
+     #comment-form button[type="submit"] {
+        width: 100%; /* Make submit button full width on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+     header h2 {
+        font-size: 1.1em;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    body {
+        font-size: 15px; /* Slightly smaller base font */
+    }
+
+    .button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95em;
+    }
+
+    /* *** MODIFIED: Adjust input/textarea padding for small screens *** */
+    #comment-form input[type="email"],
+    #comment-form textarea {
+        font-size: 0.95em;
+        padding: 0.7rem 0.9rem;
+    }
+
+     /* Adjust reCAPTCHA scale for smaller screens */
+    #recaptcha-container > div { /* Target the inner div for scaling */
+        transform: scale(0.85);
+        transform-origin: center; /* Scale from center */
+        margin: 0 auto; /* Center after scaling */
+    }
+    #recaptcha-container {
+        min-height: 70px; /* Adjust min-height after scaling */
+    }
+     #comment-form button[type="submit"] {
+        width: 100%; /* Ensure full width */
+    }
+}
+
 /* --- ADDITIONS/MODIFICATIONS FOR AUTH --- */
 
 /* General Auth Page Layout */
