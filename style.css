@@ -520,9 +520,10 @@ a:hover, a:focus {
 /* Inputs for Auth */
 .auth-card input[type="email"],
 .auth-card input[type="password"] {
-     background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
+    background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
     padding: 0.9rem 1.1rem; /* Slightly larger padding */
     font-size: 1.05em;
+    color: var(--text-light);
 }
 
 /* Password Toggle Button */
