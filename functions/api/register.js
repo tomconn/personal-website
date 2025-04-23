@@ -18,7 +18,6 @@ export async function onRequestPost({ request, env }) {
     //     // return new Response(JSON.stringify({ success: false, message: 'Invalid request origin.' }), { status: 403, headers: { 'Content-Type': 'application/json' }});
     // }
 
-
     try {
         const body = await request.json();
         const email = body.email?.trim();
