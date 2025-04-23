@@ -130,7 +130,6 @@ If you did not register, please ignore this email.
 </p>
 <p>If the button doesn't work, copy and paste this link into your browser:<br>${activationLink}</p>
 <p>If you did not register, please ignore this email.</p>
-<p>Regards,<br>Thomas Connolly<br>softwarestable.com</p>
         `;
 
 
@@ -138,7 +137,7 @@ If you did not register, please ignore this email.
             apiKey: env.BREVO_API_KEY,
             toEmail: email,
             fromEmail: env.NOTIFICATION_EMAIL_FROM, // Must be verified sender in Brevo
-            fromName: "Thomas Connolly - Account Activation",
+            fromName: "Account Activation",
             subject: emailSubject,
             textContent: emailTextContent,
             htmlContent: emailHtmlContent,
