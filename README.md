@@ -2,34 +2,6 @@
 
 This repository contains the source code for the personal website of Thomas Connolly (www.thomasconnolly.com), hosted on Cloudflare Pages.
 
-# Directory Structure
-```text
-/
-├── functions/
-│   ├── api/
-│   │   ├── submit-comment.js   # Existing comment handler
-│   │   ├── register.js         # Handles user registration
-│   │   ├── login.js            # Handles user login
-│   │   ├── activate-account.js # Handles email activation link
-│   │   └── logout.js           # Handles user logout
-│   └── utils/
-│       ├── auth.js             # Password hashing, token generation, cookies
-│       └── email.js            # Email sending utility
-│       └── validation.js       # Shared validation logic (e.g., password complexity)
-│
-├── index.html          # Main page
-├── login.html          # Login form page
-├── register.html       # Registration form page
-├── activate.html       # Activation landing page
-├── style.css           # Shared styles
-├── script.js           # Main page JS (incl. comment logic, auth links)
-├── login.js            # Login page specific JS
-├── register.js         # Registration page specific JS
-├── activate.js         # Activation page specific JS
-├── common.js           # Shared frontend JS utilities (e.g., password toggle)
-└── README.md           # Documentation
-```
-
 ## DB schema
 
 bash
@@ -88,15 +60,30 @@ A simple, responsive, single-page personal website featuring:
 ## Directory Structure
 ```
 /
-├── index.html # Main HTML structure (includes comment form)
-├── style.css # CSS for styling, theme, responsiveness
-├── script.js # JavaScript for animations and comment form interaction/validation
 ├── functions/
-│ └── api/
-│ └── submit-comment.js # Cloudflare Worker: Handles comment submission, validation, logging
-└── README.md # This setup and documentation file
+│   ├── api/
+│   │   ├── submit-comment.js   # Existing comment handler
+│   │   ├── register.js         # Handles user registration
+│   │   ├── login.js            # Handles user login
+│   │   ├── activate-account.js # Handles email activation link
+│   │   └── logout.js           # Handles user logout
+│   └── utils/
+│       ├── auth.js             # Password hashing, token generation, cookies
+│       └── email.js            # Email sending utility
+│       └── validation.js       # Shared validation logic (e.g., password complexity)
+│
+├── index.html          # Main page
+├── login.html          # Login form page
+├── register.html       # Registration form page
+├── activate.html       # Activation landing page
+├── style.css           # Shared styles
+├── script.js           # Main page JS (incl. comment logic, auth links)
+├── login.js            # Login page specific JS
+├── register.js         # Registration page specific JS
+├── activate.js         # Activation page specific JS
+├── common.js           # Shared frontend JS utilities (e.g., password toggle)
+└── README.md           # Documentation
 ```
-
 *(Note: The `functions` directory structure is conventional for Cloudflare Pages Functions deployment.)*
 
 ## Technology Stack
