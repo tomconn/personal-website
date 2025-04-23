@@ -4,7 +4,6 @@ This repository contains the source code for the personal website of Thomas Conn
 
 ## DB schema
 
-bash
 ```
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
