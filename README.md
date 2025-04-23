@@ -3,6 +3,7 @@
 This repository contains the source code for the personal website of Thomas Connolly (www.thomasconnolly.com), hosted on Cloudflare Pages.
 
 # Directory Structure
+```text
 /
 ├── functions/
 │   ├── api/
@@ -27,6 +28,7 @@ This repository contains the source code for the personal website of Thomas Conn
 ├── activate.js         # Activation page specific JS
 ├── common.js           # Shared frontend JS utilities (e.g., password toggle)
 └── README.md           # Documentation
+```
 
 ## DB schema
 
