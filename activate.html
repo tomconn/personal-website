@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Account - Thomas Connolly</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="twinkling-bg"></div>
+
+     <header class="auth-header">
+        <a href="/" class="home-link">Thomas Connolly</a>
+        <h2>Account Activation</h2>
+    </header>
+
+    <main class="auth-main">
+        <section id="activation-section" class="card auth-card">
+            <div id="activation-status" class="form-status" role="alert" aria-live="polite">
+                <p>Activating your account, please wait...</p>
+                <div class="spinner"></div> <!-- Optional loading spinner -->
+            </div>
+            <p id="activation-result" style="text-align: center; margin-top: 1rem;"></p>
+             <div id="activation-links" style="text-align: center; margin-top: 1.5rem; display: none;">
+                 <a href="/login.html" class="button">Proceed to Login</a>
+             </div>
+        </section>
+    </main>
+
+    <footer class="fade-in">
+        <p>© <span id="year"></span> Thomas Connolly.</p>
+    </footer>
+
+    <script src="activate.js"></script>
+     <script>
+      // Set footer year dynamically
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>

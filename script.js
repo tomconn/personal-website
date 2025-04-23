@@ -1,4 +1,67 @@
+// File: script.js
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Authentication Link Management ---
+    const authLinksContainer = document.getElementById('auth-links');
+
+    function updateAuthLinks() {
+        // Basic check for the presence of the session cookie
+        // A more robust check would involve calling a '/api/check-session' endpoint
+        const isLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith('session_token='));
+
+        if (authLinksContainer) {
+            if (isLoggedIn) {
+                authLinksContainer.innerHTML = `
+                    <button id="logout-button">Logout</button>
+                `;
+                const logoutButton = document.getElementById('logout-button');
+                if (logoutButton) {
+                    logoutButton.addEventListener('click', handleLogout);
+                }
+            } else {
+                authLinksContainer.innerHTML = `
+                    <a href="/login.html">Login</a>
+                    <span class="separator">|</span>
+                    <a href="/register.html">Register</a>
+                `;
+            }
+        }
+    }
+
+    async function handleLogout(event) {
+        event.preventDefault();
+        const logoutButton = event.target;
+        logoutButton.disabled = true;
+        logoutButton.textContent = 'Logging out...';
+
+        try {
+            const response = await fetch('/api/logout', { method: 'POST' });
+            if (response.ok) {
+                // Update UI immediately after successful logout
+                updateAuthLinks();
+                 // Optionally redirect or show a message
+                 // window.location.href = '/'; // Redirect home
+                 console.log('Logout successful.');
+            } else {
+                console.error('Logout failed:', response.status);
+                 alert('Logout failed. Please try again.'); // Simple feedback
+                 logoutButton.disabled = false; // Re-enable button on failure
+                 logoutButton.textContent = 'Logout';
+            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            alert('An error occurred during logout.');
+             logoutButton.disabled = false;
+             logoutButton.textContent = 'Logout';
+        }
+    }
+
+    // Initial check when page loads
+    updateAuthLinks();
+
+    // --- End Authentication Link Management ---
+
 
     // Set current year in footer
     const yearSpan = document.getElementById('year');
@@ -6,286 +69,168 @@ document.addEventListener('DOMContentLoaded', () => {
         yearSpan.textContent = new Date().getFullYear();
     }
 
-    // Simple fade-in animation for elements on scroll
+    // Simple fade-in animation for elements on scroll (existing logic)
     const fadeElems = document.querySelectorAll('.fade-in');
-    const observerOptions = {
-        root: null, // relative to document viewport
-        rootMargin: '0px',
-        threshold: 0.1 // trigger when 10% of the element is visible
-    };
+    // ... (rest of the IntersectionObserver logic remains the same) ...
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
     const observerCallback = (entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Optional: Unobserve after animation to save resources
-                // observer.unobserve(entry.target);
             }
-            // Optional: If you want elements to fade out when scrolling up
-            // else {
-            //     entry.target.classList.remove('visible');
-            // }
         });
     };
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     fadeElems.forEach(elem => observer.observe(elem));
 
 
-    // --- Comment Form Logic ---
+    // --- Comment Form Logic (Adapted) ---
     const commentForm = document.getElementById('comment-form');
     const commentTextarea = document.getElementById('comment-text');
     const charCount = document.getElementById('char-count');
-    const formStatus = document.getElementById('form-status');
-    const submitButton = document.getElementById('submit-comment');
-    const recaptchaContainer = document.getElementById('recaptcha-container'); // To check if it exists
-    // *** NEW: Get Email elements ***
-    const emailInput = document.getElementById('comment-email');
-    const emailError = document.getElementById('email-error');
-    // *** END NEW ***
+    const formStatusComment = document.getElementById('form-status-comment'); // Unique ID
+    const submitButtonComment = document.getElementById('submit-comment'); // Unique ID
+    const recaptchaContainerComment = document.getElementById('recaptcha-container-comment'); // Unique ID
+    const emailInputComment = document.getElementById('comment-email'); // Unique ID
+    const emailErrorComment = document.getElementById('email-error'); // Unique ID (assuming it's specific to comment)
 
     const maxChars = 256;
-    let statusTimeout; // To manage the success/error message timeout
-    let emailErrorTimeout; // *** NEW: Timeout for email error message ***
+    let statusTimeoutComment; // Unique timeout var
+    let emailErrorTimeoutComment; // Unique timeout var
 
-    // Check if all required comment elements exist before adding listeners
-    // *** MODIFIED: Added emailInput and emailError to the check ***
-    if (commentForm && emailInput && emailError && commentTextarea && charCount && formStatus && submitButton && recaptchaContainer) {
+    // Use the global show/hideStatusMessage functions from common.js if needed
+    // Or keep local ones if they have very specific behavior for this form
+
+    if (commentForm && emailInputComment && emailErrorComment && commentTextarea && charCount && formStatusComment && submitButtonComment && recaptchaContainerComment) {
 
         // --- Character Counter Update ---
         commentTextarea.addEventListener('input', () => {
             const currentLength = commentTextarea.value.length;
             charCount.textContent = `${currentLength} / ${maxChars}`;
-            // Add visual feedback if exceeding limit
-            if (currentLength > maxChars) {
-                 charCount.classList.add('error');
-            } else {
-                 charCount.classList.remove('error');
-            }
+            charCount.classList.toggle('error', currentLength > maxChars);
         });
-        // Initial count update on page load
         charCount.textContent = `${commentTextarea.value.length} / ${maxChars}`;
 
-
-        // *** NEW: Email Validation Logic ***
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format regex
-
-        function isValidEmail(email) {
-            return emailRegex.test(email);
+        // --- Email Validation Feedback (using common.js function) ---
+         function showCommentEmailError(message) {
+            if (emailErrorComment) {
+                emailErrorComment.textContent = message;
+                emailErrorComment.classList.add('visible');
+                emailInputComment.setAttribute('aria-invalid', 'true');
+                clearTimeout(emailErrorTimeoutComment);
+                emailErrorTimeoutComment = setTimeout(hideCommentEmailError, 20000);
+            }
         }
-
-        function showEmailError(message) {
-            if (emailError) {
-                emailError.textContent = message;
-                emailError.classList.add('visible');
-                emailInput.setAttribute('aria-invalid', 'true'); // Accessibility
-
-                // Clear existing timeout before setting a new one
-                clearTimeout(emailErrorTimeout);
-                // Set timeout to hide the error message after 20 seconds
-                emailErrorTimeout = setTimeout(() => {
-                    hideEmailError();
-                }, 20000); // 20 seconds
+         function hideCommentEmailError() {
+            if (emailErrorComment) {
+                 clearTimeout(emailErrorTimeoutComment);
+                 emailErrorComment.classList.remove('visible');
+                 emailInputComment.removeAttribute('aria-invalid');
             }
         }
 
-        function hideEmailError() {
-            if (emailError) {
-                 clearTimeout(emailErrorTimeout); // Clear timeout if hidden manually/by validation
-                 emailError.classList.remove('visible');
-                 emailInput.removeAttribute('aria-invalid'); // Accessibility
-                 // Optional: Clear text after transition
-                 // setTimeout(() => { emailError.textContent = ''; }, 300); // Match CSS transition
-            }
-        }
-
-        // Add input listener for real-time validation feedback
-        emailInput.addEventListener('input', () => {
-            const emailValue = emailInput.value.trim();
-            if (emailValue === '' || isValidEmail(emailValue)) {
-                hideEmailError(); // Hide error if valid or empty
+        emailInputComment.addEventListener('input', () => {
+            const emailValue = emailInputComment.value.trim();
+             // Use common validation function
+            if (emailValue === '' || isValidEmailFormat(emailValue)) {
+                hideCommentEmailError();
             } else {
-                // Only show error if the field is not empty and invalid
-                showEmailError('Please enter a valid email address.');
+                showCommentEmailError('Please enter a valid email address.');
             }
         });
-        // *** END NEW: Email Validation Logic ***
-
 
         // --- Form Submission Handler ---
         commentForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default browser submission
-            clearTimeout(statusTimeout); // Clear any existing general status message timeout
-            // *** NEW: Clear email error timeout on submit attempt ***
-            clearTimeout(emailErrorTimeout);
+            event.preventDefault();
+            clearTimeout(statusTimeoutComment);
+            clearTimeout(emailErrorTimeoutComment);
 
             // --- Client-side Validation ---
-            // *** NEW: Get and validate email ***
-            const email = emailInput.value.trim();
+            const email = emailInputComment.value.trim();
             if (!email) {
-                showEmailError('Email address is required.');
-                emailInput.focus();
+                showCommentEmailError('Email address is required.');
+                emailInputComment.focus();
                 return;
             }
-            if (!isValidEmail(email)) {
-                showEmailError('Please enter a valid email address.');
-                emailInput.focus();
+            if (!isValidEmailFormat(email)) { // Use common function
+                showCommentEmailError('Please enter a valid email address.');
+                emailInputComment.focus();
                 return;
             }
-            // Hide email error if validation passes here
-            hideEmailError();
-            // *** END NEW ***
+            hideCommentEmailError();
 
             const comment = commentTextarea.value.trim();
             let recaptchaResponse = null;
 
-            // Ensure grecaptcha is loaded and get response
             try {
-                recaptchaResponse = grecaptcha.getResponse();
+                // Ensure you use the correct widget ID if multiple reCAPTCHAs exist
+                // If only one is rendered at a time, this might be okay, otherwise, pass the widget ID
+                recaptchaResponse = grecaptcha.getResponse(); // May need adjustment if multiple captchas render
             } catch (e) {
-                console.error("reCAPTCHA not ready or error getting response:", e);
-                showStatus('reCAPTCHA is not ready. Please wait or refresh.', 'error', true); // Keep error shown
-                // Don't disable button if reCAPTCHA itself failed to load
+                console.error("reCAPTCHA error:", e);
+                 // Use the showStatusMessage from common.js
+                 showStatusMessage(formStatusComment, 'reCAPTCHA error. Please refresh.', 'error', true);
                 return;
             }
 
             if (!comment) {
-                showStatus('Comment cannot be empty.', 'error');
+                 showStatusMessage(formStatusComment, 'Comment cannot be empty.', 'error', true);
                 commentTextarea.focus();
                 return;
             }
             if (comment.length > maxChars) {
-                showStatus(`Comment exceeds the maximum length of ${maxChars} characters.`, 'error');
+                 showStatusMessage(formStatusComment, `Comment exceeds ${maxChars} characters.`, 'error', true);
                 commentTextarea.focus();
                 return;
             }
              if (!recaptchaResponse) {
-                showStatus('Please complete the reCAPTCHA verification.', 'error');
-                // Try to focus the reCAPTCHA iframe, though direct focus might be blocked
-                const iframe = recaptchaContainer.querySelector('iframe');
-                if (iframe) iframe.focus();
+                 showStatusMessage(formStatusComment, 'Please complete the reCAPTCHA.', 'error', true);
                 return;
             }
             // --- End Validation ---
 
-
-            // Disable button and show loading state
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-            hideStatus(); // Clear previous general status message immediately
+            submitButtonComment.disabled = true;
+            submitButtonComment.textContent = 'Submitting...';
+            hideStatusMessage(formStatusComment); // Hide previous messages
 
             try {
-                const response = await fetch('/api/submit-comment', { // Your Function endpoint
+                const response = await fetch('/api/submit-comment', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        // *** NEW: Include email in the payload ***
                         email: email,
-                        comment: comment, // Send the trimmed comment
+                        comment: comment,
                         'g-recaptcha-response': recaptchaResponse,
                     }),
                 });
 
-                // Try parsing JSON, but handle cases where response might not be JSON
-                let result;
-                try {
-                     result = await response.json();
-                } catch(e) {
-                    // If response is not JSON (e.g., server error page)
-                    console.error("Failed to parse JSON response:", e);
-                    result = { success: false, message: `Server returned status ${response.status}. Please try again.` };
-                }
-
+                const result = await response.json();
 
                 if (response.ok && result.success) {
-                    showStatus('Thank you for your comment!', 'success');
-                    commentForm.reset(); // Clear the form fields (includes email and comment)
-                    charCount.textContent = `0 / ${maxChars}`; // Reset char count display
+                    showStatusMessage(formStatusComment, 'Thank you for your comment!', 'success');
+                    commentForm.reset();
+                    charCount.textContent = `0 / ${maxChars}`;
                     charCount.classList.remove('error');
-                     // *** NEW: Explicitly hide email error on success ***
-                    hideEmailError();
-                    grecaptcha.reset(); // Reset reCAPTCHA widget
-
-                    // Set timeout to hide success message after 20 seconds (uses existing statusTimeout)
-                    statusTimeout = setTimeout(() => {
-                        hideStatus();
-                    }, 20000); // 20 seconds
-
+                    hideCommentEmailError();
+                    grecaptcha.reset(); // Reset the specific widget if possible
                 } else {
-                    // Handle errors from the function (including reCAPTCHA failure or server-side email validation)
-                    const errorMessage = result.message || 'An unknown error occurred. Please try again.';
-                    showStatus(errorMessage, 'error', true); // Keep error shown until user interaction
-                    grecaptcha.reset(); // Reset reCAPTCHA on error so user can retry
+                    const errorMessage = result.message || 'An error occurred.';
+                    showStatusMessage(formStatusComment, errorMessage, 'error', true);
+                    grecaptcha.reset();
                 }
 
             } catch (error) {
-                console.error('Network or fetch error submitting comment:', error);
-                showStatus('A network error occurred. Please check your connection and try again.', 'error', true); // Keep error shown
-                // Don't reset reCAPTCHA here as it might be a network issue, not verification fail
+                console.error('Error submitting comment:', error);
+                 showStatusMessage(formStatusComment, 'Network error. Please try again.', 'error', true);
             } finally {
-                // Re-enable button AFTER processing, regardless of outcome
-                resetSubmitButton();
+                submitButtonComment.disabled = false;
+                submitButtonComment.textContent = 'Submit Comment';
             }
         });
 
     } else {
-        console.warn("One or more comment form elements (including email) not found. Comment functionality may be limited or disabled.");
+        console.warn("Comment form elements not fully found. Comment section disabled.");
     }
 
-
-    // Helper function to show general status messages (success/errors below reCAPTCHA)
-    // *** MODIFIED: Added 'persist' flag for errors that shouldn't auto-hide ***
-    function showStatus(message, type = 'info', persist = false) { // type can be 'success' or 'error'
-        if (formStatus) {
-            clearTimeout(statusTimeout); // Clear existing timeout first
-            formStatus.textContent = message;
-            // Reset classes, then add the correct ones
-            formStatus.className = 'form-status';
-            if (type === 'success' || type === 'error') {
-                formStatus.classList.add(type);
-            }
-            formStatus.classList.add('visible'); // Make it visible with transition
-
-            // Set aria-invalid for errors for accessibility
-            if (type === 'error') {
-                formStatus.setAttribute('aria-invalid', 'true');
-                // If persist is false (default), set a timeout for errors too
-                if (!persist) {
-                    statusTimeout = setTimeout(hideStatus, 20000); // Hide error after 20s
-                }
-            } else {
-                formStatus.removeAttribute('aria-invalid');
-                 // Success messages always get the timeout (handled in submit handler)
-            }
-        }
-    }
-
-     // Helper function to hide the general status message
-    function hideStatus() {
-        if (formStatus) {
-            clearTimeout(statusTimeout); // Clear timeout if hidden manually
-            formStatus.classList.remove('visible');
-             // Optional: clear text after transition ends for cleaner DOM
-             // setTimeout(() => {
-             //     if (!formStatus.classList.contains('visible')) { // check if it wasn't shown again quickly
-             //         formStatus.textContent = '';
-             //         formStatus.className = 'form-status';
-             //         formStatus.removeAttribute('aria-invalid');
-             //     }
-             // }, 500); // Match CSS transition duration
-        }
-    }
-
-    // Helper function to reset the submit button state
-    function resetSubmitButton() {
-         if (submitButton) {
-             submitButton.disabled = false;
-             submitButton.textContent = 'Submit Comment';
-         }
-    }
-
-    // Console message - a little easter egg
-    console.log("Initializing connection to base... Sequence nominal.");
-    console.log("Welcome aboard the Software Stable. All systems green.");
-
+    console.log("Software Stable: Systems online. Ready for interaction.");
 });

@@ -2,6 +2,53 @@
 
 This repository contains the source code for the personal website of Thomas Connolly (www.thomasconnolly.com), hosted on Cloudflare Pages.
 
+# Directory Structure
+/
+├── functions/
+│   ├── api/
+│   │   ├── submit-comment.js   # Existing comment handler
+│   │   ├── register.js         # Handles user registration
+│   │   ├── login.js            # Handles user login
+│   │   ├── activate-account.js # Handles email activation link
+│   │   └── logout.js           # Handles user logout
+│   └── utils/
+│       ├── auth.js             # Password hashing, token generation, cookies
+│       └── email.js            # Email sending utility
+│       └── validation.js       # Shared validation logic (e.g., password complexity)
+│
+├── index.html          # Main page
+├── login.html          # Login form page
+├── register.html       # Registration form page
+├── activate.html       # Activation landing page
+├── style.css           # Shared styles
+├── script.js           # Main page JS (incl. comment logic, auth links)
+├── login.js            # Login page specific JS
+├── register.js         # Registration page specific JS
+├── activate.js         # Activation page specific JS
+├── common.js           # Shared frontend JS utilities (e.g., password toggle)
+└── README.md           # Documentation
+
+## DB schema
+
+bash
+```
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    is_active INTEGER DEFAULT 0 NOT NULL, -- 0 = false, 1 = true
+    activation_token TEXT,
+    activation_expires DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for faster email lookups
+CREATE INDEX idx_users_email ON users(email);
+-- Index for faster activation token lookups
+CREATE INDEX idx_users_activation_token ON users(activation_token);
+```
+
 ## Original Prompt & Generation
 
 *This project structure, code, and documentation were generated based on the following prompt using Google Gemini 2.5 Pro:*

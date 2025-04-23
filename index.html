@@ -10,10 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- Add reCAPTCHA script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Site Key for reCAPTCHA (Replace with your actual site key) -->
+    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY">
 </head>
 <body>
     <div class="stars-bg"></div>
     <div class="twinkling-bg"></div>
+
+    <!-- Navigation / Auth Links -->
+    <nav class="auth-nav">
+        <div id="auth-links" class="container">
+            <!-- Links will be populated by script.js -->
+            <a href="/login.html">Login</a>
+            <span class="separator">|</span>
+            <a href="/register.html">Register</a>
+        </div>
+    </nav>
 
     <header class="fade-in">
         <h1>Thomas Connolly</h1>
@@ -70,13 +82,11 @@
         <section id="comments" class="card fade-in">
             <h2><span class="icon">💬</span> Leave a Comment</h2>
             <form id="comment-form">
-                <!-- *** NEW: Email Input Field *** -->
                 <div class="form-group">
                     <label for="comment-email">Your Email:</label>
                     <input type="email" id="comment-email" name="email" placeholder="Enter your email address" required aria-describedby="email-error">
                     <div id="email-error" class="form-error-message" role="alert" aria-live="assertive"></div>
                 </div>
-                <!-- *** END NEW: Email Input Field *** -->
 
                 <div class="form-group">
                     <label for="comment-text">Your Comment:</label>
@@ -85,10 +95,11 @@
                 </div>
 
                 <div class="form-group">
-                    <div id="recaptcha-container" class="g-recaptcha" data-sitekey="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"></div>
+                    <!-- Inject Site Key Here -->
+                    <div id="recaptcha-container-comment" class="g-recaptcha"></div>
                 </div>
 
-                <div id="form-status" class="form-status" role="alert" aria-live="polite"></div>
+                <div id="form-status-comment" class="form-status" role="alert" aria-live="polite"></div>
 
                 <button type="submit" id="submit-comment" class="button">Submit Comment</button>
             </form>
@@ -101,6 +112,8 @@
         <p>© <span id="year"></span> Thomas Connolly. Charting the course for innovation.</p>
     </footer>
 
+    <!-- Load shared utils first, then page-specific script -->
+    <script src="common.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
