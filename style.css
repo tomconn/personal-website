@@ -68,6 +68,9 @@ body {
     to { background-position: -10000px 5000px; }
 }
 
+.hidden {
+    display: none;
+}
 
 /* --- Layout & Spacing --- */
 header, main, footer {
@@ -316,7 +319,7 @@ a:hover, a:focus {
 }
 
 /* reCAPTCHA needs some margin */
-#recaptcha-container-comment { /* Specific ID */
+#recaptcha-container {
     margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
     display: flex;
     justify-content: center; /* Center horizontally */
@@ -442,19 +445,18 @@ a:hover, a:focus {
     }
 
      /* Adjust reCAPTCHA scale for smaller screens */
-    #recaptcha-container-comment > div { /* Target the inner div */
+    #recaptcha-container > div { /* Target the inner div for scaling */
         transform: scale(0.85);
-        transform-origin: center;
-        margin: 0 auto;
+        transform-origin: center; /* Scale from center */
+        margin: 0 auto; /* Center after scaling */
     }
-    #recaptcha-container-comment {
+    #recaptcha-container {
         min-height: 70px; /* Adjust min-height after scaling */
     }
      #comment-form button[type="submit"] {
         width: 100%; /* Ensure full width */
     }
 }
-
 
 /* --- ADDITIONS/MODIFICATIONS FOR AUTH --- */
 
@@ -520,10 +522,12 @@ a:hover, a:focus {
 
 /* Inputs for Auth */
 .auth-card input[type="email"],
-.auth-card input[type="password"] {
-     background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
+.auth-card input[type="password"],
+.auth-card input[type="text"] {
+    background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
     padding: 0.9rem 1.1rem; /* Slightly larger padding */
     font-size: 1.05em;
+    color: var(--text-light);
 }
 
 /* Password Toggle Button */
@@ -535,7 +539,7 @@ a:hover, a:focus {
     position: absolute;
     top: 55%; /* Adjust vertically centered with label */
     right: 10px;
-    transform: translateY(-50%);
+    transform: translateY(-20%);
     background: none;
     border: none;
     color: var(--text-medium);
@@ -609,21 +613,20 @@ a:hover, a:focus {
     font-size: 0.9em;
 }
 
-#auth-links a, #auth-links button.button-link-style { /* Apply to button */
+#auth-links a, #auth-links button {
     color: var(--text-light);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
-    /* Style button to look like a link */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
+    background: none; /* For logout button */
+    border: none;     /* For logout button */
+    cursor: pointer;  /* For logout button */
+    padding: 0;       /* For logout button */
+    font-family: inherit; /* For logout button */
+    font-size: inherit;   /* For logout button */
 }
 
-#auth-links a:hover, #auth-links button.button-link-style:hover {
+#auth-links a:hover, #auth-links button:hover {
     color: var(--accent-orange);
 }
 
@@ -678,9 +681,3 @@ a:hover, a:focus {
 }
 
 /* --- END AUTH ADDITIONS --- */
-
-/* --- UTILITY CLASSES --- */
-.hidden {
-    display: none !important; /* Use important to override other display rules if needed */
-}
-/* --- END UTILITY CLASSES --- */
