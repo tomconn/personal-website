@@ -134,7 +134,10 @@ Follow these steps to set up the repository, deploy the website and the backend 
 6.  **Save and Deploy:** Click "Save and Deploy". Cloudflare will deploy both the static site and the function in the `functions` directory. The function will be available at `/api/submit-comment` relative to your site URL.
 7. **DB schema**
 * The required D1 schema (CREATE TABLE users ...).
-```
+
+### Users Table
+
+```sql
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE NOT NULL,
@@ -152,6 +155,23 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_activation_token ON users(activation_token);
 ```
 
+### Sessions Table
+
+A `sessions` table is used to validate user sessions securely on the backend.
+
+```sql
+-- Create the sessions table
+CREATE TABLE sessions (
+    token TEXT PRIMARY KEY NOT NULL,      -- The unique session token
+    user_id INTEGER NOT NULL,             -- User ID linked to the session
+    expires_at DATETIME NOT NULL,         -- Session expiry timestamp
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- Session creation timestamp
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Link to users table
+);
+
+-- Index for faster lookup/cleanup of expired sessions
+CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
+```
    * **Create D1 Database:** Go to your Cloudflare dashboard -> Workers & Pages -> D1 -> Create database. Note the database ID.
    * **Create Table:** Use the D1 Console tab to run the CREATE TABLE users ... SQL.
    * **Set Environment Variables:** In your Cloudflare Pages project settings -> Environment Variables, add all the required variables listed above for both Production and Preview environments. Make sure DB is bound to your created D1 database. Set ACTIVATION_BASE_URL appropriately (e.g., https://preview-branch.your-project.pages.dev for preview, https://www.softwarestable.com for production).
@@ -170,6 +190,110 @@ CREATE INDEX idx_users_activation_token ON users(activation_token);
        *   Test password complexity rules on the registration form.
        *   Test reCAPTCHA requirement on all forms.
        *   Test expired activation link (wait an hour or manually change expiry in D1).
+
+### Session Cleanup Worker (Recommended)
+
+To prevent the `sessions` table from growing indefinitely with expired sessions, it's recommended to set up a Cloudflare Worker Cron Trigger to periodically delete old sessions. This Worker runs separately from your main Cloudflare Pages functions.
+
+**Setup Steps:**
+
+1.  **Create the Worker:**
+    *   Go to your Cloudflare Dashboard -> **Workers & Pages**.
+    *   Click **"Create Application"**.
+    *   Select the **"Worker"** tab.
+    *   Under "Templates", select a basic template like **"Hello World"** and click **"Use template"**.
+    *   Give your Worker a descriptive name, for example: `session-cleanup-worker`.
+    *   Click **"Deploy"**. This deploys the initial template code.
+
+2.  **Add the Cleanup Code:**
+    *   After the initial deploy, you'll be on the Worker's overview page. Click the **"Edit code"** button.
+    *   In the online editor, **delete all** the existing "Hello World" template code.
+    *   **Copy and paste** the following complete script into the editor:
+
+    ```javascript
+    /**
+     * Cloudflare Worker script for cleaning up expired sessions from D1.
+     */
+    export default {
+      /**
+       * Handles the scheduled event triggered by a Cron Trigger.
+       * @param {ScheduledEvent} event - Contains information about the trigger (e.g., cron schedule).
+       * @param {object} env - Contains environment variables and bindings (like D1).
+       * @param {ExecutionContext} ctx - Provides methods like ctx.waitUntil().
+       */
+      async scheduled(event, env, ctx) {
+        console.log(`[Session Cleanup] Cron Trigger Fired: ${event.cron}`);
+        // Use ctx.waitUntil to ensure the script runs to completion,
+        // even after the response to the trigger event has been sent.
+        ctx.waitUntil(cleanupExpiredSessions(env));
+      },
+    };
+
+    /**
+     * Connects to the D1 database bound as SESSION_DB and deletes expired sessions.
+     * @param {object} env - Environment variables and bindings.
+     */
+    async function cleanupExpiredSessions(env) {
+      // Ensure the D1 binding name matches your configuration ('SESSION_DB' is used here)
+      if (!env.SESSION_DB) {
+        console.error("[Session Cleanup] D1 Database binding 'SESSION_DB' is missing in Worker environment.");
+        return; // Stop execution if DB binding isn't configured
+      }
+
+      const nowISO = new Date().toISOString();
+      console.log(`[Session Cleanup] Running session cleanup at ${nowISO}...`);
+
+      try {
+        // Prepare the SQL statement to delete sessions where expiry is in the past
+        const stmt = env.SESSION_DB.prepare(
+          "DELETE FROM sessions WHERE expires_at <= ?1" // Using numbered param
+        );
+
+        // Bind the current time and execute the delete operation
+        const { success, meta } = await stmt.bind(nowISO).run();
+
+        if (success) {
+          console.log(`[Session Cleanup] Cleanup successful. Deleted ${meta.changes ?? 0} expired sessions.`);
+        } else {
+          // D1 might report !success in some edge cases, log if needed
+          console.error("[Session Cleanup] D1 query execution reported failure.", meta);
+        }
+      } catch (e) {
+        // Catch any errors during DB interaction
+        console.error("[Session Cleanup] Error during session cleanup:", e);
+        // You might want to add more robust error reporting here (e.g., send to logging service)
+      }
+    }
+    ```
+
+    *   Click the **"Save and deploy"** button in the editor.
+
+3.  **Bind D1 Database:**
+    *   Navigate back to your `session-cleanup-worker` overview page.
+    *   Go to the **Settings** tab.
+    *   Click on **Variables**.
+    *   Scroll down to **D1 Database Bindings** and click **"Add binding"**.
+    *   **Variable name:** Enter `SESSION_DB` (This *must* match the `env.SESSION_DB` used in the code above).
+    *   **D1 database:** Select the D1 database that contains your `sessions` table from the dropdown list.
+    *   Click **"Save"**.
+
+4.  **Configure Cron Trigger:**
+    *   Go back to the `session-cleanup-worker` overview page.
+    *   Go to the **Triggers** tab.
+    *   Scroll down to the **Cron Triggers** section and click **"Add Cron Trigger"**.
+    *   Enter your desired **Cron Schedule** in UTC. Examples:
+        *   `0 0 * * *` : Run daily at midnight UTC.
+        *   `0 */6 * * *`: Run every 6 hours (00:00, 06:00, 12:00, 18:00 UTC).
+        *   `15 3 * * *` : Run daily at 3:15 AM UTC.
+        *   *(Use [crontab.guru](https://crontab.guru/) to verify your schedule)*
+    *   Click **"Add trigger"**.
+
+5.  **Final Deploy:** Deploying after adding the code (Step 2) should have published the latest script. If you made changes to the Settings (like D1 binding or triggers) after that, you might need to trigger another deploy. Go to the Worker overview and click **"Deploy"** if available, or simply make a tiny change in the code editor (like adding a space) and click **"Save and deploy"** again to be sure.
+
+**Monitoring:**
+
+*   After the scheduled time for your Cron Trigger passes, check the logs for your `session-cleanup-worker`. Go to the Worker's dashboard -> **Logs** tab. You should see the `console.log` messages indicating it ran and how many sessions were deleted.
+*   You can also periodically check the `sessions` table in your D1 database console to confirm that rows with past `expires_at` dates are being removed.
 
 ### 3. Custom Domain Setup (www.thomasconnolly.com via Namecheap)
 
@@ -219,10 +343,3 @@ CREATE INDEX idx_users_activation_token ON users(activation_token);
 *   Cloudflare Pages will automatically detect the push and redeploy the updated site and function.
 
 ---
-
-**Important Reminders:**
-
-*   Replace placeholder **reCAPTCHA Site Key** in `index.html`.
-*   Set the **reCAPTCHA Secret Key** as an environment variable (`RECAPTCHA_SECRET_KEY`) in your Cloudflare Pages project settings.
-*   Manually update the **bio text** in `index.html`.
-*   (Optional) If enabling MailChannels, uncomment the relevant code in `functions/api/submit-comment.js` and configure MailChannels in Cloudflare.
