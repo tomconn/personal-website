@@ -7,18 +7,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const authLinksContainer = document.getElementById('auth-links');
 
     /**
-     * Updates the navigation links (Login/Register vs Logout) based on cookie presence.
+     * Asynchronously checks the user's login status via the backend
+     * and updates the navigation links accordingly.
      */
-    function updateAuthLinks() {
+    async function initializeAuthUI() {
         if (!authLinksContainer) {
-            console.warn('Auth links container (#auth-links) not found.');
+            console.warn('Auth links container (#auth-links) not found. Cannot initialize auth UI.');
             return;
         }
 
-        // Check for the session cookie name defined in functions/utils/auth.js
-        const SESSION_COOKIE_NAME = 'session_token';
-        const isLoggedIn = document.cookie.split(';').some((item) => item.trim().startsWith(`${SESSION_COOKIE_NAME}=`));
+        let isLoggedIn = false;
+        try {
+            const response = await fetch('/api/check-session'); // Call the new endpoint
+            if (response.ok) {
+                const data = await response.json();
+                isLoggedIn = data.loggedIn;
+                // console.log('Session check successful:', isLoggedIn); // Debug log
+            } else {
+                 // Log error but assume logged out if check fails
+                console.error('Failed to check session status:', response.status);
+            }
+        } catch (error) {
+            // Log error but assume logged out on network failure etc.
+            console.error('Error fetching session status:', error);
+        }
 
+        // Now update the UI based on the result from the backend
         if (isLoggedIn) {
             // User is logged in - Show Logout button
             authLinksContainer.innerHTML = `
@@ -28,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (logoutButton) {
                 logoutButton.addEventListener('click', handleLogout);
             } else {
-                 console.error('Failed to find dynamically added logout button.');
+                 console.error('Failed to find dynamically added logout button after session check.');
             }
         } else {
             // User is logged out - Show Login/Register links
@@ -52,24 +66,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch('/api/logout', { method: 'POST' });
-            // Check if the request itself was successful (status 2xx)
             if (response.ok) {
-                 // Server successfully processed the logout (cleared cookie via Set-Cookie header)
-                console.log('Logout successful.');
-                // Update UI immediately to reflect logged-out state
-                updateAuthLinks();
-                 // Optional: Show a brief success message or redirect
+                console.log('Logout successful via API.');
+                // Update UI immediately after successful API call confirms cookie cleared
+                // No need to re-fetch session status here, just show logged out state
+                authLinksContainer.innerHTML = `
+                    <a href="/login.html">Login</a>
+                    <span class="separator">|</span>
+                    <a href="/register.html">Register</a>
+                `;
+                 // Optional: Show a brief success message
                  // showStatusMessage(someGlobalStatusElement, 'Logged out successfully.', 'success');
-                 // window.location.reload(); // Or just reload to clear state
             } else {
-                 // Server returned an error status
                 console.error('Logout request failed:', response.status, await response.text());
-                 alert('Logout failed. Please try again.'); // Simple feedback for the user
-                 logoutButton.disabled = false; // Re-enable button on failure
-                 logoutButton.textContent = 'Logout';
+                alert('Logout failed. Please try again.');
+                logoutButton.disabled = false;
+                logoutButton.textContent = 'Logout';
             }
         } catch (error) {
-            // Network error or other exception during fetch
             console.error('Error during logout fetch:', error);
             alert('An error occurred during logout. Please check your connection.');
              logoutButton.disabled = false;
@@ -77,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initial check and setup of auth links when the page loads
-    updateAuthLinks();
+    // Initialize the auth UI when the page loads
+    initializeAuthUI(); // Call the async function
 
     // --- End Authentication Link Management ---
 
@@ -97,27 +111,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const fadeElems = document.querySelectorAll('.fade-in');
     if (typeof IntersectionObserver !== 'undefined') {
         const observerOptions = {
-            root: null, // relative to document viewport
-            rootMargin: '0px',
-            threshold: 0.1 // trigger when 10% of the element is visible
+            root: null, rootMargin: '0px', threshold: 0.1
         };
         const observerCallback = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Optional: Unobserve after animation to save resources
-                    // observer.unobserve(entry.target);
+                    // observer.unobserve(entry.target); // Optional: unobserve after first animation
                 }
-                // Optional: If you want elements to fade out when scrolling up
-                // else {
-                //     entry.target.classList.remove('visible');
-                // }
             });
         };
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         fadeElems.forEach(elem => observer.observe(elem));
     } else {
-        // Fallback for older browsers: just make elements visible immediately
         console.warn('IntersectionObserver not supported. Fade-in animations disabled.');
         fadeElems.forEach(elem => elem.classList.add('visible'));
     }
@@ -128,103 +134,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const commentForm = document.getElementById('comment-form');
     const commentTextarea = document.getElementById('comment-text');
     const charCount = document.getElementById('char-count');
-    const formStatusComment = document.getElementById('form-status-comment'); // Specific ID for comment status
+    const formStatusComment = document.getElementById('form-status-comment');
     const submitButtonComment = document.getElementById('submit-comment');
-    const recaptchaContainerComment = document.getElementById('recaptcha-container-comment'); // Specific ID
+    const recaptchaContainerComment = document.getElementById('recaptcha-container-comment');
     const emailInputComment = document.getElementById('comment-email');
-    const emailErrorComment = document.getElementById('email-error'); // Specific ID for comment email error
+    const emailErrorComment = document.getElementById('email-error');
 
     const maxChars = 256;
-    let emailErrorTimeoutComment; // Timeout specifically for comment email error
+    let emailErrorTimeoutComment;
 
-    // Check if all required comment elements exist before adding listeners
     if (commentForm && emailInputComment && emailErrorComment && commentTextarea && charCount && formStatusComment && submitButtonComment && recaptchaContainerComment) {
 
         // --- Character Counter Update ---
         commentTextarea.addEventListener('input', () => {
             const currentLength = commentTextarea.value.length;
             charCount.textContent = `${currentLength} / ${maxChars}`;
-            // Add/remove error class based on length
             charCount.classList.toggle('error', currentLength > maxChars);
         });
-        // Initial count update on page load
         charCount.textContent = `${commentTextarea.value.length} / ${maxChars}`;
 
-
-        // --- Email Validation Feedback (using local functions for specificity) ---
-        // Helper to show the email-specific error message for the comment form
+        // --- Email Validation Feedback ---
         function showCommentEmailError(message) {
             if (emailErrorComment) {
                 emailErrorComment.textContent = message;
                 emailErrorComment.classList.add('visible');
-                emailInputComment.setAttribute('aria-invalid', 'true'); // Accessibility
-                // Clear existing timeout before setting a new one
+                emailInputComment.setAttribute('aria-invalid', 'true');
                 clearTimeout(emailErrorTimeoutComment);
-                // Set timeout to hide the error message after 20 seconds
-                emailErrorTimeoutComment = setTimeout(hideCommentEmailError, 20000); // 20 seconds
+                emailErrorTimeoutComment = setTimeout(hideCommentEmailError, 20000);
             }
         }
-
-        // Helper to hide the email-specific error message for the comment form
         function hideCommentEmailError() {
             if (emailErrorComment) {
-                 clearTimeout(emailErrorTimeoutComment); // Clear timeout if hidden manually/by validation
+                 clearTimeout(emailErrorTimeoutComment);
                  emailErrorComment.classList.remove('visible');
-                 emailInputComment.removeAttribute('aria-invalid'); // Accessibility
+                 emailInputComment.removeAttribute('aria-invalid');
             }
         }
-
-        // Add input listener for real-time email validation feedback
         emailInputComment.addEventListener('input', () => {
             const emailValue = emailInputComment.value.trim();
-            // Use the shared validation function from common.js
-            if (emailValue === '' || isValidEmailFormat(emailValue)) {
-                hideCommentEmailError(); // Hide error if valid or empty
+            if (emailValue === '' || isValidEmailFormat(emailValue)) { // Assumes isValidEmailFormat from common.js
+                hideCommentEmailError();
             } else {
-                // Only show error if the field is not empty and invalid
                 showCommentEmailError('Please enter a valid email address.');
             }
         });
 
-
         // --- Comment Form Submission Handler ---
         commentForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default browser submission
-            clearTimeout(emailErrorTimeoutComment); // Clear email error timer
-            hideStatusMessage(formStatusComment); // Clear previous general status messages (using common.js helper)
+            event.preventDefault();
+            clearTimeout(emailErrorTimeoutComment);
+            hideStatusMessage(formStatusComment); // Assumes hideStatusMessage from common.js
 
             // --- Client-side Validation ---
             const email = emailInputComment.value.trim();
-            if (!email) {
-                showCommentEmailError('Email address is required.');
+            if (!email || !isValidEmailFormat(email)) {
+                showCommentEmailError('Valid email required.');
                 emailInputComment.focus();
                 return;
             }
-            if (!isValidEmailFormat(email)) { // Use common validation function
-                showCommentEmailError('Please enter a valid email address.');
-                emailInputComment.focus();
-                return;
-            }
-            hideCommentEmailError(); // Hide email error if validation passes here
+            hideCommentEmailError();
 
             const comment = commentTextarea.value.trim();
             let recaptchaResponse = null;
-            let recaptchaWidgetId = recaptchaContainerComment.dataset.widgetId; // Check if widget ID was stored
+            let recaptchaWidgetId = recaptchaContainerComment.dataset.widgetId;
 
-            // Ensure grecaptcha is loaded and get response
             try {
-                // Use widget ID if available, otherwise use default index 0
                 recaptchaResponse = grecaptcha.getResponse(recaptchaWidgetId);
                  if (!recaptchaResponse) {
-                    showStatusMessage(formStatusComment, 'Please complete the reCAPTCHA verification.', 'error', true);
-                    // Try to focus the reCAPTCHA iframe, though direct focus might be blocked
-                    const iframe = recaptchaContainerComment.querySelector('iframe');
-                    if (iframe) iframe.focus();
+                    showStatusMessage(formStatusComment, 'Please complete reCAPTCHA.', 'error', true); // Assumes showStatusMessage from common.js
                     return;
                 }
             } catch (e) {
-                console.error("reCAPTCHA not ready or error getting response:", e);
-                showStatusMessage(formStatusComment, 'reCAPTCHA error. Please try refreshing the page.', 'error', true); // Keep error shown
+                console.error("reCAPTCHA error:", e);
+                showStatusMessage(formStatusComment, 'reCAPTCHA error. Refresh page.', 'error', true);
                 return;
             }
 
@@ -234,87 +216,79 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (comment.length > maxChars) {
-                showStatusMessage(formStatusComment, `Comment exceeds the maximum length of ${maxChars} characters.`, 'error', true);
+                showStatusMessage(formStatusComment, `Comment exceeds ${maxChars} characters.`, 'error', true);
                 commentTextarea.focus();
                 return;
             }
             // --- End Client-side Validation ---
 
-
-            // Disable button and show loading state
             submitButtonComment.disabled = true;
             submitButtonComment.textContent = 'Submitting...';
 
             try {
-                const response = await fetch('/api/submit-comment', { // Your Function endpoint
+                const response = await fetch('/api/submit-comment', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: email,
-                        comment: comment, // Send the trimmed comment
+                        comment: comment,
                         'g-recaptcha-response': recaptchaResponse,
                     }),
                 });
 
-                // Try parsing JSON, but handle cases where response might not be JSON
-                let result;
+                let result = { success: false, message: 'An unknown error occurred.' }; // Default error
                 const contentType = response.headers.get("content-type");
-                if (contentType && contentType.indexOf("application/json") !== -1) {
-                    result = await response.json();
-                } else {
-                    // Handle non-JSON responses (e.g., server error pages)
+                 if (contentType && contentType.indexOf("application/json") !== -1) {
+                     try {
+                         result = await response.json();
+                     } catch (jsonError) {
+                         console.error("Failed to parse JSON response:", jsonError);
+                         result.message = `Server returned invalid response (${response.status}).`;
+                     }
+                 } else {
                     const errorText = await response.text();
                     console.error("Non-JSON response received:", response.status, errorText);
-                    result = { success: false, message: `Server error (${response.status}). Please try again.` };
+                    result.message = `Server error (${response.status}). Please try again.`;
                 }
 
                 if (response.ok && result.success) {
-                    // Success!
                     showStatusMessage(formStatusComment, 'Thank you for your comment!', 'success');
-                    commentForm.reset(); // Clear the form fields (includes email and comment)
-                    charCount.textContent = `0 / ${maxChars}`; // Reset char count display
+                    commentForm.reset();
+                    charCount.textContent = `0 / ${maxChars}`;
                     charCount.classList.remove('error');
-                    hideCommentEmailError(); // Explicitly hide email error on success
-                    grecaptcha.reset(recaptchaWidgetId); // Reset reCAPTCHA widget using its ID
-
+                    hideCommentEmailError();
+                    grecaptcha.reset(recaptchaWidgetId);
                 } else {
-                    // Handle errors reported by the server function (e.g., validation, backend reCAPTCHA fail)
-                    const errorMessage = result.message || 'An unknown error occurred. Please try again.';
-                    showStatusMessage(formStatusComment, errorMessage, 'error', true); // Persist error message
-                    grecaptcha.reset(recaptchaWidgetId); // Reset reCAPTCHA on error so user can retry
+                    showStatusMessage(formStatusComment, result.message, 'error', true);
+                    grecaptcha.reset(recaptchaWidgetId);
                 }
 
             } catch (error) {
-                // Handle network errors or exceptions during the fetch itself
                 console.error('Network or fetch error submitting comment:', error);
-                showStatusMessage(formStatusComment, 'A network error occurred. Please check your connection and try again.', 'error', true); // Persist error
-                // Don't reset reCAPTCHA here as it might be a network issue, not verification fail
+                showStatusMessage(formStatusComment, 'Network error. Check connection.', 'error', true);
             } finally {
-                // Re-enable button AFTER processing, regardless of outcome
                 submitButtonComment.disabled = false;
                 submitButtonComment.textContent = 'Submit Comment';
             }
         });
 
-        // Optional: Explicitly render reCAPTCHA if needed, storing widget ID
-        // This is useful if you have multiple captchas or need finer control
-        if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+        // Optional: Explicitly render reCAPTCHA
+         if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
              try {
-                 const widgetId = grecaptcha.render(recaptchaContainerComment, {
-                     'sitekey' : recaptchaContainerComment.dataset.sitekey || document.querySelector('meta[name="recaptcha-site-key"]')?.content
-                     // Add other parameters like theme, size if needed
-                 });
-                 recaptchaContainerComment.dataset.widgetId = widgetId; // Store the ID
+                 const siteKey = recaptchaContainerComment.dataset.sitekey || document.querySelector('meta[name="recaptcha-site-key"]')?.content;
+                 if (siteKey) {
+                     const widgetId = grecaptcha.render(recaptchaContainerComment, { 'sitekey' : siteKey });
+                     recaptchaContainerComment.dataset.widgetId = widgetId;
+                 } else {
+                      console.error("reCAPTCHA site key not found for comment form.");
+                 }
              } catch (e) {
                  console.error("Error rendering reCAPTCHA for comment form:", e);
              }
         }
 
-
     } else {
-        console.warn("One or more comment form elements not found. Comment functionality disabled.");
+        console.warn("Comment form elements not fully found. Comment functionality disabled.");
     }
     // --- End Comment Form Logic ---
 
