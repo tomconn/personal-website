@@ -519,7 +519,8 @@ a:hover, a:focus {
 
 /* Inputs for Auth */
 .auth-card input[type="email"],
-.auth-card input[type="password"] {
+.auth-card input[type="password"],
+.auth-card input[type="text"] {
     background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
     padding: 0.9rem 1.1rem; /* Slightly larger padding */
     font-size: 1.05em;
@@ -535,7 +536,7 @@ a:hover, a:focus {
     position: absolute;
     top: 55%; /* Adjust vertically centered with label */
     right: 10px;
-    transform: translateY(-50%);
+    transform: translateY(-20%);
     background: none;
     border: none;
     color: var(--text-medium);
