@@ -37,32 +37,35 @@ A simple, responsive, single-page personal website featuring:
 *   Basic scroll-based fade-in animations for sections.
 
 ## Directory Structure
-```
+
+```text
 /
-├── functions/
-│   ├── api/
-│   │   ├── submit-comment.js   # Existing comment handler
-│   │   ├── register.js         # Handles user registration
-│   │   ├── login.js            # Handles user login
-│   │   ├── activate-account.js # Handles email activation link
-│   │   └── logout.js           # Handles user logout
-│   └── utils/
-│       ├── auth.js             # Password hashing, token generation, cookies
-│       └── email.js            # Email sending utility
-│       └── validation.js       # Shared validation logic (e.g., password complexity)
+├── functions/                  # Backend Cloudflare Functions
+│   ├── api/                    # API endpoint handlers
+│   │   ├── submit-comment.js   # Handles comment submissions
+│   │   ├── register.js         # Handles user registration POST requests
+│   │   ├── login.js            # Handles user login POST requests
+│   │   ├── activate-account.js # Handles account activation POST requests
+│   │   ├── check-session.js    # Handles session validation GET requests
+│   │   └── logout.js           # Handles user logout POST requests
+│   └── utils/                  # Shared backend utility functions
+│       ├── auth.js             # Password hashing, token generation, cookie helpers
+│       └── email.js            # Email sending utility (Brevo)
+│       └── validation.js       # Shared validation (email, password, reCAPTCHA)
 │
-├── index.html          # Main page
-├── login.html          # Login form page
-├── register.html       # Registration form page
-├── activate.html       # Activation landing page
-├── style.css           # Shared styles
-├── script.js           # Main page JS (incl. comment logic, auth links)
-├── login.js            # Login page specific JS
-├── register.js         # Registration page specific JS
-├── activate.js         # Activation page specific JS
-├── common.js           # Shared frontend JS utilities (e.g., password toggle)
-└── README.md           # Documentation
+├── index.html                  # Main landing page (homepage)
+├── login.html                  # Login form page
+├── register.html               # Registration form page
+├── activate.html               # Account activation status/landing page
+├── style.css                   # Shared CSS styles for all pages
+├── script.js                   # JavaScript specific to index.html
+├── login.js                    # JavaScript specific to login.html
+├── register.js                 # JavaScript specific to register.html
+├── activate.js                 # JavaScript specific to activate.html
+├── common.js                   # Shared frontend JavaScript utilities
+└── README.md                   # Project setup, documentation, etc.
 ```
+
 *(Note: The `functions` directory structure is conventional for Cloudflare Pages Functions deployment.)*
 
 ## Technology Stack
