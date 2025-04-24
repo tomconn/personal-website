@@ -2,26 +2,6 @@
 
 This repository contains the source code for the personal website of Thomas Connolly (www.thomasconnolly.com), hosted on Cloudflare Pages.
 
-## DB schema
-
-```
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    salt TEXT NOT NULL,
-    is_active INTEGER DEFAULT 0 NOT NULL, -- 0 = false, 1 = true
-    activation_token TEXT,
-    activation_expires DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- Index for faster email lookups
-CREATE INDEX idx_users_email ON users(email);
--- Index for faster activation token lookups
-CREATE INDEX idx_users_activation_token ON users(activation_token);
-```
-
 ## Original Prompt & Generation
 
 *This project structure, code, and documentation were generated based on the following prompt using Google Gemini 2.5 Pro:*
@@ -152,6 +132,44 @@ Follow these steps to set up the repository, deploy the website and the backend 
         *   Click `Encrypt` if desired (recommended).
         *   Click `Save`.
 6.  **Save and Deploy:** Click "Save and Deploy". Cloudflare will deploy both the static site and the function in the `functions` directory. The function will be available at `/api/submit-comment` relative to your site URL.
+7. **DB schema**
+* The required D1 schema (CREATE TABLE users ...).
+```
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    is_active INTEGER DEFAULT 0 NOT NULL, -- 0 = false, 1 = true
+    activation_token TEXT,
+    activation_expires DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Index for faster email lookups
+CREATE INDEX idx_users_email ON users(email);
+-- Index for faster activation token lookups
+CREATE INDEX idx_users_activation_token ON users(activation_token);
+```
+
+   * **Create D1 Database:** Go to your Cloudflare dashboard -> Workers & Pages -> D1 -> Create database. Note the database ID.
+   * **Create Table:** Use the D1 Console tab to run the CREATE TABLE users ... SQL.
+   * **Set Environment Variables:** In your Cloudflare Pages project settings -> Environment Variables, add all the required variables listed above for both Production and Preview environments. Make sure DB is bound to your created D1 database. Set ACTIVATION_BASE_URL appropriately (e.g., https://preview-branch.your-project.pages.dev for preview, https://www.softwarestable.com for production).
+   * **Replace Placeholders:** Ensure the recaptcha-site-key meta tag value in index.html, login.html, and register.html is your actual site key. Ensure NOTIFICATION_EMAIL_FROM is an email address verified within your Brevo account.
+   * **Commit and Push:** Add all the new/modified files to your Git repository and push them to the branch connected to Cloudflare Pages.
+   * **Test:**
+       *   Use a Cloudflare Pages preview deployment first.
+       *   Test registration with a valid email.
+       *   Check your email for the activation link (ensure it points to the correct preview URL).
+       *   Click the activation link. Verify the success message.
+       *   Try logging in with the correct credentials. Verify redirect to index.
+       *   Verify the "Logout" link appears on index.html.
+       *   Click Logout. Verify the "Login/Register" links reappear.
+       *   Test invalid login attempts.
+       *   Test registration with an existing email.
+       *   Test password complexity rules on the registration form.
+       *   Test reCAPTCHA requirement on all forms.
+       *   Test expired activation link (wait an hour or manually change expiry in D1).
 
 ### 3. Custom Domain Setup (www.thomasconnolly.com via Namecheap)
 
