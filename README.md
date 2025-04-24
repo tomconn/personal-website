@@ -191,9 +191,9 @@ CREATE INDEX idx_sessions_expires_at ON sessions(expires_at);
        *   Test reCAPTCHA requirement on all forms.
        *   Test expired activation link (wait an hour or manually change expiry in D1).
 
-### Session Cleanup Worker (Recommended)
+### Session Cleanup Worker
 
-To prevent the `sessions` table from growing indefinitely with expired sessions, it's recommended to set up a Cloudflare Worker Cron Trigger to periodically delete old sessions. This Worker runs separately from your main Cloudflare Pages functions.
+To prevent the `sessions` table from growing indefinitely with expired sessions, set up a Cloudflare Worker Cron Trigger to periodically delete old sessions. This Worker runs separately from your main Cloudflare Pages functions.
 
 **Setup Steps:**
 
