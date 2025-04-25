@@ -24,6 +24,40 @@ This repository contains the source code for the personal website of Thomas Conn
 
 **(Self-Correction during generation):** The LinkedIn bio needs to be manually copied and pasted into `index.html` as automatic scraping is not feasible or appropriate. DNS instructions were adjusted to use CNAME records within Namecheap instead of changing nameservers, ensuring Namecheap email forwarding remains active.
 
+## Additional functionality to add login/registration and logout - Prompt & Generation
+```text
+Create a Cloudflare login and registration function, with the following functions. 
+
+**For the registration function;**
+Create a registration form page with a username, use an email address, and password fields. By default the password text should not be visible but add the option to display or hide. Use a D1 to store the username and password. The page should reuse the recaptcha logic already used for the email and comment box, in submit-comment.js.
+Validate the username, password and recaptcha. The password should be a minimum of 8 characters, a maximum of 256 characters, with a least 1 uppercase, 1 lowercase and 1 special character. Display a warning if the username, password and recaptcha are not valid.
+The password should be hashed with SHA256 and use a salt.
+The username and password uses the D1 database to store the username, an email address, and password.
+Send a confirmation email, to the username, with a link to activate the login. Reuse the function sendEmailWithBrevo in the submit-comment.js, and move it into a comment js file.
+On successful registration, return to the index page.
+
+**For the login function;**
+Create a login form page with a username and password fields. By default the password text should not be visible but add the option to view the text with an eye icon in the password box. The page should reuse the recaptcha logic already used for the email and comment box.
+Display a warning if the  username, password and recaptcha are not valid.
+Match the login username and password against the D1 database.
+The password should be compared against the D1 database hashed and a salt value.
+On successful login, store the session token in a cookie, the cookie has a ttl of 3 hours. The token is used in the index.html page. Return to the index page.
+Unsuccessful login will represent the login page with the error message, 'Username and/or password is not found!'
+Ensure the registration and login functions are in separate js file.
+
+**For the index.html page**, show a login/registration links, at the top of the existing page. On pressing the login link navigate to the login page. On pressing registration navigate to the registration page. On successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  
+
+Existing Code is as follows. Add the login and registration and update the existing code to support it. Regenerate all the code in full. Ensure all additional styles are added to the existing style.css.
+
+For the index.html page, on successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  Show the differences to the existing code.
+
+Add Validate the token against a session store in D1
+
+Modify the index.html to only display the 'Leave a comment' if the user is NOT logged onto the website.
+
+describe how to set up a Cloudflare Worker Cron Trigger
+```
+
 ## Project Overview
 
 A simple, responsive, single-page personal website featuring:
