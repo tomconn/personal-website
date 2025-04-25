@@ -7,7 +7,7 @@ export function escapeHtml(unsafe) {
          .replace(/&/g, "&") // Must be first
          .replace(/</g, "<")
          .replace(/>/g, ">")
-         .replace(/"/g, '"')
+         .replace(/"/g, "&quot;")
          .replace(/'/g, "'");
 }
 
