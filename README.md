@@ -35,6 +35,7 @@ This repository contains the source code for the personal website of Thomas Conn
 > The username and password uses the D1 database to store the username, an email address, and password.
 > Send a confirmation email, to the username, with a link to activate the login. Reuse the function sendEmailWithBrevo in the submit-comment.js, and move it into a comment js file.
 > On successful registration, return to the index page.
+
 > **For the login function;**
 > Create a login form page with a username and password fields. By default the password text should not be visible but add the option to view the text with an eye icon in the password box. The page should reuse the recaptcha logic already used for the email and comment box.
 > Display a warning if the  username, password and recaptcha are not valid.
@@ -43,6 +44,7 @@ This repository contains the source code for the personal website of Thomas Conn
 > On successful login, store the session token in a cookie, the cookie has a ttl of 3 hours. The token is used in the index.html page. Return to the index page.
 > Unsuccessful login will represent the login page with the error message, 'Username and/or password is not found!'
 > Ensure the registration and login functions are in separate js file.
+
 > **For the index.html page**, show a login/registration links, at the top of the existing page. On pressing the login link navigate to the login page. On pressing registration navigate to the registration page. On successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  
 > Existing Code is as follows. Add the login and registration and update the existing code to support it. Regenerate all the code in full. > Ensure all additional styles are added to the existing style.css.
 > For the index.html page, on successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  Show the differences to the existing code.
