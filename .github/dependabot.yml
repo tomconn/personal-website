@@ -1,0 +1,26 @@
+# .github/dependabot.yml
+
+version: 2
+updates:
+  # Configuration for npm (JavaScript dependencies)
+  - package-ecosystem: "npm"       # Tell Dependabot to look for npm packages
+    directory: "/"                 # Location of your package.json (usually root)
+                                   # Change if it's in a subdirectory, e.g., "/frontend"
+    schedule:
+      interval: "daily"            # Check for updates every day
+      time: "04:00"                # Optional: Specify time (UTC) e.g. 4:00 AM UTC
+      timezone: "Etc/UTC"          # Optional: Specify timezone
+    # Optional settings:
+    # open-pull-requests-limit: 10 # Limit the number of open PRs from Dependabot
+    # assignees:
+    #   - "your-github-username"
+    # labels:
+    #   - "dependencies"
+    #   - "javascript"
+
+  # --- Add other package ecosystems below if needed ---
+  # Example for GitHub Actions (often used in JS projects)
+  # - package-ecosystem: "github-actions"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "daily"
