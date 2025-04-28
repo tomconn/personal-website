@@ -107,14 +107,12 @@ footer {
     border-top: 1px solid var(--border-color);
     color: var(--text-medium);
     font-size: 0.9em;
-    /* Padding is handled by the nested .container now */
 }
 
 /* Space between sections within main */
 main .container > section { /* Target sections directly inside the main container */
     margin-bottom: 2.5rem;
 }
-/* Remove bottom margin from the last section */
 main .container > section:last-child {
     margin-bottom: 0;
 }
@@ -146,7 +144,7 @@ h2 {
 }
 
 /* Header's h2 (subtitle) styling */
-header .container h2 { /* Target h2 inside header's container */
+header .container h2 {
     font-size: 1.5em;
     color: var(--text-light);
     font-weight: 400;
@@ -393,44 +391,52 @@ a:hover, a:focus {
     padding: 0.5rem 0; /* Vertical padding only */
     border-bottom: 1px solid var(--border-color);
     z-index: 10;
+    position: relative; /* Ensure z-index works */
 }
 
 /* Use the general .container class for width/padding/centering */
+/* Apply flexbox directly to the container WITHIN the nav */
 .nav-container {
     /* Inherits max-width, margin, padding from .container */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap; /* Allow wrapping on very narrow screens */
+    justify-content: space-between; /* Pushes .nav-left and .nav-right apart */
+    align-items: center; /* Vertically aligns the flex items (.nav-left and .nav-right) */
+    gap: 1rem; /* Adds space between left/right if they get close */
+    flex-wrap: wrap; /* Allows wrapping on very small screens */
 }
 
+/* Style for the right-side container (auth links/button) */
 .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.9em;
+    display: flex; /* Make items inside align nicely */
+    align-items: center; /* Vertically align items like Login | Register */
+    gap: 0.8rem; /* Spacing between Login, separator, Register, or Logout button */
+    font-size: 0.9em; /* Consistent font size */
 }
 
+/* Style for the left-side container (blog link) */
 .nav-left {
-    font-size: 0.9em;
-    /* Prevent shrinking if space gets tight, prioritize auth links */
+    font-size: 0.9em; /* Consistent font size */
+    /* Prevents the Blog link from shrinking if space is tight */
     flex-shrink: 0;
 }
 
+/* General styles for links/buttons specifically within the nav bar */
 .nav-container a,
-.nav-container button.button-link-style {
+.nav-container button.button-link-style { /* Target links and the button */
     color: var(--text-light);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
+    /* Button specific resets to make it look like a link */
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: normal;
+    padding: 0;       /* Remove default button padding */
+    margin: 0;        /* Remove default button margin */
+    font-family: inherit; /* Use body font */
+    font-size: inherit;   /* Use parent font size */
+    line-height: 1.4; /* Ensure consistent line height for vertical centering */
+    vertical-align: middle; /* Helps align inline-block elements */
 }
 
 .nav-container a:hover,
@@ -438,20 +444,23 @@ a:hover, a:focus {
     color: var(--accent-orange);
 }
 
+/* Blog link specific style (optional emphasis) */
 .nav-blog-link {
     font-weight: 600;
 }
 
-#auth-links .separator {
+/* Separator style within auth links */
+#auth-links .separator { /* Target separator specifically */
     color: var(--text-medium);
     opacity: 0.6;
+    line-height: 1.4; /* Match line height of links */
+    vertical-align: middle; /* Align with links */
 }
 /* --- End Top Navigation Bar --- */
 
 
 /* --- Auth Page Specific Styles --- */
-/* ... (Keep existing Auth page styles: .auth-header, .auth-main, .auth-card, etc.) ... */
-.auth-header { /* Example */
+.auth-header {
     text-align: center;
     padding: 2rem 1.5rem 1rem;
     border-bottom: 1px solid var(--border-color);
@@ -461,18 +470,29 @@ a:hover, a:focus {
 .auth-header .home-link { font-family: var(--font-heading); font-size: 1.2em; color: var(--text-light); text-decoration: none; display: block; margin-bottom: 0.5rem; }
 .auth-header .home-link:hover { color: var(--accent-orange); text-shadow: none; }
 .auth-main { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem; }
-.auth-card { width: 100%; max-width: 450px; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+/* Use the general .container class for width/padding inside auth pages too */
+.auth-main .container {
+    max-width: 450px; /* Limit width of auth forms */
+    padding-left: 0; /* Remove extra padding if not needed */
+    padding-right: 0;
+}
+.auth-card {
+    width: 100%; /* Take full width of its container */
+    /* max-width: 450px; /* Max width now controlled by container */
+    padding: 2rem 2.5rem;
+    background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+}
 #login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
 .auth-card label { font-weight: 600; color: var(--text-light); font-size: 1em; margin-bottom: 0.5rem; display: block; }
 .auth-card input[type="email"], .auth-card input[type="password"] { background-color: rgba(10, 15, 26, 0.95); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
 .auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
 .password-group { position: relative; }
-.password-toggle { position: absolute; top: 55%; right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
+.password-toggle { position: absolute; top: 50%; /* Center vertically relative to input height */ right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; height: 70%; /* Adjust clickable area height */ }
 .password-toggle:hover svg, .password-toggle:focus svg { fill: var(--accent-orange); }
 .password-toggle svg { width: 20px; height: 20px; fill: var(--text-medium); transition: fill 0.2s ease; }
 .auth-card input[type="password"] { padding-right: 45px; }
 .password-rules { font-size: 0.8em; color: var(--text-medium); margin-top: 0.3rem; }
-.auth-button { margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 1.1em; width: 100%; } /* Inherits .button styles */
+.auth-button { margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 1.1em; width: 100%; /* Inherits .button styles */ }
 .auth-switch { text-align: center; margin-top: 1.5rem; font-size: 0.95em; color: var(--text-medium); }
 .auth-switch a { font-weight: 600; }
 .spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid var(--accent-orange); width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 1rem auto 0; }
@@ -483,7 +503,7 @@ a:hover, a:focus {
 
 /* --- UTILITY CLASSES --- */
 .hidden {
-    display: none !important; /* Use important to override other display rules if needed */
+    display: none !important;
 }
 /* --- END UTILITY CLASSES --- */
 
@@ -491,14 +511,13 @@ a:hover, a:focus {
 /* --- RESPONSIVENESS --- */
 @media (max-width: 768px) {
     h1 { font-size: 2.2em; }
-    header .container h2 { font-size: 1.3em; } /* Target header h2 correctly */
+    header .container h2 { font-size: 1.3em; }
     h2 { font-size: 1.6em; } /* General section h2 */
 
-    /* Adjust main container padding on smaller screens */
+    /* Adjust main container padding */
     .container { padding-left: 1rem; padding-right: 1rem; }
 
     header { padding-top: 3rem; }
-    /* Footer padding adjusted via container */
 
     .card { padding: 1rem 1.5rem; }
 
@@ -513,7 +532,7 @@ a:hover, a:focus {
 
 @media (max-width: 480px) {
     h1 { font-size: 1.8em; }
-    header .container h2 { font-size: 1.1em; } /* Target header h2 */
+    header .container h2 { font-size: 1.1em; }
     h2 { font-size: 1.4em; } /* General section h2 */
 
     body { font-size: 15px; }
@@ -526,13 +545,12 @@ a:hover, a:focus {
         padding: 0.7rem 0.9rem;
     }
 
-     /* Adjust reCAPTCHA scale */
+    /* Adjust reCAPTCHA scale */
     #recaptcha-container-comment > div,
     #recaptcha-container-login > div,
     #recaptcha-container-register > div {
         transform: scale(0.85);
         transform-origin: center;
-        /* margin: 0 auto; /* Center might not be needed if parent uses flex justify */
     }
      #recaptcha-container-comment,
      #recaptcha-container-login,
@@ -546,10 +564,26 @@ a:hover, a:focus {
     .auth-card { padding: 1.5rem 1.5rem; }
     .auth-header h2 { font-size: 1.6em; }
 
-    /* Nav bar adjustments */
+    /* Nav bar adjustments for small screens */
     .auth-nav { padding: 0.4rem 0; }
-    .nav-container { padding: 0 1rem; flex-wrap: wrap; justify-content: center; } /* Center items if they wrap */
-    .nav-left, .nav-right { font-size: 0.85em; gap: 0.6rem; }
-    .nav-left { margin-bottom: 0.3rem; } /* Add small space below blog link if nav wraps */
+    .nav-container {
+        padding: 0 1rem; /* Adjust padding */
+        flex-wrap: wrap;
+        justify-content: center; /* Center items when they wrap */
+        gap: 0.5rem; /* Reduce gap when wrapped */
+    }
+    .nav-left, .nav-right {
+        font-size: 0.85em;
+        gap: 0.6rem; /* Gap within right side */
+    }
+    .nav-left {
+        margin-bottom: 0.3rem; /* Space below Blog if it wraps above */
+        text-align: center; /* Center blog link if wrapped */
+        width: 100%; /* Allow blog link take full width if alone on line */
+    }
+     .nav-right {
+         justify-content: center; /* Center auth links if they wrap */
+         width: 100%; /* Allow auth links take full width if alone on line */
+    }
 }
 /* --- END RESPONSIVENESS --- */
