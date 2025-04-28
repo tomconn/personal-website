@@ -70,21 +70,22 @@ body {
 
 
 /* --- Layout & Spacing --- */
-/* General Container for consistent width */
+/* General Container for consistent width & padding */
 .container {
-    max-width: 900px; /* Content width */
+    max-width: 900px; /* Max content width */
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1.5rem;
+    padding-left: 1.5rem;  /* Horizontal padding */
     padding-right: 1.5rem;
-    width: 100%;
+    width: 100%; /* Takes full width until max-width */
 }
 
+/* Apply vertical padding to the outer sectioning elements */
 header, main, footer {
-    /* Use the container class for width/padding now */
     padding-top: 2rem;
     padding-bottom: 2rem;
-    z-index: 1; /* Above background */
+    width: 100%; /* Ensure they take full available width */
+    z-index: 1; /* Keep content above background */
 }
 
 main {
@@ -96,21 +97,28 @@ header {
     padding-top: 4rem; /* More top padding for header */
     padding-bottom: 3rem;
     border-bottom: 2px solid var(--accent-orange);
-    margin-bottom: 2rem;
+    margin-bottom: 2rem; /* Space below header */
 }
 
+/* Footer specific styling */
 footer {
     text-align: center;
-    padding: 1.5rem 1.5rem; /* Use explicit padding on footer element */
-    margin-top: 3rem;
+    margin-top: 3rem; /* Space above footer */
     border-top: 1px solid var(--border-color);
     color: var(--text-medium);
     font-size: 0.9em;
+    /* Padding is handled by the nested .container now */
 }
 
-section {
+/* Space between sections within main */
+main .container > section { /* Target sections directly inside the main container */
     margin-bottom: 2.5rem;
 }
+/* Remove bottom margin from the last section */
+main .container > section:last-child {
+    margin-bottom: 0;
+}
+
 
 /* --- Typography --- */
 h1, h2 {
@@ -122,9 +130,10 @@ h1, h2 {
 h1 {
     font-size: 2.8em;
     letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(255, 127, 0, 0.5); /* Orange glow */
+    text-shadow: 0 0 8px rgba(255, 127, 0, 0.5);
 }
 
+/* Section headings */
 h2 {
     font-size: 1.8em;
     color: var(--accent-orange);
@@ -136,7 +145,8 @@ h2 {
     margin-bottom: 1rem;
 }
 
-header h2 {
+/* Header's h2 (subtitle) styling */
+header .container h2 { /* Target h2 inside header's container */
     font-size: 1.5em;
     color: var(--text-light);
     font-weight: 400;
@@ -145,7 +155,8 @@ header h2 {
     margin: 0;
 }
 
-.subtitle {
+/* Header's subtitle paragraph */
+header .container .subtitle {
     color: var(--text-medium);
     font-style: italic;
     margin-top: 0.5rem;
@@ -158,8 +169,8 @@ p {
 }
 
 ul {
-    list-style: none; /* Remove default bullets */
-    padding-left: 1.5em; /* Indent list items */
+    list-style: none;
+    padding-left: 1.5em;
 }
 
 li {
@@ -167,9 +178,8 @@ li {
     position: relative;
 }
 
-/* Custom bullet point */
 li::before {
-    content: '»'; /* Use a chevron or other symbol */
+    content: '»';
     position: absolute;
     left: -1.5em;
     color: var(--accent-orange);
@@ -194,13 +204,13 @@ a:hover, a:focus {
     border-radius: 8px;
     padding: 1.5rem 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px); /* Frosted glass effect */
+    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
 
 .icon {
     display: inline-block;
-    font-size: 1.2em; /* Make icons slightly larger than text */
+    font-size: 1.2em;
 }
 
 #contact .links {
@@ -220,26 +230,26 @@ a:hover, a:focus {
     text-align: center;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-    cursor: pointer; /* Add cursor pointer */
+    cursor: pointer;
 }
 
 .button:hover:not(:disabled),
 .button:focus:not(:disabled) {
-    background-color: #1e5bc6; /* Lighter blue */
+    background-color: #1e5bc6;
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    text-shadow: none; /* Remove text shadow on button hover */
+    text-shadow: none;
 }
 
 .button:disabled {
     background-color: #555;
     border-color: #777;
-    color: #aaa; /* Lighter text color for disabled state */
+    color: #aaa;
     cursor: not-allowed;
     opacity: 0.7;
-    transform: none; /* Prevent hover effect */
-    box-shadow: none; /* Prevent hover shadow */
+    transform: none;
+    box-shadow: none;
 }
 
 
@@ -260,7 +270,7 @@ a:hover, a:focus {
 #comment-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Spacing between form elements */
+    gap: 1.5rem;
 }
 
 .form-group {
@@ -268,32 +278,30 @@ a:hover, a:focus {
     flex-direction: column;
 }
 
-/* Label styling (visible label now) */
 #comment-form label {
-    display: block; /* Ensure label takes its own line */
-    margin-bottom: 0.5rem; /* Space between label and input/textarea */
+    display: block;
+    margin-bottom: 0.5rem;
     color: var(--text-medium);
     font-weight: 500;
     font-size: 0.95em;
 }
 
-/* Input and Textarea Styles for Comment Form */
 #comment-form input[type="email"],
 #comment-form textarea {
-    background-color: rgba(10, 15, 26, 0.9); /* Darker input background */
+    background-color: rgba(10, 15, 26, 0.9);
     color: var(--text-light);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 0.8rem 1rem;
     font-family: var(--font-body);
     font-size: 1em;
-    width: 100%; /* Ensure full width */
+    width: 100%;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 #comment-form textarea {
-    min-height: 100px; /* Decent starting height */
-    resize: vertical; /* Allow vertical resizing */
+    min-height: 100px;
+    resize: vertical;
 }
 
 #comment-form input[type="email"]:focus,
@@ -314,7 +322,7 @@ a:hover, a:focus {
     font-size: 0.85em;
     color: var(--text-medium);
     margin-top: 0.3rem;
-    height: 1.2em; /* Reserve space to prevent layout shift */
+    height: 1.2em;
 }
 
 .char-counter.error {
@@ -322,21 +330,19 @@ a:hover, a:focus {
     font-weight: bold;
 }
 
-/* reCAPTCHA needs some margin */
-#recaptcha-container-comment { /* Specific ID */
-    margin-bottom: 0.5rem; /* Add space below reCAPTCHA */
+#recaptcha-container-comment {
+    margin-bottom: 0.5rem;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    min-height: 78px; /* Approximate height of reCAPTCHA */
+    justify-content: center;
+    min-height: 78px;
 }
 
-/* Specific Email Error Message Styling */
 .form-error-message {
     color: var(--error-text);
     font-size: 0.85em;
     margin-top: 0.3rem;
-    min-height: 1.2em; /* Reserve space like char counter */
-    display: none; /* Hidden by default */
+    min-height: 1.2em;
+    display: none;
     opacity: 0;
     transition: opacity 0.3s ease-out;
 }
@@ -346,22 +352,21 @@ a:hover, a:focus {
     opacity: 1;
 }
 
-/* Form status message styling (for general success/errors) */
 .form-status {
     padding: 0.8rem 1.2rem;
     border-radius: 5px;
-    margin-bottom: 1rem; /* Space below status, before button */
+    margin-bottom: 1rem;
     font-weight: 500;
     text-align: center;
-    display: none; /* Hide by default */
-    opacity: 0; /* Start hidden for transition */
+    display: none;
+    opacity: 0;
     transition: opacity 0.5s ease-out;
-    border: 1px solid transparent; /* Base border */
+    border: 1px solid transparent;
 }
 
 .form-status.visible {
-    display: block; /* Make it take up space */
-    opacity: 1; /* Fade it in */
+    display: block;
+    opacity: 1;
 }
 
 .form-status.success {
@@ -377,56 +382,55 @@ a:hover, a:focus {
 }
 
 #comment-form button[type="submit"] {
-    align-self: center; /* Center the button */
-    min-width: 180px; /* Give button a decent minimum width */
+    align-self: center;
+    min-width: 180px;
 }
 
 
 /* --- Top Navigation Bar --- */
 .auth-nav {
-    background-color: rgba(11, 61, 145, 0.6); /* Semi-transparent NASA Blue */
-    padding: 0.5rem 0;
+    background-color: rgba(11, 61, 145, 0.6);
+    padding: 0.5rem 0; /* Vertical padding only */
     border-bottom: 1px solid var(--border-color);
-    z-index: 10; /* Ensure it's above other content */
+    z-index: 10;
 }
 
-/* Container class for flex behavior within the nav */
+/* Use the general .container class for width/padding/centering */
 .nav-container {
     /* Inherits max-width, margin, padding from .container */
     display: flex;
-    justify-content: space-between; /* Align items to left and right */
-    align-items: center; /* Vertically center items */
-    gap: 1rem; /* Add some gap between left/right */
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap; /* Allow wrapping on very narrow screens */
 }
 
-/* Style for the right-side (auth links/button) */
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 0.8rem; /* Spacing between auth links/separator */
+    gap: 0.8rem;
     font-size: 0.9em;
 }
 
-/* Style for the left-side (blog link) */
 .nav-left {
     font-size: 0.9em;
+    /* Prevent shrinking if space gets tight, prioritize auth links */
+    flex-shrink: 0;
 }
 
-/* General styles for links/buttons within the nav bar */
 .nav-container a,
-.nav-container button.button-link-style { /* Apply to button styled as link */
+.nav-container button.button-link-style {
     color: var(--text-light);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
-    /* Style button to look like a link */
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     font-family: inherit;
     font-size: inherit;
-    line-height: normal; /* Ensure consistent line height */
+    line-height: normal;
 }
 
 .nav-container a:hover,
@@ -434,13 +438,11 @@ a:hover, a:focus {
     color: var(--accent-orange);
 }
 
-/* Blog link specific style */
 .nav-blog-link {
-    font-weight: 600; /* Make it slightly bolder */
+    font-weight: 600;
 }
 
-/* Separator style within auth links */
-#auth-links .separator { /* Target separator specifically within #auth-links */
+#auth-links .separator {
     color: var(--text-medium);
     opacity: 0.6;
 }
@@ -448,161 +450,34 @@ a:hover, a:focus {
 
 
 /* --- Auth Page Specific Styles --- */
-/* General Auth Page Layout */
-.auth-header {
+/* ... (Keep existing Auth page styles: .auth-header, .auth-main, .auth-card, etc.) ... */
+.auth-header { /* Example */
     text-align: center;
-    padding: 2rem 1.5rem 1rem; /* Less padding than main header */
+    padding: 2rem 1.5rem 1rem;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
 }
-
-.auth-header h2 {
-    font-size: 1.8em;
-    color: var(--accent-orange);
-    border: none;
-    margin: 0.5rem 0 0 0;
-    padding: 0;
-    font-weight: 600;
-}
-
-.auth-header .home-link {
-    font-family: var(--font-heading);
-    font-size: 1.2em;
-    color: var(--text-light);
-    text-decoration: none;
-    display: block;
-    margin-bottom: 0.5rem;
-}
-.auth-header .home-link:hover {
-    color: var(--accent-orange);
-    text-shadow: none;
-}
-
-.auth-main {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align card to top */
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
-
-.auth-card {
-    width: 100%;
-    max-width: 450px; /* Limit width of auth forms */
-    padding: 2rem 2.5rem;
-}
-
-/* Auth Form Specifics */
-#login-form, #register-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem; /* Slightly tighter gap for auth forms */
-}
-
-/* Make labels bolder for auth */
-.auth-card label {
-    font-weight: 600;
-    color: var(--text-light); /* Make labels brighter */
-    font-size: 1em;
-}
-
-/* Inputs for Auth */
-.auth-card input[type="email"],
-.auth-card input[type="password"] {
-     background-color: rgba(10, 15, 26, 0.95); /* Slightly darker */
-    padding: 0.9rem 1.1rem; /* Slightly larger padding */
-    font-size: 1.05em;
-}
-
-/* Password Toggle Button */
-.password-group {
-    position: relative;
-}
-
-.password-toggle {
-    position: absolute;
-    top: 55%; /* Adjust vertically centered with label */
-    right: 10px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-medium);
-    cursor: pointer;
-    padding: 5px;
-    display: flex; /* For aligning SVG */
-    align-items: center;
-    justify-content: center;
-}
-
-.password-toggle:hover svg,
-.password-toggle:focus svg {
-    fill: var(--accent-orange);
-}
-
-.password-toggle svg {
-    width: 20px; /* Adjust icon size */
-    height: 20px;
-    fill: var(--text-medium); /* Default color */
-    transition: fill 0.2s ease;
-}
-
-/* Adjust input padding to not overlap icon */
-.auth-card input[type="password"] {
-    padding-right: 45px; /* Make space for the icon button */
-}
-
-/* Password strength/rules text */
-.password-rules {
-    font-size: 0.8em;
-    color: var(--text-medium);
-    margin-top: 0.3rem;
-}
-
-/* Auth Submit Button */
-.auth-button {
-    margin-top: 1rem; /* Add some space before the button */
-    padding: 0.9rem 1.5rem;
-    font-size: 1.1em;
-    width: 100%; /* Make auth buttons full width */
-}
-
-/* Link to switch between login/register */
-.auth-switch {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.95em;
-    color: var(--text-medium);
-}
-
-.auth-switch a {
-    font-weight: 600;
-}
-
-/* Spinner for activation page */
-.spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top: 4px solid var(--accent-orange);
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin: 1rem auto 0; /* Center spinner */
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* reCAPTCHA containers on Auth pages */
-#recaptcha-container-login,
-#recaptcha-container-register {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    min-height: 78px; /* Approximate height of reCAPTCHA */
-}
-
+.auth-header h2 { font-size: 1.8em; color: var(--accent-orange); border: none; margin: 0.5rem 0 0 0; padding: 0; font-weight: 600;}
+.auth-header .home-link { font-family: var(--font-heading); font-size: 1.2em; color: var(--text-light); text-decoration: none; display: block; margin-bottom: 0.5rem; }
+.auth-header .home-link:hover { color: var(--accent-orange); text-shadow: none; }
+.auth-main { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem; }
+.auth-card { width: 100%; max-width: 450px; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+#login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
+.auth-card label { font-weight: 600; color: var(--text-light); font-size: 1em; margin-bottom: 0.5rem; display: block; }
+.auth-card input[type="email"], .auth-card input[type="password"] { background-color: rgba(10, 15, 26, 0.95); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
+.auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
+.password-group { position: relative; }
+.password-toggle { position: absolute; top: 55%; right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
+.password-toggle:hover svg, .password-toggle:focus svg { fill: var(--accent-orange); }
+.password-toggle svg { width: 20px; height: 20px; fill: var(--text-medium); transition: fill 0.2s ease; }
+.auth-card input[type="password"] { padding-right: 45px; }
+.password-rules { font-size: 0.8em; color: var(--text-medium); margin-top: 0.3rem; }
+.auth-button { margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 1.1em; width: 100%; } /* Inherits .button styles */
+.auth-switch { text-align: center; margin-top: 1.5rem; font-size: 0.95em; color: var(--text-medium); }
+.auth-switch a { font-weight: 600; }
+.spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid var(--accent-orange); width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 1rem auto 0; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+#recaptcha-container-login, #recaptcha-container-register { display: flex; justify-content: center; min-height: 78px; }
 /* --- End Auth Page Styles --- */
 
 
@@ -616,12 +491,14 @@ a:hover, a:focus {
 /* --- RESPONSIVENESS --- */
 @media (max-width: 768px) {
     h1 { font-size: 2.2em; }
-    header h2 { font-size: 1.3em; }
-    h2 { font-size: 1.6em; }
+    header .container h2 { font-size: 1.3em; } /* Target header h2 correctly */
+    h2 { font-size: 1.6em; } /* General section h2 */
 
-    .container { padding-left: 1rem; padding-right: 1rem; } /* Adjust container padding */
+    /* Adjust main container padding on smaller screens */
+    .container { padding-left: 1rem; padding-right: 1rem; }
+
     header { padding-top: 3rem; }
-    footer { padding-left: 1rem; padding-right: 1rem; }
+    /* Footer padding adjusted via container */
 
     .card { padding: 1rem 1.5rem; }
 
@@ -636,8 +513,8 @@ a:hover, a:focus {
 
 @media (max-width: 480px) {
     h1 { font-size: 1.8em; }
-    header h2 { font-size: 1.1em; }
-    h2 { font-size: 1.4em; }
+    header .container h2 { font-size: 1.1em; } /* Target header h2 */
+    h2 { font-size: 1.4em; } /* General section h2 */
 
     body { font-size: 15px; }
 
@@ -649,27 +526,30 @@ a:hover, a:focus {
         padding: 0.7rem 0.9rem;
     }
 
-     /* Adjust reCAPTCHA scale for smaller screens (Apply to all relevant containers) */
+     /* Adjust reCAPTCHA scale */
     #recaptcha-container-comment > div,
     #recaptcha-container-login > div,
     #recaptcha-container-register > div {
         transform: scale(0.85);
         transform-origin: center;
-        margin: 0 auto;
+        /* margin: 0 auto; /* Center might not be needed if parent uses flex justify */
     }
-    #recaptcha-container-comment,
-    #recaptcha-container-login,
-    #recaptcha-container-register {
-        min-height: 70px; /* Adjust min-height after scaling */
-    }
+     #recaptcha-container-comment,
+     #recaptcha-container-login,
+     #recaptcha-container-register {
+         min-height: 70px; /* Adjust min-height */
+     }
 
     #comment-form button[type="submit"] { width: 100%; }
 
-    /* Auth page specific adjustments */
+    /* Auth page specific */
     .auth-card { padding: 1.5rem 1.5rem; }
     .auth-header h2 { font-size: 1.6em; }
+
+    /* Nav bar adjustments */
     .auth-nav { padding: 0.4rem 0; }
-    .nav-container { padding: 0 1rem; } /* Adjust nav padding */
+    .nav-container { padding: 0 1rem; flex-wrap: wrap; justify-content: center; } /* Center items if they wrap */
     .nav-left, .nav-right { font-size: 0.85em; gap: 0.6rem; }
+    .nav-left { margin-bottom: 0.3rem; } /* Add small space below blog link if nav wraps */
 }
 /* --- END RESPONSIVENESS --- */

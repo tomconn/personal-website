@@ -19,14 +19,12 @@
 
     <!-- Navigation / Auth Links -->
     <nav class="auth-nav">
-        <div class="container nav-container"> <!-- Flex container for left/right alignment -->
-             <!-- Left Side Link -->
+        <div class="container nav-container"> <!-- Flex container for left/right -->
              <div class="nav-left">
                 <a href="https://blog.softwarestable.com/" target="_blank" rel="noopener noreferrer" class="nav-blog-link">Blog</a>
             </div>
-            <!-- Right Side Auth Links (Dynamically Populated by script.js) -->
             <div id="auth-links" class="nav-right">
-                <!-- Default links shown before JS runs or if JS fails -->
+                <!-- Default links (replaced by script.js) -->
                 <a href="/login.html">Login</a>
                 <span class="separator">|</span>
                 <a href="/register.html">Register</a>
@@ -34,90 +32,95 @@
         </div>
     </nav>
 
+    <!-- *** MODIFIED: Added container div inside header *** -->
     <header class="fade-in">
-        <h1>Thomas Connolly</h1>
-        <h2>Platform Engineering Architect</h2>
-        <p class="subtitle">Building the future of resilient, automated infrastructure.</p>
+        <div class="container">
+            <h1>Thomas Connolly</h1>
+            <h2>Platform Engineering Architect</h2>
+            <p class="subtitle">Building the future of resilient, automated infrastructure.</p>
+        </div>
     </header>
+    <!-- *** END MODIFICATION *** -->
 
+    <!-- *** MODIFIED: Added container div inside main (optional but good practice) *** -->
     <main>
-        <section id="about" class="card fade-in">
-            <h2><span class="icon">🚀</span> About Me</h2>
-            <p>
-                Experienced IT Architect specialising in Platform Engineering, Cloud Native technologies, and DevOps practices. Passionate about designing and implementing scalable, secure, and automated systems that empower development teams and accelerate business value. Proven ability in leading infrastructure strategy, adopting modern tooling like Kubernetes and Terraform, and fostering a culture of collaboration and continuous improvement across organisations. Focused on bridging the gap between development and operations to create robust and efficient platforms.
-            </p>
-        </section>
+        <div class="container">
+            <section id="about" class="card fade-in">
+                <h2><span class="icon">🚀</span> About Me</h2>
+                <p>
+                    Experienced IT Architect specialising in Platform Engineering, Cloud Native technologies, and DevOps practices. Passionate about designing and implementing scalable, secure, and automated systems that empower development teams and accelerate business value. Proven ability in leading infrastructure strategy, adopting modern tooling like Kubernetes and Terraform, and fostering a culture of collaboration and continuous improvement across organisations. Focused on bridging the gap between development and operations to create robust and efficient platforms.
+                </p>
+            </section>
 
-        <section id="skills" class="card fade-in">
-            <h2><span class="icon">🛠️</span> Core Skills</h2>
-            <ul>
-                <li>Platform Engineering Strategy & Design</li>
-                <li>Kubernetes Ecosystem (Deployment, Management, Security)</li>
-                <li>Cloud Architecture (AWS, Azure and GCP)</li>
-                <li>Infrastructure as Code (Terraform)</li>
-                <li>CI/CD Pipeline Automation (GitHub, Harness.io, Argo CD)</li>
-                <li>DevOps Culture & Practices</li>
-                <li>System Observability & Monitoring</li>
-                <li>Network Design & Security</li>
-                <li>Automation & Scripting (Python, Bash)</li>
-            </ul>
-        </section>
+            <section id="skills" class="card fade-in">
+                <h2><span class="icon">🛠️</span> Core Skills</h2>
+                <ul>
+                    <li>Platform Engineering Strategy & Design</li>
+                    <li>Kubernetes Ecosystem (Deployment, Management, Security)</li>
+                    <li>Cloud Architecture (AWS, Azure and GCP)</li>
+                    <li>Infrastructure as Code (Terraform)</li>
+                    <li>CI/CD Pipeline Automation (GitHub, Harness.io, Argo CD)</li>
+                    <li>DevOps Culture & Practices</li>
+                    <li>System Observability & Monitoring</li>
+                    <li>Network Design & Security</li>
+                    <li>Automation & Scripting (Python, Bash)</li>
+                </ul>
+            </section>
 
-        <section id="certifications" class="card fade-in">
-            <h2><span class="icon">📜</span> Certifications</h2>
-            <ul>
-                <li>Certified Kubernetes Administrator (CKA)</li>
-                <li>Certified Kubernetes Application Developer (CKAD)</li>
-                <li>Certified Kubernetes Security Specialist (CKS)</li>
-                <li>Kubestronaut</li>
-                <li>AWS Certified Solutions Architect – Professional</li>
-                <li>TOGAF 9 Certified</li>
-            </ul>
-        </section>
+            <section id="certifications" class="card fade-in">
+                <h2><span class="icon">📜</span> Certifications</h2>
+                <ul>
+                    <li>Certified Kubernetes Administrator (CKA)</li>
+                    <li>Certified Kubernetes Application Developer (CKAD)</li>
+                    <li>Certified Kubernetes Security Specialist (CKS)</li>
+                    <li>Kubestronaut</li>
+                    <li>AWS Certified Solutions Architect – Professional</li>
+                    <li>TOGAF 9 Certified</li>
+                </ul>
+            </section>
 
-        <section id="contact" class="card fade-in">
-            <h2><span class="icon">🛰️</span> Connect</h2>
-            <p>Get in touch or explore my work:</p>
-            <div class="links">
-                <a href="mailto:contact@thomasconnolly.com" class="button">Email: contact@thomasconnolly.com</a>
-                <a href="https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au" target="_blank" rel="noopener noreferrer" class="button">LinkedIn</a>
-                <a href="https://github.com/tomconn" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
-            </div>
-        </section>
-
-        <!-- COMMENT SECTION - Visibility controlled by script.js -->
-        <section id="comments" class="card fade-in"> <!-- Initially visible, hidden by JS if logged in -->
-            <h2><span class="icon">💬</span> Leave a Comment</h2>
-            <form id="comment-form">
-                <div class="form-group">
-                    <label for="comment-email">Your Email:</label>
-                    <input type="email" id="comment-email" name="email" placeholder="Enter your email address" required aria-describedby="email-error">
-                    <div id="email-error" class="form-error-message" role="alert" aria-live="assertive"></div>
+            <section id="contact" class="card fade-in">
+                <h2><span class="icon">🛰️</span> Connect</h2>
+                <p>Get in touch or explore my work:</p>
+                <div class="links">
+                    <a href="mailto:contact@thomasconnolly.com" class="button">Email: contact@thomasconnolly.com</a>
+                    <a href="https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au" target="_blank" rel="noopener noreferrer" class="button">LinkedIn</a>
+                    <a href="https://github.com/tomconn" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
                 </div>
+            </section>
 
-                <div class="form-group">
-                    <label for="comment-text">Your Comment:</label>
-                    <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
-                    <div id="char-count" class="char-counter">0 / 256</div>
-                </div>
-
-                <div class="form-group">
-                    <!-- Inject Site Key Here (via meta tag and common.js) -->
-                    <div id="recaptcha-container-comment" class="g-recaptcha"></div>
-                </div>
-
-                <div id="form-status-comment" class="form-status" role="alert" aria-live="polite"></div>
-
-                <button type="submit" id="submit-comment" class="button">Submit Comment</button>
-            </form>
-        </section>
-        <!-- END COMMENT SECTION -->
-
+            <!-- COMMENT SECTION - Visibility controlled by script.js -->
+            <section id="comments" class="card fade-in"> <!-- Initially visible, hidden by JS if logged in -->
+                <h2><span class="icon">💬</span> Leave a Comment</h2>
+                <form id="comment-form">
+                    <div class="form-group">
+                        <label for="comment-email">Your Email:</label>
+                        <input type="email" id="comment-email" name="email" placeholder="Enter your email address" required aria-describedby="email-error">
+                        <div id="email-error" class="form-error-message" role="alert" aria-live="assertive"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment-text">Your Comment:</label>
+                        <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
+                        <div id="char-count" class="char-counter">0 / 256</div>
+                    </div>
+                    <div class="form-group">
+                        <div id="recaptcha-container-comment" class="g-recaptcha"></div>
+                    </div>
+                    <div id="form-status-comment" class="form-status" role="alert" aria-live="polite"></div>
+                    <button type="submit" id="submit-comment" class="button">Submit Comment</button>
+                </form>
+            </section>
+        </div>
     </main>
+    <!-- *** END MODIFICATION *** -->
 
+    <!-- *** MODIFIED: Added container div inside footer *** -->
     <footer class="fade-in">
-        <p>© <span id="year"></span> Thomas Connolly. Charting the course for innovation.</p>
+        <div class="container">
+            <p>© <span id="year"></span> Thomas Connolly. Charting the course for innovation.</p>
+        </div>
     </footer>
+    <!-- *** END MODIFICATION *** -->
 
     <!-- Load shared utils first, then page-specific script -->
     <script src="common.js"></script>
