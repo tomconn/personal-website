@@ -3,93 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Consistent Title Pattern -->
     <title>Login - Thomas Connolly</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <!-- Site Key for reCAPTCHA (Replace with your actual site key) -->
-    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"> <!-- Ensure value is correct -->
+    <!-- Site Key for reCAPTCHA (Ensure value is correct) -->
+    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY">
 </head>
 <body>
     <div class="stars-bg"></div>
     <div class="twinkling-bg"></div>
 
-     <!-- Simple Header for Auth Pages -->
-     <header class="fade-in">
-        <!-- ADDED CONTAINER -->
+     <!-- Consistent Header Structure -->
+     <header class="auth-header">
         <div class="container">
             <a href="/" class="home-link">Thomas Connolly</a>
             <h2>Login</h2>
         </div>
-        <!-- END ADDED CONTAINER -->
     </header>
 
     <main class="auth-main">
-        <!-- ADDED CONTAINER -->
         <div class="container">
             <section id="login-section" class="card auth-card">
                 <form id="login-form" novalidate>
                     <div id="form-status-login" class="form-status" role="alert" aria-live="polite"></div>
-
                     <div class="form-group">
                         <label for="login-email">Email (Username):</label>
                         <input type="email" id="login-email" name="email" placeholder="your.email@example.com" required>
                     </div>
-
                     <div class="form-group password-group">
                         <label for="login-password">Password:</label>
                         <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
                         <button type="button" class="password-toggle" aria-label="Show password">
-                            <!-- SVG Icon for eye (or use text/emoji) -->
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                         </button>
                     </div>
-
                     <div class="form-group">
-                         <!-- Inject Site Key Here -->
                         <div id="recaptcha-container-login" class="g-recaptcha"></div>
                     </div>
-
                     <button type="submit" id="submit-login" class="button auth-button">Login</button>
                 </form>
                 <p class="auth-switch">Don't have an account? <a href="/register.html">Register here</a></p>
             </section>
         </div>
-        <!-- END ADDED CONTAINER -->
     </main>
 
+    <!-- Consistent Footer Structure -->
     <footer class="fade-in">
-        <!-- ADDED CONTAINER -->
         <div class="container">
             <p>© <span id="year"></span> Thomas Connolly.</p>
         </div>
-        <!-- END ADDED CONTAINER -->
     </footer>
 
     <script src="common.js"></script>
     <script src="login.js"></script>
     <script>
-      // Set footer year dynamically
       document.getElementById('year').textContent = new Date().getFullYear();
-      // Set reCAPTCHA site key dynamically - More robust check
-       const siteKeyMetaLogin = document.querySelector('meta[name="recaptcha-site-key"]');
-       const recaptchaContainerLogin = document.getElementById('recaptcha-container-login');
-       if (siteKeyMetaLogin && recaptchaContainerLogin && siteKeyMetaLogin.content) {
-           recaptchaContainerLogin.dataset.sitekey = siteKeyMetaLogin.content;
-           // Explicit render call (optional, depending on common.js)
-           if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.ready === 'function') {
-             grecaptcha.ready(function() {
-               try {
-                 if (document.getElementById('recaptcha-container-login')){ // Check element still exists
-                    grecaptcha.render('recaptcha-container-login', { 'sitekey': siteKeyMetaLogin.content });
-                 }
-               } catch(e) { console.error("Error rendering login reCAPTCHA:", e); }
-             });
-           }
-       } else {
-           console.error("reCAPTCHA setup failed for login page: Meta tag or container missing/empty.");
+       // Explicit render call remains useful as fallback/override
+       if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.ready === 'function') {
+         grecaptcha.ready(function() {
+           try {
+             const container = document.getElementById('recaptcha-container-login');
+             const siteKeyMeta = document.querySelector('meta[name="recaptcha-site-key"]');
+             if (container && siteKeyMeta && siteKeyMeta.content) {
+                 grecaptcha.render(container, { 'sitekey': siteKeyMeta.content });
+             } else if (!siteKeyMeta?.content) {
+                 console.error("reCAPTCHA Site Key Meta Tag missing for login page.");
+             }
+           } catch(e) { console.error("Error rendering login reCAPTCHA:", e); }
+         });
        }
     </script>
 </body>
