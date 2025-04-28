@@ -92,25 +92,25 @@ main {
     flex-grow: 1; /* Pushes footer down */
 }
 
-header {
+header:not(.auth-header) { /* Style general header */
     text-align: center;
-    padding-top: 4rem; /* More top padding for header */
+    padding-top: 4rem;
     padding-bottom: 3rem;
     border-bottom: 2px solid var(--accent-orange);
-    margin-bottom: 2rem; /* Space below header */
+    margin-bottom: 2rem;
 }
 
 /* Footer specific styling */
 footer {
     text-align: center;
-    margin-top: 3rem; /* Space above footer */
+    margin-top: 3rem;
     border-top: 1px solid var(--border-color);
     color: var(--text-medium);
     font-size: 0.9em;
 }
 
 /* Space between sections within main */
-main .container > section { /* Target sections directly inside the main container */
+main .container > section {
     margin-bottom: 2.5rem;
 }
 main .container > section:last-child {
@@ -131,8 +131,8 @@ h1 {
     text-shadow: 0 0 8px rgba(255, 127, 0, 0.5);
 }
 
-/* Section headings */
-h2 {
+/* General Section headings */
+section h2 {
     font-size: 1.8em;
     color: var(--accent-orange);
     display: flex;
@@ -143,8 +143,8 @@ h2 {
     margin-bottom: 1rem;
 }
 
-/* Header's h2 (subtitle) styling */
-header .container h2 {
+/* Main Header's h2 (subtitle) styling */
+header:not(.auth-header) .container h2 {
     font-size: 1.5em;
     color: var(--text-light);
     font-weight: 400;
@@ -153,8 +153,8 @@ header .container h2 {
     margin: 0;
 }
 
-/* Header's subtitle paragraph */
-header .container .subtitle {
+/* Main Header's subtitle paragraph */
+header:not(.auth-header) .container .subtitle {
     color: var(--text-medium);
     font-style: italic;
     margin-top: 0.5rem;
@@ -265,229 +265,79 @@ a:hover, a:focus {
 
 
 /* --- Comment Form Styles --- */
-#comment-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-#comment-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-medium);
-    font-weight: 500;
-    font-size: 0.95em;
-}
-
-#comment-form input[type="email"],
-#comment-form textarea {
-    background-color: rgba(10, 15, 26, 0.9);
-    color: var(--text-light);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 0.8rem 1rem;
-    font-family: var(--font-body);
-    font-size: 1em;
-    width: 100%;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#comment-form textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-
-#comment-form input[type="email"]:focus,
-#comment-form textarea:focus {
-    outline: none;
-    border-color: var(--accent-orange);
-    box-shadow: 0 0 5px rgba(255, 127, 0, 0.5);
-}
-
-#comment-form input[type="email"]::placeholder,
-#comment-form textarea::placeholder {
-    color: var(--text-medium);
-    opacity: 0.8;
-}
-
-.char-counter {
-    text-align: right;
-    font-size: 0.85em;
-    color: var(--text-medium);
-    margin-top: 0.3rem;
-    height: 1.2em;
-}
-
-.char-counter.error {
-    color: var(--error-text);
-    font-weight: bold;
-}
-
-#recaptcha-container-comment {
-    margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: center;
-    min-height: 78px;
-}
-
-.form-error-message {
-    color: var(--error-text);
-    font-size: 0.85em;
-    margin-top: 0.3rem;
-    min-height: 1.2em;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease-out;
-}
-
-.form-error-message.visible {
-    display: block;
-    opacity: 1;
-}
-
-.form-status {
-    padding: 0.8rem 1.2rem;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    font-weight: 500;
-    text-align: center;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-    border: 1px solid transparent;
-}
-
-.form-status.visible {
-    display: block;
-    opacity: 1;
-}
-
-.form-status.success {
-    background-color: var(--success-bg);
-    color: var(--success-text);
-    border-color: #38c172;
-}
-
-.form-status.error {
-    background-color: var(--error-bg);
-    color: var(--error-text);
-    border-color: #dc3545;
-}
-
-#comment-form button[type="submit"] {
-    align-self: center;
-    min-width: 180px;
-}
+#comment-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-group { display: flex; flex-direction: column; }
+#comment-form label { display: block; margin-bottom: 0.5rem; color: var(--text-medium); font-weight: 500; font-size: 0.95em; }
+#comment-form input[type="email"], #comment-form textarea { background-color: rgba(10, 15, 26, 0.9); color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.8rem 1rem; font-family: var(--font-body); font-size: 1em; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+#comment-form textarea { min-height: 100px; resize: vertical; }
+#comment-form input[type="email"]:focus, #comment-form textarea:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
+#comment-form input[type="email"]::placeholder, #comment-form textarea::placeholder { color: var(--text-medium); opacity: 0.8; }
+.char-counter { text-align: right; font-size: 0.85em; color: var(--text-medium); margin-top: 0.3rem; height: 1.2em; }
+.char-counter.error { color: var(--error-text); font-weight: bold; }
+#recaptcha-container-comment { margin-bottom: 0.5rem; display: flex; justify-content: center; min-height: 78px; }
+.form-error-message { color: var(--error-text); font-size: 0.85em; margin-top: 0.3rem; min-height: 1.2em; display: none; opacity: 0; transition: opacity 0.3s ease-out; }
+.form-error-message.visible { display: block; opacity: 1; }
+.form-status { padding: 0.8rem 1.2rem; border-radius: 5px; margin-bottom: 1rem; font-weight: 500; text-align: center; display: none; opacity: 0; transition: opacity 0.5s ease-out; border: 1px solid transparent; }
+.form-status.visible { display: block; opacity: 1; }
+.form-status.success { background-color: var(--success-bg); color: var(--success-text); border-color: #38c172; }
+.form-status.error { background-color: var(--error-bg); color: var(--error-text); border-color: #dc3545; }
+#comment-form button[type="submit"] { align-self: center; min-width: 180px; }
 
 
 /* --- Top Navigation Bar --- */
-.auth-nav {
-    background-color: rgba(11, 61, 145, 0.6);
-    padding: 0.5rem 0; /* Vertical padding only */
-    border-bottom: 1px solid var(--border-color);
-    z-index: 10;
-    position: relative; /* Ensure z-index works */
-}
-
-/* Use the general .container class for width/padding/centering */
-/* Apply flexbox directly to the container WITHIN the nav */
-.nav-container {
-    /* Inherits max-width, margin, padding from .container */
-    display: flex;
-    justify-content: space-between; /* Pushes .nav-left and .nav-right apart */
-    align-items: center; /* Vertically aligns the flex items (.nav-left and .nav-right) */
-    gap: 1rem; /* Adds space between left/right if they get close */
-    flex-wrap: wrap; /* Allows wrapping on very small screens */
-}
-
-/* Style for the right-side container (auth links/button) */
-.nav-right {
-    display: flex; /* Make items inside align nicely */
-    align-items: center; /* Vertically align items like Login | Register */
-    gap: 0.8rem; /* Spacing between Login, separator, Register, or Logout button */
-    font-size: 0.9em; /* Consistent font size */
-}
-
-/* Style for the left-side container (blog link) */
-.nav-left {
-    font-size: 0.9em; /* Consistent font size */
-    /* Prevents the Blog link from shrinking if space is tight */
-    flex-shrink: 0;
-}
-
-/* General styles for links/buttons specifically within the nav bar */
-.nav-container a,
-.nav-container button.button-link-style { /* Target links and the button */
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-    /* Button specific resets to make it look like a link */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;       /* Remove default button padding */
-    margin: 0;        /* Remove default button margin */
-    font-family: inherit; /* Use body font */
-    font-size: inherit;   /* Use parent font size */
-    line-height: 1.4; /* Ensure consistent line height for vertical centering */
-    vertical-align: middle; /* Helps align inline-block elements */
-}
-
-.nav-container a:hover,
-.nav-container button.button-link-style:hover {
-    color: var(--accent-orange);
-}
-
-/* Blog link specific style (optional emphasis) */
-.nav-blog-link {
-    font-weight: 600;
-}
-
-/* Separator style within auth links */
-#auth-links .separator { /* Target separator specifically */
-    color: var(--text-medium);
-    opacity: 0.6;
-    line-height: 1.4; /* Match line height of links */
-    vertical-align: middle; /* Align with links */
-}
+.auth-nav { background-color: rgba(11, 61, 145, 0.6); padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); z-index: 10; position: relative; }
+.nav-container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.nav-right { display: flex; align-items: center; gap: 0.8rem; font-size: 0.9em; }
+.nav-left { font-size: 0.9em; flex-shrink: 0; }
+.nav-container a, .nav-container button.button-link-style { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s ease; background: none; border: none; cursor: pointer; padding: 0; margin: 0; font-family: inherit; font-size: inherit; line-height: 1.4; vertical-align: middle; }
+.nav-container a:hover, .nav-container button.button-link-style:hover { color: var(--accent-orange); }
+.nav-blog-link { font-weight: 600; }
+#auth-links .separator { color: var(--text-medium); opacity: 0.6; line-height: 1.4; vertical-align: middle; }
 /* --- End Top Navigation Bar --- */
 
 
 /* --- Auth Page Specific Styles --- */
 .auth-header {
-    text-align: center;
-    padding: 2rem 1.5rem 1rem;
+    /* REMOVED text-align: center; */
+    padding: 2rem 0 1rem; /* Vertical padding only */
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
 }
-.auth-header h2 { font-size: 1.8em; color: var(--accent-orange); border: none; margin: 0.5rem 0 0 0; padding: 0; font-weight: 600;}
-.auth-header .home-link { font-family: var(--font-heading); font-size: 1.2em; color: var(--text-light); text-decoration: none; display: block; margin-bottom: 0.5rem; }
-.auth-header .home-link:hover { color: var(--accent-orange); text-shadow: none; }
+/* ADDED/MODIFIED RULE for the container inside auth headers */
+.auth-header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center flex items (link and h2) horizontally */
+}
+.auth-header .container h2 { /* Adjusted target */
+    font-size: 1.8em;
+    color: var(--accent-orange);
+    border: none;
+    margin: 0.5rem 0 0 0; /* Keep margin */
+    padding: 0;
+    font-weight: 600;
+    text-align: center; /* Explicitly center the text within the h2 element itself */
+}
+.auth-header .container .home-link { /* Adjusted target */
+    font-family: var(--font-heading);
+    font-size: 1.2em;
+    color: var(--text-light);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.auth-header .container .home-link:hover { color: var(--accent-orange); text-shadow: none; }
+
 .auth-main { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem; }
-/* Use the general .container class for width/padding inside auth pages too */
-.auth-main .container {
-    max-width: 450px; /* Limit width of auth forms */
-    padding-left: 0; /* Remove extra padding if not needed */
-    padding-right: 0;
-}
-.auth-card {
-    width: 100%; /* Take full width of its container */
-    /* max-width: 450px; /* Max width now controlled by container */
-    padding: 2rem 2.5rem;
-    background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-}
+/* Container within auth-main */
+.auth-main .container { max-width: 450px; padding-left: 0; padding-right: 0; }
+.auth-card { width: 100%; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
 #login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
 .auth-card label { font-weight: 600; color: var(--text-light); font-size: 1em; margin-bottom: 0.5rem; display: block; }
 .auth-card input[type="email"], .auth-card input[type="password"] { background-color: rgba(10, 15, 26, 0.95); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
 .auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
 .password-group { position: relative; }
-.password-toggle { position: absolute; top: 50%; /* Center vertically relative to input height */ right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; height: 70%; /* Adjust clickable area height */ }
+.password-toggle { position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; height: 70%; }
 .password-toggle:hover svg, .password-toggle:focus svg { fill: var(--accent-orange); }
 .password-toggle svg { width: 20px; height: 20px; fill: var(--text-medium); transition: fill 0.2s ease; }
 .auth-card input[type="password"] { padding-right: 45px; }
@@ -511,79 +361,43 @@ a:hover, a:focus {
 /* --- RESPONSIVENESS --- */
 @media (max-width: 768px) {
     h1 { font-size: 2.2em; }
-    header .container h2 { font-size: 1.3em; }
-    h2 { font-size: 1.6em; } /* General section h2 */
+    header:not(.auth-header) .container h2 { font-size: 1.3em; }
+    section h2 { font-size: 1.6em; } /* General section h2 */
+    .auth-header .container h2 { font-size: 1.6em; } /* Auth header h2 */
 
-    /* Adjust main container padding */
     .container { padding-left: 1rem; padding-right: 1rem; }
-
-    header { padding-top: 3rem; }
-
+    header:not(.auth-header) { padding-top: 3rem; }
     .card { padding: 1rem 1.5rem; }
-
-    #contact .links {
-        flex-direction: column;
-        align-items: stretch;
-    }
-     #comment-form button[type="submit"] {
-        width: 100%;
-    }
+    #contact .links { flex-direction: column; align-items: stretch; }
+    #comment-form button[type="submit"] { width: 100%; }
 }
 
 @media (max-width: 480px) {
     h1 { font-size: 1.8em; }
-    header .container h2 { font-size: 1.1em; }
-    h2 { font-size: 1.4em; } /* General section h2 */
+    header:not(.auth-header) .container h2 { font-size: 1.1em; }
+    section h2 { font-size: 1.4em; }
+    .auth-header .container h2 { font-size: 1.4em; } /* Auth header h2 */
 
     body { font-size: 15px; }
-
     .button { padding: 0.7rem 1.2rem; font-size: 0.95em; }
 
-    #comment-form input[type="email"],
-    #comment-form textarea {
-        font-size: 0.95em;
-        padding: 0.7rem 0.9rem;
-    }
+    #comment-form input[type="email"], #comment-form textarea { font-size: 0.95em; padding: 0.7rem 0.9rem; }
 
     /* Adjust reCAPTCHA scale */
-    #recaptcha-container-comment > div,
-    #recaptcha-container-login > div,
-    #recaptcha-container-register > div {
-        transform: scale(0.85);
-        transform-origin: center;
-    }
-     #recaptcha-container-comment,
-     #recaptcha-container-login,
-     #recaptcha-container-register {
-         min-height: 70px; /* Adjust min-height */
-     }
+    #recaptcha-container-comment > div, #recaptcha-container-login > div, #recaptcha-container-register > div { transform: scale(0.85); transform-origin: center; }
+    #recaptcha-container-comment, #recaptcha-container-login, #recaptcha-container-register { min-height: 70px; }
 
     #comment-form button[type="submit"] { width: 100%; }
 
     /* Auth page specific */
     .auth-card { padding: 1.5rem 1.5rem; }
-    .auth-header h2 { font-size: 1.6em; }
+    /* Auth header h2 already adjusted above */
 
-    /* Nav bar adjustments for small screens */
+    /* Nav bar adjustments */
     .auth-nav { padding: 0.4rem 0; }
-    .nav-container {
-        padding: 0 1rem; /* Adjust padding */
-        flex-wrap: wrap;
-        justify-content: center; /* Center items when they wrap */
-        gap: 0.5rem; /* Reduce gap when wrapped */
-    }
-    .nav-left, .nav-right {
-        font-size: 0.85em;
-        gap: 0.6rem; /* Gap within right side */
-    }
-    .nav-left {
-        margin-bottom: 0.3rem; /* Space below Blog if it wraps above */
-        text-align: center; /* Center blog link if wrapped */
-        width: 100%; /* Allow blog link take full width if alone on line */
-    }
-     .nav-right {
-         justify-content: center; /* Center auth links if they wrap */
-         width: 100%; /* Allow auth links take full width if alone on line */
-    }
+    .nav-container { padding: 0 1rem; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    .nav-left, .nav-right { font-size: 0.85em; gap: 0.6rem; }
+    .nav-left { margin-bottom: 0.3rem; text-align: center; width: 100%; }
+    .nav-right { justify-content: center; width: 100%; }
 }
 /* --- END RESPONSIVENESS --- */
