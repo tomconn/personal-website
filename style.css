@@ -92,7 +92,8 @@ main {
     flex-grow: 1; /* Pushes footer down */
 }
 
-header:not(.auth-header) { /* Style general header */
+/* Style general header (index.html) */
+header:not(.auth-header) {
     text-align: center;
     padding-top: 4rem;
     padding-bottom: 3rem;
@@ -125,13 +126,14 @@ h1, h2 {
     margin-bottom: 0.5rem;
 }
 
-h1 {
+h1 { /* Main H1 on index.html */
     font-size: 2.8em;
     letter-spacing: 2px;
     text-shadow: 0 0 8px rgba(255, 127, 0, 0.5);
+    font-weight: 700; /* Ensure consistent weight */
 }
 
-/* General Section headings */
+/* General Section headings (e.g., "About Me", "Skills") */
 section h2 {
     font-size: 1.8em;
     color: var(--accent-orange);
@@ -141,19 +143,22 @@ section h2 {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+    font-weight: 600; /* Slightly less bold than H1 */
 }
 
-/* Main Header's h2 (subtitle) styling */
+/* Index Header's h2 (subtitle) styling */
 header:not(.auth-header) .container h2 {
     font-size: 1.5em;
     color: var(--text-light);
-    font-weight: 400;
+    font-weight: 400; /* Lighter weight for subtitle */
     border: none;
     padding: 0;
     margin: 0;
+    letter-spacing: normal; /* Reset potential inherited spacing */
+    text-shadow: none;      /* Reset potential inherited shadow */
 }
 
-/* Main Header's subtitle paragraph */
+/* Index Header's subtitle paragraph */
 header:not(.auth-header) .container .subtitle {
     color: var(--text-medium);
     font-style: italic;
@@ -298,27 +303,29 @@ a:hover, a:focus {
 
 /* --- Auth Page Specific Styles --- */
 .auth-header {
-    /* REMOVED text-align: center; */
     padding: 2rem 0 1rem; /* Vertical padding only */
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
 }
-/* ADDED/MODIFIED RULE for the container inside auth headers */
 .auth-header .container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center flex items (link and h2) horizontally */
+    align-items: center; /* Center flex items horizontally */
 }
-.auth-header .container h2 { /* Adjusted target */
-    font-size: 1.8em;
-    color: var(--accent-orange);
+/* STYLE FOR H2 IN AUTH HEADERS (Login, Register, Activate) */
+.auth-header .container h2 {
+    font-size: 1.8em;            /* Heading size */
+    font-family: var(--font-heading); /* Match main heading font */
+    color: var(--text-light);     /* Use light text color */
     border: none;
-    margin: 0.5rem 0 0 0; /* Keep margin */
+    margin: 0.5rem 0 0 0;
     padding: 0;
-    font-weight: 600;
-    text-align: center; /* Explicitly center the text within the h2 element itself */
+    font-weight: 700;             /* Match main heading weight */
+    text-align: center;           /* Center text within h2 */
+    letter-spacing: 1px;          /* Optional: Match main heading spacing */
+    text-shadow: none;            /* Ensure no shadow */
 }
-.auth-header .container .home-link { /* Adjusted target */
+.auth-header .container .home-link {
     font-family: var(--font-heading);
     font-size: 1.2em;
     color: var(--text-light);
@@ -329,7 +336,6 @@ a:hover, a:focus {
 .auth-header .container .home-link:hover { color: var(--accent-orange); text-shadow: none; }
 
 .auth-main { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem; }
-/* Container within auth-main */
 .auth-main .container { max-width: 450px; padding-left: 0; padding-right: 0; }
 .auth-card { width: 100%; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
 #login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
@@ -362,8 +368,8 @@ a:hover, a:focus {
 @media (max-width: 768px) {
     h1 { font-size: 2.2em; }
     header:not(.auth-header) .container h2 { font-size: 1.3em; }
-    section h2 { font-size: 1.6em; } /* General section h2 */
-    .auth-header .container h2 { font-size: 1.6em; } /* Auth header h2 */
+    section h2 { font-size: 1.6em; }
+    .auth-header .container h2 { font-size: 1.6em; } /* Adjust auth header h2 */
 
     .container { padding-left: 1rem; padding-right: 1rem; }
     header:not(.auth-header) { padding-top: 3rem; }
@@ -376,7 +382,7 @@ a:hover, a:focus {
     h1 { font-size: 1.8em; }
     header:not(.auth-header) .container h2 { font-size: 1.1em; }
     section h2 { font-size: 1.4em; }
-    .auth-header .container h2 { font-size: 1.4em; } /* Auth header h2 */
+    .auth-header .container h2 { font-size: 1.4em; } /* Adjust auth header h2 */
 
     body { font-size: 15px; }
     .button { padding: 0.7rem 1.2rem; font-size: 0.95em; }
@@ -391,7 +397,6 @@ a:hover, a:focus {
 
     /* Auth page specific */
     .auth-card { padding: 1.5rem 1.5rem; }
-    /* Auth header h2 already adjusted above */
 
     /* Nav bar adjustments */
     .auth-nav { padding: 0.4rem 0; }
