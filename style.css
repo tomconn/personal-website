@@ -340,8 +340,8 @@ a:hover, a:focus {
 .auth-card { width: 100%; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
 #login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
 .auth-card label { font-weight: 600; color: var(--text-light); font-size: 1em; margin-bottom: 0.5rem; display: block; }
-.auth-card input[type="email"], .auth-card input[type="password"] { background-color: rgba(10, 15, 26, 0.95); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
-.auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
+.auth-card input[type="email"], .auth-card input[type="password"], .auth-card input[type="text"]  { background-color: rgba(10, 15, 26, 0.95); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--border-color); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
+.auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus, .auth-card input[type="text"]:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 5px rgba(255, 127, 0, 0.5); }
 .password-group { position: relative; }
 .password-toggle { position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; height: 70%; }
 .password-toggle:hover svg, .password-toggle:focus svg { fill: var(--accent-orange); }
