@@ -19,11 +19,18 @@
 
     <!-- Navigation / Auth Links -->
     <nav class="auth-nav">
-        <div id="auth-links" class="container">
-            <!-- Links will be populated by script.js -->
-            <a href="/login.html">Login</a>
-            <span class="separator">|</span>
-            <a href="/register.html">Register</a>
+        <div class="container nav-container"> <!-- Flex container for left/right alignment -->
+             <!-- Left Side Link -->
+             <div class="nav-left">
+                <a href="https://blog.softwarestable.com/" target="_blank" rel="noopener noreferrer" class="nav-blog-link">Blog</a>
+            </div>
+            <!-- Right Side Auth Links (Dynamically Populated by script.js) -->
+            <div id="auth-links" class="nav-right">
+                <!-- Default links shown before JS runs or if JS fails -->
+                <a href="/login.html">Login</a>
+                <span class="separator">|</span>
+                <a href="/register.html">Register</a>
+            </div>
         </div>
     </nav>
 
