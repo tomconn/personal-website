@@ -46,7 +46,7 @@ This repository contains the source code for the personal website of Thomas Conn
 > Ensure the registration and login functions are in separate js file.
 
 > **For the index.html page**, show a login/registration links, at the top of the existing page. On pressing the login link navigate to the login page. On pressing registration navigate to the registration page. On successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  
-> Existing Code is as follows. Add the login and registration and update the existing code to support it. Regenerate all the code in full. > Ensure all additional styles are added to the existing style.css.
+> Existing Code is as follows. Add the login and registration and update the existing code to support it. Regenerate all the code in full. Ensure all additional styles are added to the existing style.css.
 > For the index.html page, on successfully login, replace the login/registration link with a logout link. Use the login cookie to check user is logged into the application.  Show the differences to the existing code.
 > Add Validate the token against a session store in D1
 > Modify the index.html to only display the 'Leave a comment' if the user is NOT logged onto the website.
