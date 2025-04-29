@@ -19,20 +19,20 @@
 
     <!-- Navigation / Auth Links -->
     <nav class="auth-nav">
-        <div class="container nav-container"> <!-- Flex container for left/right -->
-             <div class="nav-left">
-                <a href="https://blog.softwarestable.com/" target="_blank" rel="noopener noreferrer" class="nav-blog-link">Blog</a>
-            </div>
+        <div class="container nav-container">
+             <!-- Let the container handle max-width and padding -->
+             <!-- Auth Links will now naturally align right due to justify-content on parent if needed, -->
+             <!-- Or center if only element. We only need the dynamic part now. -->
             <div id="auth-links" class="nav-right">
                 <!-- Default links (replaced by script.js) -->
                 <a href="/login.html">Login</a>
                 <span class="separator">|</span>
                 <a href="/register.html">Register</a>
             </div>
+             <!-- *** END MODIFICATION *** -->
         </div>
     </nav>
 
-    <!-- *** MODIFIED: Added container div inside header *** -->
     <header class="fade-in">
         <div class="container">
             <h1>Thomas Connolly</h1>
@@ -40,9 +40,7 @@
             <p class="subtitle">Building the future of resilient, automated infrastructure.</p>
         </div>
     </header>
-    <!-- *** END MODIFICATION *** -->
 
-    <!-- *** MODIFIED: Added container div inside main (optional but good practice) *** -->
     <main>
         <div class="container">
             <section id="about" class="card fade-in">
@@ -86,6 +84,7 @@
                     <a href="mailto:contact@thomasconnolly.com" class="button">Email: contact@thomasconnolly.com</a>
                     <a href="https://www.linkedin.com/in/thomas-connolly-7350742/?originalSubdomain=au" target="_blank" rel="noopener noreferrer" class="button">LinkedIn</a>
                     <a href="https://github.com/tomconn" target="_blank" rel="noopener noreferrer" class="button">GitHub</a>
+                    <a href="https://blog.softwarestable.com/" target="_blank" rel="noopener noreferrer" class="button">Blog</a>
                 </div>
             </section>
 
@@ -112,15 +111,12 @@
             </section>
         </div>
     </main>
-    <!-- *** END MODIFICATION *** -->
 
-    <!-- *** MODIFIED: Added container div inside footer *** -->
     <footer class="fade-in">
         <div class="container">
             <p>© <span id="year"></span> Thomas Connolly. Charting the course for innovation.</p>
         </div>
     </footer>
-    <!-- *** END MODIFICATION *** -->
 
     <!-- Load shared utils first, then page-specific script -->
     <script src="common.js"></script>
