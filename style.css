@@ -200,6 +200,14 @@ a:hover, a:focus {
     text-shadow: 0 0 5px var(--accent-orange);
 }
 
+/* --- Make Images Responsive --- */
+img,
+picture img { /* Target both standalone images and images within picture elements */
+    max-width: 100%; /* Ensures image never exceeds the width of its container */
+    height: auto;    /* Maintains aspect ratio when width changes */
+    display: block;  /* Optional: Prevents extra space below image if treated as inline */
+}
+
 /* --- Components --- */
 .card {
     background-color: var(--card-bg);
