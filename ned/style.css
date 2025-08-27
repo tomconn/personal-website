@@ -1,0 +1,418 @@
+/* --- Base Styles & Variables --- */
+:root {
+    --primary-bg: #1a1a1a; /* Dark Grey - like a worn soccer ball */
+    --secondary-bg: #333333; /* Medium Grey - for accents */
+    --accent-white: #ffffff; /* White - for contrast, like the panels of a ball */
+    --accent-black: #000000; /* Black - for strong lines and text */
+    --text-light: #e0e0e0;    /* Off-white text */
+    --text-medium: #a0a0a0;  /* Lighter gray */
+    --card-bg: rgba(51, 51, 51, 0.9); /* Semi-transparent card background */
+    --border-color: rgba(0, 0, 0, 0.6); /* Subtle black border */
+    --success-bg: rgba(40, 167, 69, 0.8); /* Greenish background for success */
+    --error-bg: rgba(220, 53, 69, 0.8);   /* Reddish background for error */
+    --error-text: #f8d7da; /* Light red text for errors */
+    --success-text: #d4edda; /* Light green text for success */
+
+    --font-heading: 'Oswald', sans-serif; /* Strong, sporty feel */
+    --font-body: 'Roboto', sans-serif; /* Clean, modern body font */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    position: relative; /* Needed for pseudo-element backgrounds */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Soccer Field Background (simplified for CSS) --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(255,255,255,0.05) 2px, transparent 3px),
+        radial-gradient(circle at 90% 90%, rgba(255,255,255,0.05) 2px, transparent 3px),
+        repeating-linear-gradient(0deg, var(--secondary-bg), var(--secondary-bg) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(90deg, var(--secondary-bg), var(--secondary-bg) 1px, transparent 1px, transparent 20px);
+    background-size: 20px 20px;
+    opacity: 0.15; /* Subtle grid/pattern */
+    z-index: -2;
+}
+
+.stars-bg, .twinkling-bg {
+    /* Remove space-themed backgrounds */
+    display: none;
+}
+
+
+/* --- Layout & Spacing --- */
+/* General Container for consistent width & padding */
+.container {
+    max-width: 900px; /* Max content width */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;  /* Horizontal padding */
+    padding-right: 1.5rem;
+    width: 100%; /* Takes full width until max-width */
+}
+
+/* Apply vertical padding to the outer sectioning elements */
+header, main, footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    width: 100%; /* Ensure they take full available width */
+    z-index: 1; /* Keep content above background */
+}
+
+main {
+    flex-grow: 1; /* Pushes footer down */
+}
+
+/* Style general header (index.html) */
+header:not(.auth-header) {
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 2px solid var(--accent-white); /* White line for header */
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, var(--primary-bg), var(--secondary-bg), var(--primary-bg));
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Footer specific styling */
+footer {
+    text-align: center;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-medium);
+    font-size: 0.9em;
+}
+
+/* Space between sections within main */
+main .container > section {
+    margin-bottom: 2.5rem;
+}
+main .container > section:last-child {
+    margin-bottom: 0;
+}
+
+
+/* --- Typography --- */
+h1, h2 {
+    font-family: var(--font-heading);
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase; /* Sporty feel */
+}
+
+h1 { /* Main H1 on index.html */
+    font-size: 3.2em;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* White glow */
+    font-weight: 800; /* Extra bold */
+}
+
+/* General Section headings (e.g., "About Me", "Skills") */
+section h2 {
+    font-size: 2em;
+    color: var(--accent-white); /* White for section titles */
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border-bottom: 1px solid var(--accent-black); /* Black separator */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+/* Index Header's h2 (subtitle) styling */
+header:not(.auth-header) .container h2 {
+    font-size: 1.8em;
+    color: var(--text-light);
+    font-weight: 500; /* Lighter weight for subtitle */
+    border: none;
+    padding: 0;
+    margin: 0;
+    letter-spacing: normal;
+    text-shadow: none;
+    text-transform: capitalize; /* Subtitle not all caps */
+}
+
+/* Index Header's subtitle paragraph */
+header:not(.auth-header) .container .subtitle {
+    color: var(--text-medium);
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 1.1em;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--text-light);
+}
+
+ul {
+    list-style: none;
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+li::before {
+    content: '⚽'; /* Soccer ball bullet point */
+    position: absolute;
+    left: -1.5em;
+    color: var(--accent-white); /* White soccer ball */
+    font-weight: bold;
+}
+
+a {
+    color: var(--accent-white); /* White links */
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: var(--text-light);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8); /* Stronger white glow */
+}
+
+/* --- Make Images Responsive --- */
+img,
+picture img { /* Target both standalone images and images within picture elements */
+    max-width: 100%; /* Ensures image never exceeds the width of its container */
+    height: auto;    /* Maintains aspect ratio when width changes */
+    display: block;  /* Optional: Prevents extra space below image if treated as inline */
+}
+
+/* --- Components --- */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--accent-black); /* Black border */
+    border-radius: 12px; /* Slightly more rounded */
+    padding: 1.5rem 2rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px); /* Stronger blur */
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.icon {
+    display: inline-block;
+    font-size: 1.2em;
+}
+
+#contact .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.button {
+    display: inline-block;
+    background-color: var(--accent-black); /* Black button */
+    color: var(--accent-white); /* White text */
+    padding: 0.9rem 1.8rem; /* Slightly larger padding */
+    border-radius: 5px;
+    border: 1px solid var(--accent-white); /* White border */
+    text-align: center;
+    font-weight: 700; /* Bolder text */
+    text-transform: uppercase; /* All caps for buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, opacity 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
+    background-color: var(--secondary-bg); /* Medium grey on hover */
+    color: var(--accent-white);
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    text-shadow: none;
+}
+
+.button:disabled {
+    background-color: #555;
+    border-color: #777;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* --- Animations --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- Comment Form Styles --- */
+#comment-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.form-group { display: flex; flex-direction: column; }
+#comment-form label { display: block; margin-bottom: 0.5rem; color: var(--text-medium); font-weight: 500; font-size: 0.95em; }
+#comment-form input[type="email"], #comment-form textarea { background-color: rgba(0, 0, 0, 0.7); /* Darker input background */ color: var(--text-light); border: 1px solid var(--secondary-bg); border-radius: 4px; padding: 0.8rem 1rem; font-family: var(--font-body); font-size: 1em; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+#comment-form textarea { min-height: 100px; resize: vertical; }
+#comment-form input[type="email"]:focus, #comment-form textarea:focus { outline: none; border-color: var(--accent-white); /* White focus border */ box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+#comment-form input[type="email"]::placeholder, #comment-form textarea::placeholder { color: var(--text-medium); opacity: 0.8; }
+.char-counter { text-align: right; font-size: 0.85em; color: var(--text-medium); margin-top: 0.3rem; height: 1.2em; }
+.char-counter.error { color: var(--error-text); font-weight: bold; }
+#recaptcha-container-comment { margin-bottom: 0.5rem; display: flex; justify-content: center; min-height: 78px; }
+.form-error-message { color: var(--error-text); font-size: 0.85em; margin-top: 0.3rem; min-height: 1.2em; display: none; opacity: 0; transition: opacity 0.3s ease-out; }
+.form-error-message.visible { display: block; opacity: 1; }
+.form-status { padding: 0.8rem 1.2rem; border-radius: 5px; margin-bottom: 1rem; font-weight: 500; text-align: center; display: none; opacity: 0; transition: opacity 0.5s ease-out; border: 1px solid transparent; }
+.form-status.visible { display: block; opacity: 1; }
+.form-status.success { background-color: var(--success-bg); color: var(--success-text); border-color: #38c172; }
+.form-status.error { background-color: var(--error-bg); color: var(--error-text); border-color: #dc3545; }
+#comment-form button[type="submit"] { align-self: center; min-width: 180px; }
+
+
+/* --- Top Navigation Bar --- */
+.auth-nav { background-color: rgba(0, 0, 0, 0.7); /* Darker nav bar */ padding: 0.5rem 0; border-bottom: 1px solid var(--secondary-bg); z-index: 10; position: relative; }
+.nav-container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.nav-right { display: flex; align-items: center; gap: 0.8rem; font-size: 0.9em; }
+.nav-left { font-size: 0.9em; flex-shrink: 0; }
+.nav-container a, .nav-container button.button-link-style { color: var(--text-light); text-decoration: none; font-weight: 500; transition: color 0.2s ease; background: none; border: none; cursor: pointer; padding: 0; margin: 0; font-family: inherit; font-size: inherit; line-height: 1.4; vertical-align: middle; }
+.nav-container a:hover, .nav-container button.button-link-style:hover { color: var(--accent-white); text-shadow: 0 0 5px var(--accent-white); }
+.nav-blog-link { font-weight: 600; }
+#auth-links .separator { color: var(--text-medium); opacity: 0.6; line-height: 1.4; vertical-align: middle; }
+/* --- End Top Navigation Bar --- */
+
+
+/* --- Auth Page Specific Styles --- */
+.auth-header {
+    padding: 2rem 0 1rem; /* Vertical padding only */
+    border-bottom: 1px solid var(--secondary-bg);
+    margin-bottom: 2rem;
+    background: var(--primary-bg); /* Solid background for auth header */
+    box-shadow: none; /* No shadow here */
+}
+.auth-header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center flex items horizontally */
+}
+/* STYLE FOR H2 IN AUTH HEADERS (Login, Register, Activate) */
+.auth-header .container h2 {
+    font-size: 2em;            /* Heading size */
+    font-family: var(--font-heading); /* Match main heading font */
+    color: var(--accent-white);     /* Use white text color */
+    border: none;
+    margin: 0.5rem 0 0 0;
+    padding: 0;
+    font-weight: 800;             /* Match main heading weight */
+    text-align: center;           /* Center text within h2 */
+    letter-spacing: 2px;          /* Optional: Match main heading spacing */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Subtle white glow */
+}
+.auth-header .container .home-link {
+    font-family: var(--font-heading);
+    font-size: 1.3em;
+    color: var(--text-light);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+.auth-header .container .home-link:hover { color: var(--accent-white); text-shadow: 0 0 5px var(--accent-white); }
+
+.auth-main { flex-grow: 1; display: flex; justify-content: center; align-items: flex-start; padding-top: 2rem; padding-bottom: 3rem; }
+.auth-main .container { max-width: 450px; padding-left: 0; padding-right: 0; }
+.auth-card { width: 100%; padding: 2rem 2.5rem; background-color: var(--card-bg); border: 1px solid var(--accent-black); border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+#login-form, #register-form { display: flex; flex-direction: column; gap: 1.2rem; }
+.auth-card label { font-weight: 600; color: var(--text-light); font-size: 1em; margin-bottom: 0.5rem; display: block; }
+.auth-card input[type="email"], .auth-card input[type="password"], .auth-card input[type="text"]  { background-color: rgba(0, 0, 0, 0.7); padding: 0.9rem 1.1rem; font-size: 1.05em; color: var(--text-light); border: 1px solid var(--secondary-bg); border-radius: 4px; width: 100%; transition: border-color 0.3s ease, box-shadow 0.3s ease;}
+.auth-card input[type="email"]:focus, .auth-card input[type="password"]:focus, .auth-card input[type="text"]:focus { outline: none; border-color: var(--accent-white); box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+.password-group { position: relative; }
+.password-toggle { position: absolute; top: 50%; right: 10px; transform: translateY(-25%); background: none; border: none; color: var(--text-medium); cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; height: 70%; }
+.password-toggle:hover svg, .password-toggle:focus svg { fill: var(--accent-white); }
+.password-toggle svg { width: 20px; height: 20px; fill: var(--text-medium); transition: fill 0.2s ease; }
+.auth-card input[type="password"] { padding-right: 45px; }
+.password-rules { font-size: 0.8em; color: var(--text-medium); margin-top: 0.3rem; }
+.auth-button { margin-top: 1rem; padding: 0.9rem 1.5rem; font-size: 1.1em; width: 100%; /* Inherits .button styles */ }
+.auth-switch { text-align: center; margin-top: 1.5rem; font-size: 0.95em; color: var(--text-medium); }
+.auth-switch a { font-weight: 600; }
+.spinner { border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top: 4px solid var(--accent-white); /* White spinner */ width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 1rem auto 0; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+#recaptcha-container-login, #recaptcha-container-register { display: flex; justify-content: center; min-height: 78px; }
+/* --- End Auth Page Styles --- */
+
+
+/* --- UTILITY CLASSES --- */
+.hidden {
+    display: none !important;
+}
+/* --- END UTILITY CLASSES --- */
+
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    h1 { font-size: 2.5em; }
+    header:not(.auth-header) .container h2 { font-size: 1.5em; }
+    section h2 { font-size: 1.8em; }
+    .auth-header .container h2 { font-size: 1.8em; } /* Adjust auth header h2 */
+
+    .container { padding-left: 1rem; padding-right: 1rem; }
+    header:not(.auth-header) { padding-top: 3rem; }
+    .card { padding: 1rem 1.5rem; }
+    #contact .links { flex-direction: column; align-items: stretch; }
+    #comment-form button[type="submit"] { width: 100%; }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2em; }
+    header:not(.auth-header) .container h2 { font-size: 1.3em; }
+    section h2 { font-size: 1.6em; }
+    .auth-header .container h2 { font-size: 1.6em; } /* Adjust auth header h2 */
+
+    body { font-size: 15px; }
+    .button { padding: 0.8rem 1.3rem; font-size: 0.95em; }
+
+    #comment-form input[type="email"], #comment-form textarea { font-size: 0.95em; padding: 0.7rem 0.9rem; }
+
+    /* Adjust reCAPTCHA scale */
+    #recaptcha-container-comment > div, #recaptcha-container-login > div, #recaptcha-container-register > div { transform: scale(0.85); transform-origin: center; }
+    #recaptcha-container-comment, #recaptcha-container-login, #recaptcha-container-register { min-height: 70px; }
+
+    #comment-form button[type="submit"] { width: 100%; }
+
+    /* Auth page specific */
+    .auth-card { padding: 1.5rem 1.5rem; }
+
+    /* Nav bar adjustments */
+    .auth-nav { padding: 0.4rem 0; }
+    .nav-container { padding: 0 1rem; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    .nav-left, .nav-right { font-size: 0.85em; gap: 0.6rem; }
+    .nav-left { margin-bottom: 0.3rem; text-align: center; width: 100%; }
+    .nav-right { justify-content: center; width: 100%; }
+}
+/* --- END RESPONSIVENESS --- */

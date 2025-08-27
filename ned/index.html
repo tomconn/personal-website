@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas Connolly - Platform Engineer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Add reCAPTCHA script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Site Key for reCAPTCHA (Replace with your actual site key) -->
+    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"> <!-- Ensure this value is correct -->
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="twinkling-bg"></div>
+
+    <header class="fade-in">
+        <div class="container">
+            <h1>Ned Connolly</h1>
+            <h2>Aspiring Football Player</h2>
+            <p class="subtitle">Driven by Dedication</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="about" class="card fade-in">
+                <h2><span class="icon">⚽</span> About Me</h2>
+                <p>
+                    A dynamic athlete with a four-year football career, this player blends a strong club foundation with exceptional, state-level sprinting speed. His journey began with two formative years at Middle Park FC, a community club founded in 1969, where he honed his foundational skills. He then progressed to the Port Melbourne Sharks, a club competing in the National Premier Leagues Victoria, for another two seasons. This step provided experience in a more competitive environment. Notably, his football talent is amplified by a successful background in athletics, having competed at the state level in sprinting multiple times. This rare combination of football skill and explosive pace makes him a valuable and exciting player on the field.
+                </p>
+            </section>
+
+            <section id="skills" class="card fade-in">
+                <h2><span class="icon">🛠️</span> Core Skills</h2>
+                <ul>
+                    <li>Speed and Agility</li>
+                    <li>Positive Aggressiveness</li>
+                    <li>High Level Of Aerobic and Anaerobic Fitness</li>
+                    <li>Perseverance</li>
+                    <li>Coachability</li>
+                    <li>Physically Robust</li>
+                    <li>Resilience</li>
+                    <li>Adaptability</li>
+                    <li>Positive Attitude</li>
+                </ul>
+            </section>
+
+            <section id="certifications" class="card fade-in">
+                <h2><span class="icon">📜</span> 2025 Highlights</h2>
+                <ul>
+                    <li>Video Placeholder!!!</li>
+                </ul>
+            </section>
+
+            <section id="contact" class="card fade-in">
+                <h2><span class="icon">🤝</span> Connect</h2>
+                <p>Get in touch:</p>
+                <div class="links">
+                    <a href="mailto:football@nedconnolly.com" class="button">Email: football@nedconnolly.com</a>
+                </div>
+            </section>
+
+            <!-- COMMENT SECTION - Visibility controlled by script.js -->
+            <section id="comments" class="card fade-in"> <!-- Initially visible, hidden by JS if logged in -->
+                <h2><span class="icon">💬</span> Leave a Comment</h2>
+                <form id="comment-form">
+                    <div class="form-group">
+                        <label for="comment-email">Your Email:</label>
+                        <input type="email" id="comment-email" name="email" placeholder="Enter your email address" required aria-describedby="email-error">
+                        <div id="email-error" class="form-error-message" role="alert" aria-live="assertive"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment-text">Your Comment:</label>
+                        <textarea id="comment-text" name="comment" maxlength="256" placeholder="Share your thoughts (max 256 characters)..." required aria-describedby="char-count form-status"></textarea>
+                        <div id="char-count" class="char-counter">0 / 256</div>
+                    </div>
+                    <div class="form-group">
+                        <div id="recaptcha-container-comment" class="g-recaptcha"></div>
+                    </div>
+                    <div id="form-status-comment" class="form-status" role="alert" aria-live="polite"></div>
+                    <button type="submit" id="submit-comment" class="button">Submit Comment</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="fade-in">
+        <div class="container">
+            <p>© <span id="year"></span> Ned Connolly. Driven by Dedication.</p>
+        </div>
+    </footer>
+
+    <!-- Load shared utils first, then page-specific script -->
+    <script src="../common.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>
