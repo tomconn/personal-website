@@ -8,10 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Add reCAPTCHA script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <!-- Site Key for reCAPTCHA (Replace with your actual site key) -->
-    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"> <!-- Ensure this value is correct -->
+    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY">
     <script>
         (function() {
             const hostname = window.location.hostname;
@@ -30,19 +28,13 @@
     <div class="stars-bg"></div>
     <div class="twinkling-bg"></div>
 
-    <!-- Navigation / Auth Links -->
     <nav class="auth-nav">
         <div class="container nav-container">
-             <!-- Let the container handle max-width and padding -->
-             <!-- Auth Links will now naturally align right due to justify-content on parent if needed, -->
-             <!-- Or center if only element. We only need the dynamic part now. -->
             <div id="auth-links" class="nav-right">
-                <!-- Default links (replaced by script.js) -->
                 <a href="/login.html">Login</a>
                 <span class="separator">|</span>
                 <a href="/register.html">Register</a>
             </div>
-             <!-- *** END MODIFICATION *** -->
         </div>
     </nav>
 
@@ -101,8 +93,7 @@
                 </div>
             </section>
 
-            <!-- COMMENT SECTION - Visibility controlled by script.js -->
-            <section id="comments" class="card fade-in"> <!-- Initially visible, hidden by JS if logged in -->
+            <section id="comments" class="card fade-in">
                 <h2><span class="icon">💬</span> Leave a Comment</h2>
                 <form id="comment-form">
                     <div class="form-group">
@@ -131,7 +122,6 @@
         </div>
     </footer>
 
-    <!-- Load shared utils first, then page-specific script -->
     <script src="common.js"></script>
     <script src="script.js"></script>
 </body>

@@ -8,10 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Add reCAPTCHA script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <!-- Site Key for reCAPTCHA (Replace with your actual site key) -->
-    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY"> <!-- Ensure this value is correct -->
+    <meta name="recaptcha-site-key" content="6Ld2sRUrAAAAAKOlfsgOHIzzUZj3o7AH6V-834xY">
 </head>
 <body>
     <div class="stars-bg"></div>
@@ -65,8 +63,7 @@
                 </div>
             </section>
 
-            <!-- COMMENT SECTION - Visibility controlled by script.js -->
-            <section id="comments" class="card fade-in"> <!-- Initially visible, hidden by JS if logged in -->
+            <section id="comments" class="card fade-in">
                 <h2><span class="icon">💬</span> Leave a Comment</h2>
                 <form id="comment-form">
                     <div class="form-group">
@@ -95,7 +92,6 @@
         </div>
     </footer>
 
-    <!-- Load shared utils first, then page-specific script -->
     <script src="../common.js"></script>
     <script src="../script.js"></script>
 </body>
