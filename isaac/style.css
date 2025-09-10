@@ -36,6 +36,7 @@ body {
     background-color: #fff;
     padding: 2rem 1.5rem;
     border-right: 1px solid #e0e0e0;
+    z-index: 10; /* Added to ensure it stays on top */
 }
 
 .site-title {
@@ -265,39 +266,11 @@ footer {
     font-size: 0.9rem;
 }
 
+
 /* --- Responsive Design --- */
+
+/* For Tablets */
 @media (max-width: 1024px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        border-right: none;
-        border-bottom: 1px solid #e0e0e0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-    }
-
-    .sidebar nav ul {
-        display: flex;
-        gap: 1rem;
-    }
-
-    .site-title {
-        margin-bottom: 0;
-    }
-    
-    .sidebar nav li {
-        margin-bottom: 0;
-    }
-
-    .content {
-        margin-left: 0;
-        width: 100%;
-        padding: 0 5%;
-    }
-
     .player-section {
         flex-direction: column;
     }
@@ -308,7 +281,51 @@ footer {
     }
 }
 
+/* For Mobile Phones */
 @media (max-width: 768px) {
+    body {
+        /* Change the body's flex-direction to stack sidebar and content vertically */
+        flex-direction: column;
+    }
+
+    .sidebar {
+        /* Change from fixed sidebar to a static top header */
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+
+        /* Arrange title and nav horizontally */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* Allows items to stack on very small screens */
+        padding: 1rem;
+    }
+
+    .site-title {
+        /* Remove bottom margin to align better in the new flex layout */
+        margin-bottom: 0;
+    }
+    
+    .sidebar nav ul {
+        /* Display navigation links in a row */
+        display: flex;
+        gap: 1rem;
+    }
+
+    .sidebar nav li {
+        margin-bottom: 0;
+    }
+
+    .content {
+        /* Remove the margin and set width to 100% to fill the screen */
+        margin-left: 0;
+        width: 100%;
+        padding: 0 5%;
+    }
+
     .trophy-grid, .two-column-section {
         grid-template-columns: 1fr;
     }
@@ -329,5 +346,11 @@ footer {
     .gallery-section img {
         grid-column: auto;
         grid-row: auto;
+    }
+
+    .trophy-item {
+        /* Stack image on top of text for smaller screens */
+        flex-direction: column;
+        text-align: center;
     }
 }
