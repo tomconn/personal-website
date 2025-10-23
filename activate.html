@@ -3,27 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Consistent Title Pattern -->
     <title>Activate Account - Thomas Connolly</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="fonts/fonts.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- No reCAPTCHA needed on this page -->
 </head>
 <body>
     <div class="stars-bg"></div>
     <div class="twinkling-bg"></div>
 
-     <!-- Consistent Header Structure -->
      <header class="auth-header">
         <div class="container">
             <a href="/" class="home-link">Thomas Connolly</a>
-            <h2>Account Activation</h2> <!-- H2 uses updated style -->
+            <h2>Account Activation</h2> 
         </div>
     </header>
 
-    <!-- Consistent Main Structure -->
     <main class="auth-main">
         <div class="container"> <!-- Centering container for the card -->
             <section id="activation-section" class="card auth-card">
@@ -39,7 +34,6 @@
         </div>
     </main>
 
-    <!-- Consistent Footer Structure -->
     <footer class="fade-in">
         <div class="container">
             <p>© <span id="year"></span> Thomas Connolly.</p>
@@ -48,7 +42,6 @@
 
     <script src="activate.js"></script>
      <script>
-      // Simple inline script just for year
       document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 
