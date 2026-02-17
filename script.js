@@ -336,35 +336,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Optional: Explicitly render reCAPTCHA for comment form
-        if (recaptchaContainerComment) {
-            // We don't need a typeof check here because grecaptcha.ready 
-            // is designed to handle the wait for the script.
-            const runRender = () => {
-                try {
-                    const siteKeyMeta = document.querySelector('meta[name="recaptcha-site-key"]');
-                    const siteKey = recaptchaContainerComment.dataset.sitekey || siteKeyMeta?.content;
-
-                    if (siteKey) {
-                        // Ensure we only render once
-                        if (recaptchaContainerComment.innerHTML.trim() === "") {
-                            const widgetId = grecaptcha.render('recaptcha-container-comment', {
-                                'sitekey': siteKey
-                            });
-                            recaptchaContainerComment.dataset.widgetId = widgetId;
-                        }
-                    } else {
-                        console.error("reCAPTCHA site key not found.");
-                    }
-                } catch (e) {
-                    console.error("Error rendering reCAPTCHA:", e);
-                }
-            };
-
-            // If the script is loaded, use ready(). If not, the script's 
-            // onload parameter (see below) will handle it.
-            if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
-                grecaptcha.ready(runRender);
-            }
+        if (typeof grecaptcha !== 'undefined' && grecaptcha.render && typeof grecaptcha.ready === 'function') {
+             grecaptcha.ready(function() { // Ensure API is ready
+                 try {
+                     const siteKeyMeta = document.querySelector('meta[name="recaptcha-site-key"]');
+                     const siteKey = recaptchaContainerComment.dataset.sitekey || siteKeyMeta?.content;
+                     if (siteKey && document.getElementById('recaptcha-container-comment')) { // Check container exists
+                         const widgetId = grecaptcha.render('recaptcha-container-comment', { // Use string ID for render
+                             'sitekey' : siteKey
+                         });
+                         recaptchaContainerComment.dataset.widgetId = widgetId; // Store the ID
+                     } else if (!siteKey) {
+                         console.error("reCAPTCHA site key not found for comment form.");
+                     }
+                 } catch (e) {
+                     console.error("Error rendering reCAPTCHA for comment form:", e);
+                 }
+            });
+        } else {
+             console.warn("reCAPTCHA API (grecaptcha) not fully available for explicit render.");
+        }
 
     } else {
         // This warning is expected if the section is hidden initially for logged-in users.
